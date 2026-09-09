@@ -14,8 +14,8 @@ git switch main
 git pull
 git checkout -b <name of your new branch>
 
-activate conda tools if the conda environment needs to be touched:
-source /user/miniconda3/etc/profile.d/conda.sh (might be different path)
+activate conda tools if the conda environment needs to be touched (might be different path):
+source /user/miniconda3/etc/profile.d/conda.sh
 conda config --set auto_activate_base false
 conda activate conda-tools
 
