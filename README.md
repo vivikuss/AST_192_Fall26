@@ -14,6 +14,11 @@ git switch main
 git pull
 git checkout -b <name of your new branch>
 
+activate conda tools if the conda environment needs to be touched:
+source /user/miniconda3/etc/profile.d/conda.sh (might be different path)
+conda config --set auto_activate_base false
+conda activate conda-tools
+
 install/update the conda environment (first time or if the were changes):
 conda-lock install --name ast192
 
