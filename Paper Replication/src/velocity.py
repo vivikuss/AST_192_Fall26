@@ -55,3 +55,16 @@ def vsini_likelihood(row):
     for differential rotation (MW14 Table 1 note f); it is used unchanged."""
     assert row.vsini_diffrot_corrected, "v sin i must be the once-corrected table value"
     return gaussian_likelihood(row.vsini, row.vsini_err)
+
+
+def vsini_excess_sigma(row, rng, *, alpha, lat_mean_deg, lat_sd_deg, n=200_000):
+    """(v sin i − v) / σ, with v = 2πR/P_eq from the same Monte Carlo as L_v
+    (spot-latitude corrected). v is the median draw, σ_v half the 16–84% range,
+    combined in quadrature with the v sin i error. Values > 2 are unphysical
+    at 2σ (v sin i cannot exceed v)."""
+    v = sample_equatorial_velocity(row, n, rng, alpha=alpha,
+                                   lat_mean_deg=lat_mean_deg, lat_sd_deg=lat_sd_deg)
+    q16, q50, q84 = np.percentile(v, [16, 50, 84])
+    sigma_v = 0.5 * (q84 - q16)
+    return dict(v=q50, sigma_v=sigma_v,
+                excess_sigma=(row.vsini - q50) / np.hypot(row.vsini_err, sigma_v))

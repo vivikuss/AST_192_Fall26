@@ -1,0 +1,4 @@
+# Regenerable caches (see README: "Regenerating data/processed")
+data/processed/*
+!data/processed/*.csv
+.DS_Store
