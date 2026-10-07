@@ -24,12 +24,13 @@ Z_GRID = np.unique(np.concatenate([np.linspace(0, 1, 801), np.geomspace(1e-4, 0.
 
 # ------------------------------------------------------------- per star
 def star_cosi_posterior(row, *, method, rng, n_mc=200_000, alpha=0.23,
-                        lat_mean_deg=20.0, lat_sd_deg=20.0, cosi_grid=COSI_GRID):
+                        lat_mean_deg=20.0, lat_sd_deg=20.0, vsini_err_scale=1.0,
+                        cosi_grid=COSI_GRID):
     """cos i posterior for one star on cosi_grid under `method` ('correct'|'mw14')."""
     v = sample_equatorial_velocity(row, n_mc, rng, alpha=alpha,
                                    lat_mean_deg=lat_mean_deg, lat_sd_deg=lat_sd_deg)
     L_v, v_grid = velocity_likelihood_from_samples(v)
-    L_u = vsini_likelihood(row)
+    L_u = vsini_likelihood(row, err_scale=vsini_err_scale)
     return posterior_cosi(cosi_grid, L_v, L_u, method=method, v_grid=v_grid)
 
 
@@ -135,3 +136,24 @@ def permutation_test(ll_star, n_a, n_trials, rng, observed_mask, kappa_grid=KAPP
         mask[rng.choice(n, n_a, replace=False)] = True
         trials[t] = metrics(mask)
     return obs, trials, (trials >= obs).mean(axis=0)
+
+
+# ------------------------------------------------------- full-sample run
+def run_sample(df, table, *, method, vsini_err_scale=1.0, k_samples=1000,
+               sample_seed=100, kappa_grid=KAPPA_GRID):
+    """Per-star posteriors (seeded by KOI number), K samples each (one shared
+    sample seed), and per-star log-likelihoods on kappa_grid. Every run with the
+    same seeds sees the same Monte Carlo draws, so runs differ only in the
+    method or the inputs."""
+    post = {int(r.koi): star_cosi_posterior(r, method=method, vsini_err_scale=vsini_err_scale,
+                                            rng=np.random.default_rng(int(r.koi)))
+            for _, r in df.iterrows()}
+    rng = np.random.default_rng(sample_seed)
+    samples = np.array([sample_from_grid(COSI_GRID, post[int(k)], k_samples, rng) for k in df.koi])
+    return dict(post=post, samples=samples, ll_star=per_star_log_likelihood(samples, table))
+
+
+def kl_divergence(p, q, grid=COSI_GRID):
+    """KL(p || q) for densities tabulated on the same grid (nats)."""
+    ok = p > 0
+    return np.trapz(np.where(ok, p * np.log(np.where(ok, p, 1.0) / np.maximum(q, 1e-300)), 0.0), grid)

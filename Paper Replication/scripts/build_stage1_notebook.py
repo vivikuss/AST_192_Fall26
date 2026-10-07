@@ -33,7 +33,7 @@ from src.obliquity import f_cosi, fisher_theta_pdf, log_kappa_prior
 from src.hierarchical import (COSI_GRID, KAPPA_GRID, Z_GRID, star_cosi_posterior,
     sample_from_grid, inclination_upper_limit_deg, fcosi_table,
     per_star_log_likelihood, kappa_posterior, summarize_kappa, grid_quantile,
-    permutation_test)
+    permutation_test, run_sample)
 from src.velocity import vsini_excess_sigma
 
 FIG, PROC = ROOT / "figures", ROOT / "data/processed"
@@ -361,11 +361,23 @@ fig.suptitle("Reproduction of Morton & Winn (2014) Figure 7 (κ_max = 10⁴)")
 fig.tight_layout(); fig.savefig(FIG / "stage1_mw14_fig7.png", bbox_inches="tight")
 """),
 M("""
-## 13. Physical consistency: (v sin i − v) / σ
+## 13. The distribution of x = (v sin i − v) / σ
 
-`v sin i` cannot exceed `v`. For each star, v = 2πR/P_eq from the same Monte
-Carlo as L_v (spot-latitude corrected), σ combines the `v sin i` error and the
-16–84% half-width of v. Stars above +2σ are flagged.
+v sin i = v · sin i, so the **true** x is ≤ 0 for every star and reaches 0 only
+at i = 90° (consistent with alignment; a misalignment purely in the sky plane
+also gives i = 90°). Measured x scatters around the true value by the
+measurement errors. Two consequences:
+
+* Cutting stars at measured x > +2σ preferentially removes stars whose true x is
+  near 0, i.e. stars consistent with alignment. Such a cut suppresses signal and
+  is not a systematics test (Section 15 reports it only for completeness).
+* Stars misaligned along the line of sight have true x < 0, so an obliquity spread
+  appears as a negative tail of x. With equal measurement errors in both groups,
+  √(spread_single² − spread_multi²) estimates the extra astrophysical spread of
+  the singles, without any obliquity model.
+
+v = 2πR/P_eq from the same Monte Carlo as L_v (spot-latitude corrected); σ adds
+the `v sin i` error and the 16–84% half-width of v in quadrature.
 """),
 C("""
 tension = pd.DataFrame([{"koi": int(r.koi), "group": r.group, "vsini": r.vsini, "vsini_err": r.vsini_err,
@@ -373,43 +385,99 @@ tension = pd.DataFrame([{"koi": int(r.koi), "group": r.group, "vsini": r.vsini, 
                                               lat_mean_deg=20, lat_sd_deg=20)}
                         for _, r in df.iterrows()])
 tension.to_csv(PROC / "stage1_vsini_excess.csv", index=False)
-fig, ax = plt.subplots(figsize=(6.5, 3.6))
+x = {g: tension.query("group == @g").excess_sigma.values for g in ("single", "multi")}
+stat = {g: dict(mean=v.mean(), sd=v.std(ddof=1), sd_mad=1.4826 * np.median(np.abs(v - np.median(v))))
+        for g, v in x.items()}
+
+fig, ax = plt.subplots(figsize=(7, 4))
 bins = np.arange(-6.5, 4.01, 0.5)
-for g in ("single", "multi"):
-    ax.hist(tension.query("group == @g").excess_sigma, bins, histtype="step", lw=2, color=GCOL[g],
-            label=f"{g} ({(df.group == g).sum()})")
-ax.axvline(2, ls="--", color="#9a9a94"); ax.text(2.05, ax.get_ylim()[1] * 0.85, "+2σ", color="#6b6a64")
-ax.set(xlabel="(v sin i − v) / σ", ylabel="Stars"); ax.legend(frameon=False)
+for g, va in (("single", "top"), ("multi", "top")):
+    ax.hist(x[g], bins, histtype="step", lw=2, color=GCOL[g], label=f"{g} ({len(x[g])})")
+    ax.axvline(stat[g]["mean"], color=GCOL[g], lw=1, ls=":")
+ax.axvline(0, color="#9a9a94", lw=1)
+txt = "\\n".join(f"{g}: mean {stat[g]['mean']:+.2f}, spread {stat[g]['sd']:.2f} (MAD-based {stat[g]['sd_mad']:.2f})"
+                for g in ("single", "multi"))
+ax.text(0.02, 0.97, txt, transform=ax.transAxes, va="top", fontsize=8.5, color="#3d3d3a")
+ax.set(xlabel="x = (v sin i − v) / σ", ylabel="Stars", ylim=(0, 10.5))
+ax.legend(frameon=False, loc="upper right")
 fig.tight_layout(); fig.savefig(FIG / "stage1_vsini_excess.png", bbox_inches="tight")
-print(tension.groupby("group").excess_sigma.describe().round(2).to_string())
-flagged = tension.query("excess_sigma > 2").sort_values("excess_sigma", ascending=False)
-flagged.round(2)
 """),
 C("""
-expected = [85, 1445, 318, 288, 262, 1628, 975]
-tension.set_index("koi").loc[expected, ["group", "vsini", "v", "sigma_v", "excess_sigma"]].round(2)
+from scipy import stats as st
+rng = np.random.default_rng(13)
+def excess_spread(a, b):
+    d = a ** 2 - b ** 2
+    return np.sign(d) * np.sqrt(abs(d))
+boot = np.array([excess_spread(np.std(rng.choice(x["single"], len(x["single"])), ddof=1),
+                               np.std(rng.choice(x["multi"], len(x["multi"])), ddof=1)) for _ in range(5000)])
+est = excess_spread(stat["single"]["sd"], stat["multi"]["sd"])
+est_mad = excess_spread(stat["single"]["sd_mad"], stat["multi"]["sd_mad"])
+print(f"sqrt(spread_single² − spread_multi²) = {est:.2f} σ   "
+      f"(bootstrap 68%: {np.percentile(boot, 16):.2f} to {np.percentile(boot, 84):.2f}; "
+      f"P(≤ 0) = {np.mean(boot <= 0):.3f})")
+print(f"same with MAD-based spreads (robust to the x = −6.2 outlier): {est_mad:.2f} σ")
+n_hi = int((tension.excess_sigma > 2).sum())
+print(f"\\nstars with x > +2σ: {n_hi} of 70. If the errors were right, even with every star at "
+      f"i = 90° the expected number is 70 × {st.norm.sf(2):.4f} = {70 * st.norm.sf(2):.1f}; "
+      f"binomial P(≥ {n_hi}) = {st.binom.sf(n_hi - 1, 70, st.norm.sf(2)):.1e}")
+tension.query("excess_sigma > 2").sort_values("excess_sigma", ascending=False).round(2)
 """),
-M("### Stage 1 re-run without the flagged stars"),
+M("""
+The excess at x > +2σ cannot come from obliquities, which only push x negative.
+It means the quoted errors are too small, or v is biased low (e.g. by the
+spot-latitude prescription), for at least some stars. That motivates the global
+error-inflation test below. The spread above is in units of each star's own σ,
+so it is a model-free indicator of the singles' extra spread, not an angle.
+"""),
+M("""
+## 14. Global error-inflation test (MW14 method)
+
+All `v sin i` uncertainties × f, identically for singles and multis,
+f ∈ {1.0, 1.15, 1.35}. The upper value comes from the multis' observed x spread
+(1.35), which bounds their measurement-only spread from above. Inflating only
+σ(v sin i) raises the total σ in x by less than f; the effective factor is shown.
+"""),
 C("""
-keep = ~df.koi.isin(flagged.koi).values
-rows = []
-for label, sel in [("all 70", np.ones(len(df), bool)), (f"without {len(flagged)} flagged", keep)]:
+KAPPA_FINE = np.unique(np.concatenate([np.arange(2, 10, 0.01), np.arange(10, 30.0001, 0.05)]))
+table_fine = fcosi_table(cache=PROC / "fcosi_table_fine.npz", kappa_grid=KAPPA_FINE)
+
+def ladder_row(run, label, sel=None, perm_seed=4300):
+    sel = np.ones(len(df), bool) if sel is None else sel
+    ll, llf = run["ll_star"][sel], per_star_log_likelihood(run["samples"][sel], table_fine)
+    row = {"run": label, "N single/multi": f"{(groups['single'] & sel).sum()}/{(groups['multi'] & sel).sum()}"}
     for g in ("single", "multi"):
-        m = groups[g] & sel
-        lp_fine = ll_fine[m].sum(0) + log_kappa_prior(KAPPA_FINE)
-        s = summarize_kappa(kappa_posterior(ll_star[m].sum(0)))
-        rows.append({"sample": label, "group": g, "N": m.sum(),
-                     "mode (fine grid)": KAPPA_FINE[np.argmax(lp_fine)],
-                     "hpd68": f"({s['hpd68_lo']:.1f}, {s['hpd68_hi']:.1f})",
-                     "median": s["median"]})
-pd.DataFrame(rows).round(2)
+        m = groups[g][sel]
+        s = summarize_kappa(kappa_posterior(ll[m].sum(0)))
+        row[f"κ_{g} mode"] = KAPPA_FINE[np.argmax(llf[m].sum(0) + log_kappa_prior(KAPPA_FINE))]
+        row[f"κ_{g} 68%"] = f"{s['hpd68_lo']:.1f}–{s['hpd68_hi']:.1f}"
+    _, _, pv = permutation_test(ll, int(groups["single"][sel].sum()), 1000,
+                                np.random.default_rng(perm_seed), groups["single"][sel])
+    row["p(TVD)"], row["p(H²)"] = pv
+    return row
+
+ladder = {}
+rows = []
+for f in (1.0, 1.15, 1.35):
+    ladder[f] = run_sample(df, table, method=METHOD, vsini_err_scale=f)
+    eff = np.median([np.hypot(f * r.vsini_err, t.sigma_v) / np.hypot(r.vsini_err, t.sigma_v)
+                     for (_, r), (_, t) in zip(df.iterrows(), tension.iterrows())])
+    rows.append({**ladder_row(ladder[f], f"f = {f}"), "median effective σ_x factor": eff})
+assert np.array_equal(ladder[1.0]["samples"], samples), "f = 1 run must reproduce Section 6 exactly"
+ladder_mw14 = pd.DataFrame(rows)
+ladder_mw14.to_csv(PROC / "stage1_error_inflation_mw14.csv", index=False)
+ladder_mw14.round(3)
+"""),
+M("""
+## 15. For completeness only: the signal-suppressing x > +2σ cut
+
+Because the cut preferentially removes stars consistent with alignment (Section
+13), changes in κ or p under it are expected by construction and are not
+evidence about systematics. Reported so the number exists, not interpreted.
 """),
 C("""
-# significance of the single/multi difference after removing the flagged stars
-o, t, pv = permutation_test(ll_star[keep], int((groups["single"] & keep).sum()), 1000,
-                            np.random.default_rng(4301), groups["single"][keep])
-print(f"{keep.sum()} stars ({(groups['single'] & keep).sum()} single / {(groups['multi'] & keep).sum()} multi): "
-      f"TVD = {o[0]:.3f} (p = {pv[0]:.3f}), H² = {o[1]:.3f} (p = {pv[1]:.3f})")
+keep = (tension.excess_sigma <= 2).values
+pd.DataFrame([ladder_row(ladder[1.0], "all 70 (f = 1)"),
+              ladder_row(ladder[1.0], f"x ≤ +2σ only ({keep.sum()} stars; signal-suppressing)", keep, 4301)]).round(3)
 """),
 ]
 nb["cells"] = cells

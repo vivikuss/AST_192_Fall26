@@ -14,6 +14,14 @@ data/morton_winn_table1.csv   Table 1 of MW14, transcribed from the PDF (scripts
 figures/    saved figures
 ```
 
+## Known unresolved item
+
+**Table 1 upper-limit offset (closed as unresolved).** Our 95% upper limits on i
+sit ≈ 0.6° below the published column. The published values lie on a 0.01 grid
+in cos i, but no flooring, rounding, or grid-CDF rule reproduces all 70 to 0.1°
+(best: 39/70; Stage 1 notebook §10). The column is reporting-only and does not
+enter the κ inference, so this is not pursued further.
+
 ## Inputs
 
 `data/morton_winn_table1.csv`, sha256
@@ -45,6 +53,6 @@ Environment: `conda activate ast192` (pytest is not in it, hence `tests/run_test
 |---|---|
 | 0 — inference engine validation | done, all checks pass (`notebooks/stage0_validation.ipynb`) |
 | 1 — reproduce MW14 | done (`notebooks/stage1_reproduce_mw14.ipynb`): κ_single 4.73, Table 1 limits within 2°, Figs. 5–7 reproduced, permutation p = 0.017 / 0.035 (published 0.015 / 0.036); κ_multi mode 16.1 reported, not tested |
-| 2 — corrected inference | not started |
+| 2 — corrected inference | done (`notebooks/stage2_corrected_inference.ipynb`): corrected κ_single 3.9, κ_multi 12.3; permutation p = 0.030 / 0.032 (stable for v sin i error inflation f ≤ 1.35) |
 | 3 — extended sample | not started |
 | 4 — significance and controls | not started |

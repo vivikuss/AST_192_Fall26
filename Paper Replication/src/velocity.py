@@ -50,14 +50,15 @@ def velocity_likelihood_from_samples(v_samples, n_grid=1500, pad_bw=6.0):
     return GridLikelihood(grid, kde(grid)), grid
 
 
-def vsini_likelihood(row):
+def vsini_likelihood(row, err_scale=1.0):
     """Gaussian L_u from the table value. The table value is already corrected
-    for differential rotation (MW14 Table 1 note f); it is used unchanged."""
+    for differential rotation (MW14 Table 1 note f); it is used unchanged.
+    err_scale multiplies the v sin i uncertainty (global error-inflation test)."""
     assert row.vsini_diffrot_corrected, "v sin i must be the once-corrected table value"
-    return gaussian_likelihood(row.vsini, row.vsini_err)
+    return gaussian_likelihood(row.vsini, err_scale * row.vsini_err)
 
 
-def vsini_excess_sigma(row, rng, *, alpha, lat_mean_deg, lat_sd_deg, n=200_000):
+def vsini_excess_sigma(row, rng, *, alpha, lat_mean_deg, lat_sd_deg, n=200_000, err_scale=1.0):
     """(v sin i − v) / σ, with v = 2πR/P_eq from the same Monte Carlo as L_v
     (spot-latitude corrected). v is the median draw, σ_v half the 16–84% range,
     combined in quadrature with the v sin i error. Values > 2 are unphysical
@@ -67,4 +68,4 @@ def vsini_excess_sigma(row, rng, *, alpha, lat_mean_deg, lat_sd_deg, n=200_000):
     q16, q50, q84 = np.percentile(v, [16, 50, 84])
     sigma_v = 0.5 * (q84 - q16)
     return dict(v=q50, sigma_v=sigma_v,
-                excess_sigma=(row.vsini - q50) / np.hypot(row.vsini_err, sigma_v))
+                excess_sigma=(row.vsini - q50) / np.hypot(err_scale * row.vsini_err, sigma_v))
