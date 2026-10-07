@@ -1,0 +1,14 @@
+# Versions in the ast192 conda env used for this project (do not pip install into ast192;
+# see the AST_192_Fall26 README). Python 3.10.21.
+numpy==1.26.4
+scipy==1.15.2
+matplotlib==3.10.9
+emcee==3.1.6
+astropy==6.1.7
+astroquery==0.4.11
+pandas==2.3.3
+nbformat==5.11.1
+nbconvert==7.17.1
+ipykernel==7.3.0
+# Not in ast192, used once outside it to transcribe Table 1 (scripts/extract_morton_winn_table1.py):
+# pypdf
