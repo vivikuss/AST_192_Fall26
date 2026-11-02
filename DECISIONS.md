@@ -37,6 +37,33 @@ when HS19 did the work, i.e. **the same map, not a substitute**. Choice: use it.
 Axis orientation verified (tests/test_extinction.py): dust at Ophiuchus
 (l=353°, b=+17°), not at b=−17°; Taurus (b=−15°) not at b=+15° or with x↔y
 swapped; Pleiades line of sight E(B−V)=0.042 (Gaia Collab. 2018a adopt 0.045).
+**Provenance and map version (checked 2026-11-02, user request).**
+- **File:** `data/raw/stilism/stilism_cube.h5`, 360,599,622 bytes, sha256
+  `a768d80ad7dea541eb57fb9b240c4f112862eb4355580d1cd3be1068c559d906` (re-hashed 2026-11-02, unchanged).
+- **Downloaded from:**
+  `http://web.archive.org/web/20231106201424id_/https://stilism.obspm.fr/static/cube/stilism_cube.h5`
+  (Wayback snapshot 2023-11-06 20:14:24 UTC; the only archived copy of the file, per the Wayback CDX index).
+- **About page:** `http://web.archive.org/web/20241211053929/https://stilism.obspm.fr/about`.
+- **Which map (correction).** The About page names no paper. Archived About pages from
+  2018-05-05, 2018-09-04, 2019-11-19 and 2024-12-11 all describe the downloadable cube as
+  **Version 4.1, created 2018-03-19**, with this grid. So v4.1 was served without change from
+  at least May 2018 to Dec 2024, which covers HS19's work (received 2019-06-28).
+  - The 2019-08-19 homepage says: "See Lallement et al. 2014, Capitanio et al. 2017, Lallement et al.,
+    submitted (2018). The current map is based on the inversion of reddening estimates towards 71,000
+    target stars."
+  - Lallement et al. 2018 (A&A 616, A132; arXiv:1804.06060) describe exactly this grid ("a cube
+    [−2000,2000]pc×[−2000,2000]pc×[−300,300]pc … voxels of 5pc side"). They merged new data
+    "with those corresponding to the ∼30,000 targets used by Capitanio et al.", and the STILISM site
+    was updated with their map.
+  - **Conclusion:** the cube is the **Lallement et al. (2018) map**, i.e. Capitanio et al. (2017) data
+    plus new APOGEE-DR14/Gaia data, released on STILISM as v4.1. It is not the Capitanio et al. 2017 map
+    as published. HS19 cite Capitanio 2017, but the cube STILISM served while they worked was this one,
+    so it is still the map HS19 queried, as far as the archive can show.
+  - The earlier wording above ("the cube STILISM distributed for Capitanio et al. (2017)") is therefore
+    imprecise. The config/cache label `stilism_capitanio2017` is kept as a name only (changing it would
+    only invalidate caches).
+  - Lallement et al. 2019 (6 × 6 × 0.8 kpc, hierarchical grid) does not match the cube. It is a
+    candidate for Phase 2d (newer map; needs user approval).
 
 **A2. CDS outage.** VizieR (CDS, CfA mirror and others), SIMBAD-CDS and
 TAPVizieR timed out all day from this network. SIMBAD is reached via the Harvard
@@ -784,3 +811,26 @@ I. **EXPLORATORY (pre-registered now, before any colour-matched value has been
   Both are being raised at the group meeting.
 - **Phase 2 (DR3 update) is on hold** (user): a teammate is doing a DR2 → DR3 reproduction, and the split
   of work will be decided at the meeting.
+
+### Storage clean-up (user decision, 2026-11-02)
+Deleted superseded data, about 214 MB (project 08: 1.3 GB → 1.1 GB). Nothing used by current results was
+removed.
+- `data/raw/gaia/field_dr2_prefilter/` (146 MB): the old ESA field chunks, partly truncated (A5) and
+  superseded by the COUNT-verified ARI field (A6, A7).
+  - `src/validate_ari.py` compared ARI against 4 of these chunks (L2 regions 0, 109, 110, 111). Its result
+    stays in `logs/ari_validation.json`; a rerun would re-fetch those regions from ESA.
+  - `field_service: esa` would re-download everything.
+- `data/raw/gaia/hosts_{hj_table1,hj_dy2019,longp_dy2019}_dr2/` (1.2 MB): ESA 50-ID host batches,
+  superseded by the ARI host queries (A8; identical rows).
+- `data/processed/phase1_dr2_test1000/`, `phase1_dr2_test1000_excl/` (64 MB): Stage A test runs,
+  superseded by the 40,000-iteration run. Their numbers remain in the conversation summary at STOP A;
+  `logs/test_mc_1000*.log` are kept.
+- `data/raw/ari/audit07/` (0.8 MB): the cache of project 07's truncation audit, copied into 07's
+  `audit/truncation_2026-11/` (public) and `data/private/processed/audit_truncation/` (extended sample).
+
+**Kept on purpose:**
+- `data/raw/gaia/field_dr2_prefilter_count/`: the ESA COUNT(*) results that documented the truncation (A5).
+- The `*_dr3rv` batches (DR3 RV-fill sensitivity variant), `pleiades_dr2`, and `validate` (BJ18 ESA vs
+  ARI check).
+- The sensitivity-variant folders (≈ 440 MB of regenerable `field_ms.csv.gz` copies), at the user's
+  request.

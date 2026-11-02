@@ -46,7 +46,7 @@ Outputs are in `data/processed/phase1_dr2/` and figures in `figures/phase1_dr2/`
 | Field | 5-parameter solution + RV, cuts 1–10; planet hosts removed | D17 |
 | Cuts 4, 8 | Lindegren et al. (2018) C.1/C.2 (the paper's typos corrected) | D1, D2 |
 | Distances | Bailer-Jones et al. (2018) `r_est` | D16 |
-| Extinction | STILISM / Capitanio+2017 cube v4.1 (the original map), line-of-sight integration, CV18 mean coefficients | A1, D9, D9b |
+| Extinction | STILISM cube v4.1 (2018-03-19), the map STILISM served during HS19's work: the Lallement+2018 map built on Capitanio+2017 (HS19 cite Capitanio+2017); line-of-sight integration, CV18 mean coefficients | A1, D9, D9b |
 | Main sequence | Published 8th-order Pleiades polynomial; keep M_G0 > MS − 1 mag | D8 |
 | UVW | astropy GalacticLSR, Schönrich+2010 solar motion; z with R0 = 8.3 kpc, z_sun = 27 pc | D11, D15 |
 | Dispersion | (1/N) Σ √[(U−Ū)² + (V−V̄)² + (W−W̄)²] (HS19 eq. 1) | D14 |
