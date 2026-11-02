@@ -1,0 +1,162 @@
+# Hamer & Schlaufman (2019, AJ 158, 190; arXiv:1908.06998) reproduction.
+# Every threshold and setting used by the pipeline lives here.
+# Judgment calls behind these values are logged in DECISIONS.md (D-numbers).
+
+run_name: phase1_dr2          # outputs go to data/processed/<run_name>/ and figures/<run_name>/
+seed: 20191021                # HS19 publication date; fixes all RNG streams
+refresh: false                # true = ignore cached downloads and re-query
+
+gaia:
+  release: dr2                # dr2 | dr3 (Phase 2a)
+  tap_url: https://gea.esac.esa.int/tap-server/tap
+  source_table: gaiadr2.gaia_source
+  distance_table: external.gaiadr2_geometric_distance   # Bailer-Jones et al. (2018)
+  distance_column: r_est      # BJ18 mode of the posterior (D16)
+  field_service: ari          # where the field query runs: esa | ari (A6)
+  host_service: ari           # host Gaia DR2 rows: esa (50-ID batches) | ari (one job per list) (A8)
+  ari:                        # ARI Heidelberg Gaia TAP, same DR2 tables (A6)
+    tap_url: https://gaia.ari.uni-heidelberg.de/tap
+    source_table: gaiadr2.gaia_source
+    distance_table: gaiadr2_complements.geometric_distance
+    execution_duration_s: 14400   # anonymous hard limit (4 h)
+    maxrec: 10000000              # hard output limit
+    range_level: 2                # one job per HEALPix level-L source_id range (A7); 192 ranges; densest timed 31 s
+    workers: 3                    # concurrent ARI jobs (shared public service)
+    poll_s: 10                    # phase poll interval (non-blocking GET)
+    status_log_s: 180             # log job status this often
+    max_wait_s: 14700             # give up (and abort) after 4 h + 5 min
+  network:                    # Gaia TAP robustness (A5); does not affect results
+    socket_timeout_s: 120     # any single HTTP read/connect
+    job_timeout_s: 300        # wall clock per async job (server aborts anonymous jobs at ~60 s)
+    poll_s: 2
+    max_rows: 50000           # anonymous output cap; a full result is treated as truncated
+    retries: 4                # timeouts / dropped connections
+    retries_500: 1            # HTTP 500 before splitting a region (500 = usually the 60 s cap)
+    retries_500_max_level: 4  # HTTP 500 at the deepest level (cannot split further)
+    backoff_s: [15, 30, 60, 120]
+    max_level: 7              # deepest HEALPix level for splitting
+    workers: 4
+
+# ---------------------------------------------------------------- samples
+hosts:
+  archive_tap: https://exoplanetarchive.ipac.caltech.edu/TAP/sync
+  archive_table: pscomppars   # one row per planet, composite parameters (D4)
+  mass_column: pl_bmassj      # "Planet Mass or Mass*sin(i)" [MJup] (D4)
+  disc_year_max: 2019         # approximate the 2019 archive (D5); null = no limit
+  drop_mass_upper_limits: false   # HS19 Table 1 keeps limit-only masses (D4)
+  hj:
+    period_max: 10.0          # P < 10 d
+    mass_min: 0.1             # Mp sin i > 0.1 MJup
+  longp:
+    period_min: 10.0          # P > 10 d
+    mass_min: 0.1
+  exclude_hj_hosts_from_longp: false  # D7: paper describes no removal; closest to 367
+  gaia_id_source: simbad      # simbad | archive (D6b); paper used SIMBAD
+  simbad_url: https://simbad.harvard.edu/simbad/sim-tap/sync   # CDS unreachable 2026-10-28; Harvard mirror
+  # RV priority (paper): archive systemic RV, else Gaia DR2 radial_velocity.
+  # Archive RVs whose reference is a post-2019 Gaia release are anachronistic
+  # for a 2019 reproduction; they are replaced by the Gaia DR2 value (D6).
+  archive_rv_reject_ref_patterns: ["Gaia DR3", "Gaia EDR3", "gaia_dr3", "GAIA DR3"]
+  rv_fill_dr3: false          # variant only: fill hosts lacking archive+DR2 RV with Gaia DR3 RV (D6c)
+  table1_file: data/hs19_table1.txt   # paper's machine-readable Table 1, if provided
+
+# Quality cuts, HS19 appendix (numbering follows the paper).
+cuts:
+  parallax_over_error_min: 10            # 1
+  mean_varpi_factor_al_range: [-0.23, 0.36]   # 2
+  visibility_periods_used_min: 8         # 3
+  uwe:                                   # 4: u < a * max(1, exp(b*(G - g0)))
+    form: lindegren                      #    lindegren = exp(b*(G-g0)); literal = exp(b*G - g0) as printed (D1)
+    a: 1.2
+    b: -0.2
+    g0: 19.5
+  astrometric_gof_al_max: 3              # 5
+  astrometric_excess_noise_sig_max: 2    # 6
+  rv_nb_transits_min: 5                  # 7
+  bp_rp_excess:                          # 8: lo_a + lo_b*c^2 < E < hi_a + hi_b*c^2
+    lo_a: 1.0
+    lo_b: 0.015                          #    paper prints 0.0015; Lindegren C.2 has 0.015 (D2)
+    hi_a: 1.3
+    hi_b: 0.06
+  bp_flux_over_error_min: 10             # 9
+  rp_flux_over_error_min: 10             # 10
+  # Server-side prefilter for the field query uses the LOOSER bound of each
+  # ambiguous cut (lo_b = 0.0015; no cut 4) so both readings can be applied locally.
+  server_lo_b: 0.0015
+  apply:
+    field: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    hosts: [1, 2, 3, 4]
+    pleiades: [1, 8, 9, 10]   # paper says 1,5,8-10; cut 5 removes 85% incl. EGGR 25 (D10b)
+
+# ---------------------------------------------------------------- extinction
+extinction:
+  map: stilism_capitanio2017
+  cube_file: data/raw/stilism/stilism_cube.h5   # v4.1, 2018-03-19 (Wayback copy, see DECISIONS D9)
+  step_pc: 1.0                # line-of-sight integration step (D9)
+  beyond_cube: zero           # dust outside the cube volume contributes nothing (D9)
+  # Casagrande & VandenBerg (2018) Table 2 mean coefficients, A_X = R_X * E(B-V)
+  R_G: 2.740
+  R_BP: 3.374
+  R_RP: 2.035
+
+# ---------------------------------------------------------------- main sequence
+main_sequence:
+  # HS19 eq.: M_G0 = sum a_i c^i, c = (BP-RP)_0, increasing order
+  coeffs: [1.07857, 6.23258, -10.85944, 21.65561, -20.27879, 9.78665, -2.52543, 0.33004, -0.0170556]
+  delta_mag: 1.0              # keep M_G0 > MS(c) - delta_mag (less than 1 mag above/brighter)
+  relation: published_poly    # published_poly | refit_poly | refit_spline (D8)
+  color_range: null           # null = no colour limit (D8b); e.g. [-0.1, 3.7]
+pleiades:
+  vizier_catalog: J/A+A/616/A10
+  ebv: 0.045
+  exclude_source_ids: [66697547870378368]   # EGGR 25 (white dwarf)
+  spline_smoothing: auto      # UnivariateSpline s; auto = N * sigma^2 (robust scatter), null = scipy default N (D10)
+  poly_order: 8
+
+# ---------------------------------------------------------------- kinematics
+kinematics:
+  # astropy GalacticLSR default v_bary (Schoenrich, Binney & Dehnen 2010)
+  solar_motion_kms: [11.1, 12.24, 7.25]
+  z_definition: galactocentric   # galactocentric | heliocentric d*sin(b) (D11)
+  # Galactocentric frame for z: astropy pre-v4.0 defaults, i.e. what
+  # astropy/pyia used in 2019 (R0 = 8.3 kpc, z_sun = 27 pc) (D11)
+  galcen_distance_kpc: 8.3
+  z_sun_pc: 27.0
+
+spectral_bins:                 # (BP-RP)_0 edges, HS19 Sec. 3
+  F: [0.438, 0.742]
+  G: [0.742, 1.00]
+  K: [1.00, 2.02]
+
+# ---------------------------------------------------------------- Monte Carlo
+monte_carlo:
+  n_iter: 40000
+  color_tol: 0.025             # |(BP-RP)_0 host - control| <= tol
+  exclude_unmatchable_hosts: false   # sensitivity: drop hosts with < min_field_candidates (D13b)
+  min_field_candidates: 1      # field MS stars within color_tol
+  checkpoint_every: 5000       # iterations per saved chunk (resumable; D19)
+  statistic: mean_abs         # mean_abs (HS19 eq. 1; reproduces 36.1 km/s) | rms (spec formula) (D14)
+  match_vars: [z]              # variables for the step-(a) histogram matching (Phase 3: add feh)
+  match_var_bins:              # binning for extra matching variables (Stage C proposal)
+    dist_pc: {bins: quantile, n_quantile_bins: 5, bin_width: 100.0}
+    abs_z: {bins: fixed, bin_width: 50.0, n_quantile_bins: 5}   # C12 G3/G4 sensitivity
+  z_match:
+    method: thinning           # thinning (Bernoulli, p = w/max w) | weighted_resample (D12)
+    bin_width_pc: 50.0         # fixed-width bins spanning the host z range
+    bins: fixed                # fixed | quantile | none
+    n_quantile_bins: 10
+  control_without_replacement: true   # one field star cannot match two hosts in one iteration (D13)
+  sensitivity:
+    bin_widths_pc: [25.0, 50.0, 100.0]
+    quantile_bins: [5, 10, 20]
+    methods: [thinning, weighted_resample]
+    n_iter: 5000               # per sensitivity variant
+
+# ---------------------------------------------------------------- EBLM (Stage C)
+eblm:
+  source: eblm4               # Triaud et al. 2017 only; EBLM XIX excluded (C8)
+  match:                      # positional Gaia DR2 match to EBLM IV J2000 positions (C11)
+    radius_arcsec: 10.0
+    max_sep_arcsec: 3.0       # after propagating Gaia to J2000 with the DR2 proper motion
+    G_minus_V_range: [-1.0, 0.3]   # FGK primaries: G - V ~ -0.1 to -0.5
+    min_dG_second: 2.0        # a second source within 10" brighter than G1 + 2 mag = possible confusion

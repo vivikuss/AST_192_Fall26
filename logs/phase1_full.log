@@ -1,0 +1,229 @@
+The current archive release 3.15 contains two breaking changes. Please see https://www.cosmos.esa.int/web/gaia/news#GACSrelease315 for details. In case of questions or feedback, please consult the Gaia helpdesk at https://www.cosmos.esa.int/web/gaia/gaia-helpdesk.
+[hj_table1] final 297  FGK {'F': 102, 'G': 133, 'K': 56}
+[hj] final 360  FGK {'F': 122, 'G': 153, 'K': 75}
+[longp] final 264  FGK {'F': 45, 'G': 155, 'K': 56}
+[field] after cuts 1371976  MS 376791
+15:27:29 [hj_table1] chunk 1/8 done (5000/40000 iterations)
+15:27:40 [hj_table1] chunk 2/8 done (10000/40000 iterations)
+15:27:52 [hj_table1] chunk 3/8 done (15000/40000 iterations)
+15:28:04 [hj_table1] chunk 4/8 done (20000/40000 iterations)
+15:28:15 [hj_table1] chunk 5/8 done (25000/40000 iterations)
+15:28:28 [hj_table1] chunk 6/8 done (30000/40000 iterations)
+15:28:41 [hj_table1] chunk 7/8 done (35000/40000 iterations)
+15:28:54 [hj_table1] chunk 8/8 done (40000/40000 iterations)
+[hj_table1] sigma_host=36.18 control median=42.82 p=0.00e+00 (97.0 s)
+15:29:06 [hj] chunk 1/8 done (5000/40000 iterations)
+15:29:19 [hj] chunk 2/8 done (10000/40000 iterations)
+15:29:32 [hj] chunk 3/8 done (15000/40000 iterations)
+15:29:44 [hj] chunk 4/8 done (20000/40000 iterations)
+15:29:56 [hj] chunk 5/8 done (25000/40000 iterations)
+15:30:09 [hj] chunk 6/8 done (30000/40000 iterations)
+15:30:21 [hj] chunk 7/8 done (35000/40000 iterations)
+15:30:33 [hj] chunk 8/8 done (40000/40000 iterations)
+[hj] sigma_host=36.14 control median=42.81 p=0.00e+00 (99.1 s)
+15:30:44 [longp] chunk 1/8 done (5000/40000 iterations)
+15:30:55 [longp] chunk 2/8 done (10000/40000 iterations)
+15:31:09 [longp] chunk 3/8 done (15000/40000 iterations)
+15:31:20 [longp] chunk 4/8 done (20000/40000 iterations)
+15:31:30 [longp] chunk 5/8 done (25000/40000 iterations)
+15:31:41 [longp] chunk 6/8 done (30000/40000 iterations)
+15:31:53 [longp] chunk 7/8 done (35000/40000 iterations)
+15:32:05 [longp] chunk 8/8 done (40000/40000 iterations)
+[longp] sigma_host=42.90 control median=41.78 p=7.77e-01 (91.8 s)
+primary done in 303 s
+15:32:24 [hj_table1] chunk 1/1 done (5000/5000 iterations)
+zbin_25pc hj_table1 36.18 42.8 0.0
+15:32:34 [longp] chunk 1/1 done (5000/5000 iterations)
+zbin_25pc longp 42.9 41.8 0.7772
+15:32:45 [hj_table1] chunk 1/1 done (5000/5000 iterations)
+zbin_50pc hj_table1 36.18 42.81 0.0
+15:32:56 [longp] chunk 1/1 done (5000/5000 iterations)
+zbin_50pc longp 42.9 41.82 0.778
+15:33:09 [hj_table1] chunk 1/1 done (5000/5000 iterations)
+zbin_100pc hj_table1 36.18 42.75 0.0
+15:33:21 [longp] chunk 1/1 done (5000/5000 iterations)
+zbin_100pc longp 42.9 42.09 0.7314
+15:33:35 [hj_table1] chunk 1/1 done (5000/5000 iterations)
+zbin_q5 hj_table1 36.18 42.64 0.0
+15:33:47 [longp] chunk 1/1 done (5000/5000 iterations)
+zbin_q5 longp 42.9 42.15 0.7078
+15:34:04 [hj_table1] chunk 1/1 done (5000/5000 iterations)
+zbin_q10 hj_table1 36.18 42.77 0.0
+15:34:16 [longp] chunk 1/1 done (5000/5000 iterations)
+zbin_q10 longp 42.9 41.79 0.7746
+15:34:30 [hj_table1] chunk 1/1 done (5000/5000 iterations)
+zbin_q20 hj_table1 36.18 42.74 0.0
+15:34:42 [longp] chunk 1/1 done (5000/5000 iterations)
+zbin_q20 longp 42.9 41.71 0.7968
+15:35:23 [hj_table1] chunk 1/1 done (5000/5000 iterations)
+weighted_resample hj_table1 36.18 42.78 0.0
+15:37:42 [longp] chunk 1/1 done (5000/5000 iterations)
+weighted_resample longp 42.9 41.77 0.7762
+15:37:59 [hj_table1] chunk 1/1 done (5000/5000 iterations)
+no_z_matching hj_table1 36.18 42.16 0.0
+15:38:15 [longp] chunk 1/1 done (5000/5000 iterations)
+no_z_matching longp 42.9 44.04 0.27
+15:38:26 [hj_table1] chunk 1/1 done (5000/5000 iterations)
+control_with_replacement hj_table1 36.18 42.78 0.0
+15:38:36 [longp] chunk 1/1 done (5000/5000 iterations)
+control_with_replacement longp 42.9 41.8 0.7758
+15:38:48 [hj_table1] chunk 1/1 done (5000/5000 iterations)
+table1_in_archive 297 36.18 0.0
+[hj_table1] final 136  FGK {'F': 20, 'G': 80, 'K': 36}
+[hj] final 161  FGK {'F': 27, 'G': 87, 'K': 47}
+[longp] final 50  FGK {'F': 3, 'G': 27, 'K': 20}
+[field] after cuts 1371345  MS 376490
+15:39:02 [hj_table1] chunk 1/1 done (5000/5000 iterations)
+[hj_table1] sigma_host=37.58 control median=45.06 p=2.00e-04 (10.6 s)
+15:39:12 [hj] chunk 1/1 done (5000/5000 iterations)
+[hj] sigma_host=38.08 control median=44.98 p=0.00e+00 (10.1 s)
+15:39:20 [longp] chunk 1/1 done (5000/5000 iterations)
+[longp] sigma_host=42.08 control median=42.66 p=4.37e-01 (8.3 s)
+[hj_table1] final 297  FGK {'F': 102, 'G': 133, 'K': 56}
+[hj] final 360  FGK {'F': 122, 'G': 153, 'K': 75}
+[longp] final 264  FGK {'F': 45, 'G': 155, 'K': 56}
+[field] after cuts 1371976  MS 376791
+15:39:38 [hj_table1] chunk 1/1 done (5000/5000 iterations)
+[hj_table1] sigma_host=36.18 control median=42.81 p=0.00e+00 (11.7 s)
+15:39:51 [hj] chunk 1/1 done (5000/5000 iterations)
+[hj] sigma_host=36.14 control median=42.80 p=0.00e+00 (12.1 s)
+15:40:02 [longp] chunk 1/1 done (5000/5000 iterations)
+[longp] sigma_host=42.90 control median=41.82 p=7.78e-01 (11.2 s)
+[hj_table1] final 297  FGK {'F': 102, 'G': 133, 'K': 56}
+[hj] final 360  FGK {'F': 122, 'G': 153, 'K': 75}
+15:40:08   hosts_longp_dy2019_dr2_ari: ARI job 1793389208020 submitted
+15:41:01   hosts_longp_dy2019_dr2_ari: ARI job 1793389208020 COMPLETED in 52 s, 530 rows
+[longp] final 242  FGK {'F': 43, 'G': 146, 'K': 45}
+[field] after cuts 1371976  MS 376791
+15:41:13 [hj_table1] chunk 1/1 done (5000/5000 iterations)
+[hj_table1] sigma_host=36.18 control median=42.81 p=0.00e+00 (11.0 s)
+15:41:25 [hj] chunk 1/1 done (5000/5000 iterations)
+[hj] sigma_host=36.14 control median=42.80 p=0.00e+00 (12.1 s)
+15:41:35 [longp] chunk 1/1 done (5000/5000 iterations)
+[longp] sigma_host=43.25 control median=41.61 p=8.47e-01 (10.0 s)
+[hj_table1] final 297  FGK {'F': 102, 'G': 133, 'K': 56}
+[hj] final 360  FGK {'F': 122, 'G': 153, 'K': 75}
+15:41:41   hosts_longp_dy2019_dr2_ari: ARI job 1793389300647 submitted
+15:41:52   hosts_longp_dy2019_dr2_ari: ARI job 1793389300647 COMPLETED in 11 s, 562 rows
+[longp] final 264  FGK {'F': 45, 'G': 155, 'K': 56}
+[field] after cuts 1371976  MS 376791
+15:42:13 [hj_table1] chunk 1/1 done (5000/5000 iterations)
+[hj_table1] sigma_host=36.18 control median=42.76 p=0.00e+00 (11.8 s)
+15:42:25 [hj] chunk 1/1 done (5000/5000 iterations)
+[hj] sigma_host=36.14 control median=42.79 p=0.00e+00 (12.5 s)
+15:42:36 [longp] chunk 1/1 done (5000/5000 iterations)
+[longp] sigma_host=42.90 control median=41.83 p=7.74e-01 (11.1 s)
+[hj_table1] final 297  FGK {'F': 102, 'G': 133, 'K': 56}
+15:42:48   hosts_hj_dy2018_dr2_ari: ARI job 1793389367091 submitted
+15:44:32   hosts_hj_dy2018_dr2_ari: ARI job 1793389367091 COMPLETED in 104 s, 460 rows
+[hj] final 327  FGK {'F': 108, 'G': 141, 'K': 72}
+15:44:33   hosts_longp_dy2018_dr2_ari: ARI job 1793389472520 submitted
+15:44:34   hosts_longp_dy2018_dr2_ari: ARI job 1793389472520 COMPLETED in 1 s, 544 rows
+[longp] final 254  FGK {'F': 44, 'G': 150, 'K': 52}
+[field] after cuts 1371979  MS 376794
+15:44:55 [hj_table1] chunk 1/1 done (5000/5000 iterations)
+[hj_table1] sigma_host=36.18 control median=42.83 p=0.00e+00 (12.2 s)
+15:45:10 [hj] chunk 1/1 done (5000/5000 iterations)
+[hj] sigma_host=36.59 control median=42.85 p=0.00e+00 (14.4 s)
+15:45:22 [longp] chunk 1/1 done (5000/5000 iterations)
+[longp] sigma_host=42.51 control median=41.75 p=7.03e-01 (12.2 s)
+[hj_table1] final 316  FGK {'F': 107, 'G': 138, 'K': 63}
+[hj] final 385  FGK {'F': 127, 'G': 160, 'K': 85}
+[longp] final 292  FGK {'F': 50, 'G': 167, 'K': 61}
+[field] after cuts 1371976  MS 376791
+15:56:11 [hj_table1] chunk 1/1 done (5000/5000 iterations)
+[hj_table1] sigma_host=35.70 control median=42.84 p=0.00e+00 (10.5 s)
+15:56:23 [hj] chunk 1/1 done (5000/5000 iterations)
+[hj] sigma_host=36.02 control median=42.79 p=0.00e+00 (11.8 s)
+15:56:34 [longp] chunk 1/1 done (5000/5000 iterations)
+[longp] sigma_host=41.98 control median=41.86 p=5.40e-01 (11.3 s)
+[hj_table1] final 297  FGK {'F': 102, 'G': 133, 'K': 56}
+15:56:42   hosts_hj_dy2019_dr2_ari: ARI job 1793390201376 submitted
+15:58:05   hosts_hj_dy2019_dr2_ari: ARI job 1793390201376 COMPLETED in 83 s, 464 rows
+[hj] final 342  FGK {'F': 121, 'G': 150, 'K': 65}
+15:58:07   hosts_longp_dy2019_dr2_ari: ARI job 1793390286062 submitted
+15:58:18   hosts_longp_dy2019_dr2_ari: ARI job 1793390286062 COMPLETED in 11 s, 539 rows
+[longp] final 255  FGK {'F': 45, 'G': 151, 'K': 52}
+[field] after cuts 1371978  MS 376792
+15:58:29 [hj_table1] chunk 1/1 done (5000/5000 iterations)
+[hj_table1] sigma_host=36.18 control median=42.83 p=0.00e+00 (10.4 s)
+15:58:40 [hj] chunk 1/1 done (5000/5000 iterations)
+[hj] sigma_host=36.17 control median=43.05 p=0.00e+00 (10.9 s)
+15:58:49 [longp] chunk 1/1 done (5000/5000 iterations)
+[longp] sigma_host=43.18 control median=41.81 p=8.09e-01 (9.4 s)
+[hj_table1] final 262  FGK {'F': 81, 'G': 120, 'K': 55}
+15:58:55   hosts_hj_dy2019_dr2_ari: ARI job 1793390334785 submitted
+15:58:56   hosts_hj_dy2019_dr2_ari: ARI job 1793390334785 COMPLETED in 1 s, 500 rows
+[hj] final 318  FGK {'F': 97, 'G': 138, 'K': 73}
+15:58:57   hosts_longp_dy2019_dr2_ari: ARI job 1793390336701 submitted
+15:58:58   hosts_longp_dy2019_dr2_ari: ARI job 1793390336701 COMPLETED in 1 s, 562 rows
+[longp] final 232  FGK {'F': 39, 'G': 131, 'K': 54}
+[field] after cuts 1371976  MS 326350
+15:59:08 [hj_table1] chunk 1/1 done (5000/5000 iterations)
+[hj_table1] sigma_host=35.95 control median=42.74 p=0.00e+00 (8.7 s)
+15:59:17 [hj] chunk 1/1 done (5000/5000 iterations)
+[hj] sigma_host=36.10 control median=42.70 p=0.00e+00 (9.5 s)
+15:59:26 [longp] chunk 1/1 done (5000/5000 iterations)
+[longp] sigma_host=42.54 control median=41.49 p=7.61e-01 (9.3 s)
+[hj_table1] final 276  FGK {'F': 89, 'G': 125, 'K': 56}
+[hj] final 335  FGK {'F': 106, 'G': 145, 'K': 74}
+[longp] final 247  FGK {'F': 41, 'G': 142, 'K': 56}
+[field] after cuts 1371976  MS 344266
+15:59:41 [hj_table1] chunk 1/1 done (5000/5000 iterations)
+[hj_table1] sigma_host=35.79 control median=42.65 p=0.00e+00 (9.3 s)
+15:59:51 [hj] chunk 1/1 done (5000/5000 iterations)
+[hj] sigma_host=35.89 control median=42.68 p=0.00e+00 (9.9 s)
+16:00:00 [longp] chunk 1/1 done (5000/5000 iterations)
+[longp] sigma_host=42.88 control median=41.68 p=7.92e-01 (9.3 s)
+[hj_table1] final 290  FGK {'F': 98, 'G': 130, 'K': 56}
+[hj] final 350  FGK {'F': 116, 'G': 150, 'K': 74}
+[longp] final 255  FGK {'F': 42, 'G': 149, 'K': 56}
+[field] after cuts 1371976  MS 361179
+16:00:16 [hj_table1] chunk 1/1 done (5000/5000 iterations)
+[hj_table1] sigma_host=35.98 control median=42.76 p=0.00e+00 (10.7 s)
+16:00:28 [hj] chunk 1/1 done (5000/5000 iterations)
+[hj] sigma_host=35.94 control median=42.76 p=0.00e+00 (11.7 s)
+16:00:38 [longp] chunk 1/1 done (5000/5000 iterations)
+[longp] sigma_host=42.88 control median=41.67 p=7.84e-01 (10.6 s)
+[hj_table1] final 306  FGK {'F': 109, 'G': 135, 'K': 56}
+[hj] final 370  FGK {'F': 129, 'G': 156, 'K': 75}
+[longp] final 274  FGK {'F': 48, 'G': 162, 'K': 56}
+[field] after cuts 1371976  MS 391515
+16:00:55 [hj_table1] chunk 1/1 done (5000/5000 iterations)
+[hj_table1] sigma_host=36.05 control median=42.92 p=0.00e+00 (11.4 s)
+16:01:07 [hj] chunk 1/1 done (5000/5000 iterations)
+[hj] sigma_host=36.00 control median=42.88 p=0.00e+00 (12.0 s)
+16:01:18 [longp] chunk 1/1 done (5000/5000 iterations)
+[longp] sigma_host=42.87 control median=41.92 p=7.50e-01 (10.8 s)
+[hj_table1] final 308  FGK {'F': 111, 'G': 135, 'K': 56}
+[hj] final 377  FGK {'F': 133, 'G': 159, 'K': 75}
+[longp] final 280  FGK {'F': 50, 'G': 166, 'K': 56}
+[field] after cuts 1371976  MS 405722
+16:01:37 [hj_table1] chunk 1/1 done (5000/5000 iterations)
+[hj_table1] sigma_host=36.04 control median=42.93 p=0.00e+00 (12.5 s)
+16:01:49 [hj] chunk 1/1 done (5000/5000 iterations)
+[hj] sigma_host=36.15 control median=42.90 p=0.00e+00 (12.9 s)
+16:02:01 [longp] chunk 1/1 done (5000/5000 iterations)
+[longp] sigma_host=42.71 control median=42.00 p=6.99e-01 (11.2 s)
+[hj_table1] final 309  FGK {'F': 112, 'G': 135, 'K': 56}
+[hj] final 384  FGK {'F': 138, 'G': 161, 'K': 75}
+[longp] final 287  FGK {'F': 51, 'G': 171, 'K': 57}
+[field] after cuts 1371976  MS 419157
+16:02:20 [hj_table1] chunk 1/1 done (5000/5000 iterations)
+[hj_table1] sigma_host=35.97 control median=42.96 p=0.00e+00 (12.9 s)
+16:02:33 [hj] chunk 1/1 done (5000/5000 iterations)
+[hj] sigma_host=36.22 control median=43.06 p=0.00e+00 (13.7 s)
+16:02:45 [longp] chunk 1/1 done (5000/5000 iterations)
+[longp] sigma_host=42.78 control median=42.07 p=7.17e-01 (11.6 s)
+[hj_table1] final 304  FGK {'F': 108, 'G': 134, 'K': 56}
+[hj] final 367  FGK {'F': 128, 'G': 154, 'K': 75}
+[longp] final 268  FGK {'F': 47, 'G': 157, 'K': 56}
+[field] after cuts 1371976  MS 382499
+16:03:02 [hj_table1] chunk 1/1 done (5000/5000 iterations)
+[hj_table1] sigma_host=36.09 control median=42.78 p=0.00e+00 (10.9 s)
+16:03:14 [hj] chunk 1/1 done (5000/5000 iterations)
+[hj] sigma_host=36.07 control median=42.79 p=0.00e+00 (11.7 s)
+16:03:24 [longp] chunk 1/1 done (5000/5000 iterations)
+[longp] sigma_host=42.75 control median=41.76 p=7.54e-01 (10.2 s)
+all done in 2182 s
+exit 0

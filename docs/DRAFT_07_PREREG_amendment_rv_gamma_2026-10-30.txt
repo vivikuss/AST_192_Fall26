@@ -1,0 +1,67 @@
+DRAFT, revised 2026-11-01 (not yet adopted; to be reviewed, dated and hashed by the user in project 07)
+
+Amendment to the RV-arm blinding rules of project 07 (07_EBLM_vs_HJ_Tertiaries):
+permitted systemic-velocity fits for project 08 (HS19 kinematics)
+(specified 2026-10-30, before any orbit fit of any CORALIE RV, and before any RV
+value, residual, drift or trend of any EBLM was viewed)
+
+What this amends
+- 07 DECISIONS.md, "2026-10-21: New stage - RV arm inventory", section "Blinding":
+  no orbit fits, residuals, drifts, trends or RV-vs-time plots before the 07 RV
+  pre-registration. 07 has no RV pre-registration yet; these rules stay in force
+  for everything not listed below.
+- Project 08 needs one quantity from these data: the systemic velocity (gamma) of each
+  EBLM IV primary, for Galactic UVW velocities.
+
+Data covered
+- The user's CORALIE07 and CORALIE14 curated files (<star>_coralie.rdb), columns jdb,
+  vrad and svrad only, for the 118 EBLM IV systems (Triaud et al. 2017,
+  arXiv:1707.07521). No other columns and no DRS summary files (resum_*.rdb) are read.
+- Data-owner permission is being confirmed by the user. No fit runs before it is.
+
+Permitted computation (per system, nothing else)
+1. Fixed inputs, all from EBLM IV: P and the primary-eclipse epoch T0,pri (tab:obs);
+   e and omega (tab:params; e = 0 where only an upper limit is given). Where EBLM IV
+   selected a drift model, the published lin/quad/cubic coefficients (tab:params) are
+   subtracted as fixed terms. Where it selected a two-Keplerian model (tab:triple),
+   the published outer orbit is subtracted as a fixed term. Nothing is fitted for them.
+2. Instrument offset: one fixed global CORALIE07 -> CORALIE14 offset of 0 m/s for all
+   systems. The literature magnitude, |offset| <~ 20 m/s (EBLM IV: "of order 10 m/s";
+   Neveu-VanMalle et al. 2016, arXiv:1509.07750, WASP-47: 18 +- 11 m/s, sign not
+   stated), is treated as a global systematic: 0.020 km/s is added in quadrature to
+   every sigma_gamma. No per-system or per-instrument-era offset is fitted, and no
+   quantity is computed or output per instrument era (user decision, 2026-11-01).
+3. Model: RV(t) = gamma + K * [cos(nu(t) + omega) + e cos(omega)], with nu from the
+   fixed P, T0, e and omega. T0,pri is the primary-eclipse time, and T_peri follows
+   from e and omega. For e = 0 this is RV = gamma - K sin(2 pi (t - T0)/P). It is
+   linear in (gamma, K) and solved by weighted linear least squares. Weights are
+   1/(svrad^2 + sigma_add^2), with sigma_add from EBLM IV tab:obs.
+4. sigma_gamma comes from the parameter covariance with these fixed weights, plus the
+   0.020 km/s offset systematic in quadrature. It is NOT rescaled by the residual
+   scatter or chi^2 (that would expose residual information).
+5. Simple average: the unweighted mean of the same RVs, after the same fixed drift,
+   outer-orbit and offset corrections.
+
+Permitted outputs (per system; nothing else is saved, printed or viewed)
+- gamma [km/s], sigma_gamma [km/s], K [km/s], gamma - (simple average) [km/s].
+- A flag if the fit cannot be computed (e.g. fewer than 3 RVs or a singular design).
+- Per-system outputs are written only to project 08's gitignored private folder. Only
+  aggregates go into reports or git. For example: the distributions of sigma_gamma and
+  of gamma - average, the comparison of fitted K with published K, and comparisons
+  with Gaia DR3 two-body-orbit gammas and the ~25 published gammas.
+
+Not permitted (until 07's own RV pre-registration)
+- Residuals, residual rms or chi^2, per-epoch model values, any drift or trend estimate,
+  any per-instrument-era quantity, plots of RV against time or phase, and any other
+  statistic computed from the per-epoch RVs.
+- The fitting function returns only the four permitted values. Intermediate arrays are
+  not logged or saved, and the code is reviewed for this before it is run.
+
+Effect on 07
+- 07 already knows the published EBLM IV orbits (P, K, e, omega, drift selections).
+  The permitted outputs add gamma and its formal error. gamma - average depends mainly
+  on phase coverage and is not a trend measure. No information about unmodelled
+  long-term trends is produced. The residual risk is accepted by the user (option b,
+  2026-10-30).
+
+Adopted by: ______________________  Date: __________  sha256: (record after adoption)

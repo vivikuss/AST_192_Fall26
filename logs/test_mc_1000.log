@@ -1,0 +1,12 @@
+The current archive release 3.15 contains two breaking changes. Please see https://www.cosmos.esa.int/web/gaia/news#GACSrelease315 for details. In case of questions or feedback, please consult the Gaia helpdesk at https://www.cosmos.esa.int/web/gaia/gaia-helpdesk.
+[hj_table1] final 297  FGK {'F': 102, 'G': 133, 'K': 56}
+[hj] final 360  FGK {'F': 122, 'G': 153, 'K': 75}
+[longp] final 264  FGK {'F': 45, 'G': 155, 'K': 56}
+[field] after cuts 1371976  MS 376791
+[hj_table1] sigma_host=36.18 control median=42.84 p=0.00e+00 (2.3 s)
+[hj] sigma_host=36.14 control median=42.85 p=0.00e+00 (2.4 s)
+[longp] sigma_host=42.90 control median=41.77 p=7.82e-01 (2.2 s)
+ variant    sample  N_host  N_field  host_disp  host_disp_mean_abs  ctrl_median  ctrl_16  ctrl_84     p  n_le  n_iter  p_mean_abs  iters_unmatched  ctrl_2  ctrl_98  host_disp_iter_mean  mean_unmatched_per_iter  n_excluded  seconds  ms_per_iter
+test1000 hj_table1     297   376791      36.18               36.18        42.84    41.38    44.32 0.000     0    1000       0.000              268   40.12    45.99                36.20                     0.28           0      2.3          2.3
+test1000        hj     360   376791      36.14               36.14        42.85    41.48    44.21 0.000     0    1000       0.000             1000   40.16    45.75                35.98                     1.84           0      2.4          2.4
+test1000     longp     264   376791      42.90               42.90        41.77    40.09    43.46 0.782   782    1000       0.782             1000   38.62    45.35                43.08                     5.00           0      2.2          2.2

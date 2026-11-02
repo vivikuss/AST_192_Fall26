@@ -1,0 +1,32 @@
+The current archive release 3.15 contains two breaking changes. Please see https://www.cosmos.esa.int/web/gaia/news#GACSrelease315 for details. In case of questions or feedback, please consult the Gaia helpdesk at https://www.cosmos.esa.int/web/gaia/gaia-helpdesk.
+14:58:49 hj_table1: final 297
+14:58:49 hj: final 360
+14:58:51   hosts_longp_dy2019_dr2_ari: ARI job 1793386730202 submitted
+14:59:02   hosts_longp_dy2019_dr2_ari: ARI job 1793386730202 COMPLETED in 11 s, 562 rows
+14:59:02 longp: final 264
+14:59:09 field: final 376791
+                                                                  step   field hj_hosts_table1 hj_hosts_archive_le2019 longp_hosts paper_field paper_hj paper_longp
+pre-filtered download (server: RV, plx, cuts 1-3, 5-7, 9, 10; loose 8) 1372060            <NA>                    <NA>        <NA>        <NA>     <NA>        <NA>
+                                                                listed    <NA>             338                     505         575        <NA>     <NA>        <NA>
+                                              Gaia DR2 source_id found    <NA>             338                     500         562        <NA>     <NA>        <NA>
+                                 row returned from gaiadr2.gaia_source    <NA>             338                     500         562        <NA>     <NA>        <NA>
+                                       cut 1: parallax_over_error > 10 1372060             338                     487         556        <NA>     <NA>        <NA>
+              cut 2: 5-parameter solution / mean_varpi_factor_al range 1372060             338                     485         551        <NA>     <NA>        <NA>
+                                    cut 3: visibility_periods_used > 8 1372060             338                     458         512        <NA>     <NA>        <NA>
+                              cut 4: unit weight error (Lindegren C.1) 1372060             338                     457         510        <NA>     <NA>        <NA>
+                                         cut 5: astrometric_gof_al < 3 1372060            <NA>                    <NA>        <NA>        <NA>     <NA>        <NA>
+                               cut 6: astrometric_excess_noise_sig < 2 1372060            <NA>                    <NA>        <NA>        <NA>     <NA>        <NA>
+                                             cut 7: rv_nb_transits > 5 1372060            <NA>                    <NA>        <NA>        <NA>     <NA>        <NA>
+                            cut 8: BP/RP excess factor (Lindegren C.2) 1372060            <NA>                    <NA>        <NA>        <NA>     <NA>        <NA>
+                              cut 9: phot_bp_mean_flux_over_error > 10 1372060            <NA>                    <NA>        <NA>        <NA>     <NA>        <NA>
+                             cut 10: phot_rp_mean_flux_over_error > 10 1372060            <NA>                    <NA>        <NA>        <NA>     <NA>        <NA>
+                                                excluding planet hosts 1371976            <NA>                    <NA>        <NA>        <NA>     <NA>        <NA>
+                                               BJ18 distance available 1371976             338                     457         510        <NA>     <NA>        <NA>
+               extinction/reddening corrected (finite M_G0, (BP-RP)_0) 1371976             338                     457         510        <NA>     <NA>        <NA>
+                                 main-sequence cut (M_G0 > MS - 1 mag)  376791             322                     402         322        <NA>     <NA>        <NA>
+                                         RV available (UVW computable)    <NA>             297                     360         264        <NA>     <NA>        <NA>
+                                           final sample (UVW computed)  376791             297                     360         264      385036      338         367
+                                                                 F bin   89496             102                     122          45        <NA>      119        <NA>
+                                                                 G bin  179780             133                     153         155        <NA>      146        <NA>
+                                                                 K bin  103636              56                      75          56        <NA>       66        <NA>
+                                                    outside F/G/K bins    3879               6                      10           8        <NA>     <NA>        <NA>

@@ -1,0 +1,10 @@
+data/*
+!data/hs19_table1.txt
+figures/**/*.png.tmp
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+logs/*.tmp
+# CORALIE-derived per-system tables (data-owner permission pending): never commit
+data/private/
+.DS_Store

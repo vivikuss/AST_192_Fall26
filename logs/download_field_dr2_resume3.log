@@ -1,0 +1,139 @@
+The current archive release 3.15 contains two breaking changes. Please see https://www.cosmos.esa.int/web/gaia/news#GACSrelease315 for details. In case of questions or feedback, please consult the Gaia helpdesk at https://www.cosmos.esa.int/web/gaia/gaia-helpdesk.
+06:57:16 level-2 regions: 109 complete, 83 remaining of 192
+06:57:16 remaining: [109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191]
+06:57:17 field_dr2_prefilter L2 pixel 0 done (1568 rows)06:57:17 field_dr2_prefilter L2 pixel 2 done (1513 rows)
+
+06:57:17 field_dr2_prefilter L2 pixel 3 done (2617 rows)
+06:57:17 field_dr2_prefilter L2 pixel 1 done (3669 rows)
+06:57:17 field_dr2_prefilter L2 pixel 5 done (8193 rows)
+06:57:17 field_dr2_prefilter L2 pixel 6 done (8193 rows)
+06:57:17 field_dr2_prefilter L2 pixel 4 done (5855 rows)
+06:57:17 field_dr2_prefilter L2 pixel 7 done (8193 rows)
+06:57:17 field_dr2_prefilter L2 pixel 8 done (1865 rows)
+06:57:17 field_dr2_prefilter L2 pixel 9 done (4369 rows)
+06:57:17 field_dr2_prefilter L2 pixel 11 done (8193 rows)06:57:17 field_dr2_prefilter L2 pixel 12 done (4931 rows)06:57:17 field_dr2_prefilter L2 pixel 10 done (6700 rows)
+
+
+06:57:17 field_dr2_prefilter L2 pixel 13 done (4973 rows)
+06:57:17 field_dr2_prefilter L2 pixel 16 done (2000 rows)
+06:57:17 field_dr2_prefilter L2 pixel 14 done (4263 rows)
+06:57:17 field_dr2_prefilter L2 pixel 17 done (656 rows)06:57:17 field_dr2_prefilter L2 pixel 15 done (9850 rows)
+
+06:57:17 field_dr2_prefilter L2 pixel 18 done (3833 rows)
+06:57:17 field_dr2_prefilter L2 pixel 21 done (814 rows)06:57:17 field_dr2_prefilter L2 pixel 20 done (630 rows)
+
+06:57:17 field_dr2_prefilter L2 pixel 19 done (2258 rows)
+06:57:17 field_dr2_prefilter L2 pixel 22 done (1833 rows)
+06:57:17 field_dr2_prefilter L2 pixel 23 done (1505 rows)
+06:57:17 field_dr2_prefilter L2 pixel 25 done (3099 rows)
+06:57:17 field_dr2_prefilter L2 pixel 24 done (3895 rows)
+06:57:17 field_dr2_prefilter L2 pixel 29 done (1895 rows)
+06:57:17 field_dr2_prefilter L2 pixel 28 done (2343 rows)
+06:57:17 field_dr2_prefilter L2 pixel 26 done (4923 rows)
+06:57:17 field_dr2_prefilter L2 pixel 27 done (5199 rows)
+06:57:17 field_dr2_prefilter L2 pixel 32 done (1339 rows)
+06:57:17 field_dr2_prefilter L2 pixel 33 done (1952 rows)
+06:57:17 field_dr2_prefilter L2 pixel 30 done (4676 rows)
+06:57:17 field_dr2_prefilter L2 pixel 31 done (5096 rows)
+06:57:17 field_dr2_prefilter L2 pixel 34 done (1436 rows)
+06:57:17 field_dr2_prefilter L2 pixel 35 done (1175 rows)
+06:57:17 field_dr2_prefilter L2 pixel 36 done (2586 rows)
+06:57:17 field_dr2_prefilter L2 pixel 37 done (4889 rows)
+06:57:17 field_dr2_prefilter L2 pixel 38 done (2352 rows)
+06:57:17 field_dr2_prefilter L2 pixel 39 done (4225 rows)
+06:57:17 field_dr2_prefilter L2 pixel 40 done (1103 rows)
+06:57:17 field_dr2_prefilter L2 pixel 42 done (1018 rows)
+06:57:17 field_dr2_prefilter L2 pixel 41 done (1329 rows)
+06:57:17 field_dr2_prefilter L2 pixel 43 done (1642 rows)
+06:57:17 field_dr2_prefilter L2 pixel 45 done (4855 rows)
+06:57:17 field_dr2_prefilter L2 pixel 44 done (2574 rows)
+06:57:17 field_dr2_prefilter L2 pixel 46 done (2801 rows)
+06:57:17 field_dr2_prefilter L2 pixel 47 done (4795 rows)
+06:57:17 field_dr2_prefilter L2 pixel 49 done (3877 rows)
+06:57:17 field_dr2_prefilter L2 pixel 48 done (7514 rows)
+06:57:18 field_dr2_prefilter L2 pixel 50 done (2215 rows)
+06:57:18 field_dr2_prefilter L2 pixel 51 done (4263 rows)
+06:57:18 field_dr2_prefilter L2 pixel 52 done (6509 rows)
+06:57:18 field_dr2_prefilter L2 pixel 53 done (9035 rows)
+06:57:18 field_dr2_prefilter L2 pixel 54 done (4304 rows)
+06:57:18 field_dr2_prefilter L2 pixel 55 done (4263 rows)
+06:57:18 field_dr2_prefilter L2 pixel 58 done (8193 rows)
+06:57:18 field_dr2_prefilter L2 pixel 57 done (2926 rows)
+06:57:18 field_dr2_prefilter L2 pixel 56 done (4973 rows)
+06:57:18 field_dr2_prefilter L2 pixel 59 done (11951 rows)
+06:57:18 field_dr2_prefilter L2 pixel 60 done (9152 rows)
+06:57:18 field_dr2_prefilter L2 pixel 62 done (8193 rows)
+06:57:18 field_dr2_prefilter L2 pixel 63 done (9193 rows)06:57:18 field_dr2_prefilter L2 pixel 61 done (8193 rows)06:57:18 field_dr2_prefilter L2 pixel 64 done (1495 rows)
+
+
+06:57:18 field_dr2_prefilter L2 pixel 65 done (1737 rows)
+06:57:18 field_dr2_prefilter L2 pixel 66 done (878 rows)
+06:57:18 field_dr2_prefilter L2 pixel 67 done (1835 rows)
+06:57:18 field_dr2_prefilter L2 pixel 68 done (1379 rows)
+06:57:18 field_dr2_prefilter L2 pixel 69 done (1134 rows)
+06:57:18 field_dr2_prefilter L2 pixel 72 done (635 rows)06:57:18 field_dr2_prefilter L2 pixel 70 done (1708 rows)
+
+06:57:18 field_dr2_prefilter L2 pixel 71 done (1671 rows)
+06:57:18 field_dr2_prefilter L2 pixel 75 done (815 rows)
+06:57:18 field_dr2_prefilter L2 pixel 74 done (866 rows)
+06:57:18 field_dr2_prefilter L2 pixel 76 done (1991 rows)06:57:18 field_dr2_prefilter L2 pixel 73 done (1867 rows)
+
+06:57:18 field_dr2_prefilter L2 pixel 78 done (2454 rows)06:57:18 field_dr2_prefilter L2 pixel 77 done (1798 rows)
+
+06:57:18 field_dr2_prefilter L2 pixel 79 done (2922 rows)
+06:57:18 field_dr2_prefilter L2 pixel 80 done (6394 rows)
+06:57:18 field_dr2_prefilter L2 pixel 82 done (3775 rows)
+06:57:18 field_dr2_prefilter L2 pixel 81 done (8193 rows)
+06:57:18 field_dr2_prefilter L2 pixel 83 done (5779 rows)
+06:57:18 field_dr2_prefilter L2 pixel 85 done (5903 rows)
+06:57:18 field_dr2_prefilter L2 pixel 86 done (3636 rows)
+06:57:18 field_dr2_prefilter L2 pixel 87 done (5097 rows)
+06:57:18 field_dr2_prefilter L2 pixel 88 done (2787 rows)
+06:57:18 field_dr2_prefilter L2 pixel 89 done (4744 rows)
+06:57:18 field_dr2_prefilter L2 pixel 90 done (2486 rows)
+06:57:18 field_dr2_prefilter L2 pixel 91 done (3905 rows)
+06:57:18 field_dr2_prefilter L2 pixel 84 done (12823 rows)
+06:57:18 field_dr2_prefilter L2 pixel 93 done (4912 rows)
+06:57:18 field_dr2_prefilter L2 pixel 92 done (5091 rows)
+06:57:18 field_dr2_prefilter L2 pixel 94 done (6352 rows)
+06:57:19 field_dr2_prefilter L2 pixel 95 done (5015 rows)
+06:57:19 field_dr2_prefilter L2 pixel 97 done (2162 rows)
+06:57:19 field_dr2_prefilter L2 pixel 96 done (2926 rows)
+06:57:19 field_dr2_prefilter L2 pixel 98 done (2361 rows)
+06:57:19 field_dr2_prefilter L2 pixel 101 done (1313 rows)
+06:57:19 field_dr2_prefilter L2 pixel 99 done (1826 rows)
+06:57:19 field_dr2_prefilter L2 pixel 100 done (2095 rows)
+06:57:19 field_dr2_prefilter L2 pixel 102 done (1528 rows)
+06:57:19 field_dr2_prefilter L2 pixel 103 done (1403 rows)06:57:19 field_dr2_prefilter L2 pixel 104 done (687 rows)
+06:57:19 field_dr2_prefilter L2 pixel 105 done (1579 rows)
+
+06:57:19 field_dr2_prefilter L2 pixel 106 done (545 rows)
+06:57:19 field_dr2_prefilter L2 pixel 107 done (358 rows)
+06:57:19 field_dr2_prefilter L2 pixel 108 done (1499 rows)
+06:58:48   field_dr2_prefilter/L2_00112: JobFailed 'job ba27c4d5-d450-11f1-9d98-bc97e148b76b-O ended ABORTED'; retry in 15 s
+06:59:01 field_dr2_prefilter L2 pixel 110 done (412 rows)
+06:59:01 field_dr2_prefilter L2 pixel 111 done (831 rows)
+06:59:04 field_dr2_prefilter L2 pixel 109 done (1372 rows)
+07:00:33   field_dr2_prefilter/L2_00114: JobFailed 'job f314d4cd-d450-11f1-9d98-bc97e148b76b-O ended ABORTED'; retry in 15 s07:00:33   field_dr2_prefilter/L2_00113: JobFailed 'job f315710e-d450-11f1-9d98-bc97e148b76b-O ended ABORTED'; retry in 15 s
+
+07:00:37   field_dr2_prefilter L2 pixel 112 failed (JobFailed); splitting
+07:00:41   field_dr2_prefilter/L2_00115: JobFailed 'job f70f0cea-d450-11f1-9d98-bc97e148b76b-O ended ABORTED'; retry in 15 s
+07:02:11   field_dr2_prefilter/L3_00448: JobFailed 'job 30a94cb0-d451-11f1-9d98-bc97e148b76b-O ended ABORTED'; retry in 15 s
+07:02:19   field_dr2_prefilter L2 pixel 113 failed (JobFailed); splitting
+07:02:26   field_dr2_prefilter L2 pixel 114 failed (JobFailed); splitting
+07:02:29   field_dr2_prefilter L2 pixel 115 failed (JobFailed); splitting
+07:03:53   field_dr2_prefilter/L3_00452: JobFailed 'job 6cd6e1a0-d451-11f1-9d98-bc97e148b76b-O ended ABORTED'; retry in 15 s
+07:03:57   field_dr2_prefilter/L3_00456: JobFailed 'job 72192a23-d451-11f1-9d98-bc97e148b76b-O ended ABORTED'; retry in 15 s
+07:03:57   field_dr2_prefilter L3 pixel 448 failed (JobFailed); splitting
+07:04:01   field_dr2_prefilter/L3_00460: JobFailed 'job 745d4dcd-d451-11f1-9d98-bc97e148b76b-O ended ABORTED'; retry in 15 s
+07:05:24   field_dr2_prefilter/L4_01792: JobFailed 'job a686302c-d451-11f1-9d98-bc97e148b76b-O ended ABORTED'; retry in 15 s
+07:05:35   field_dr2_prefilter L3 pixel 452 failed (JobFailed); splitting
+07:05:38   field_dr2_prefilter L3 pixel 460 failed (JobFailed); splitting
+07:05:39   field_dr2_prefilter L3 pixel 456 failed (JobFailed); splitting
+07:07:00   field_dr2_prefilter/L4_01808: JobFailed 'job de476a61-d451-11f1-9d98-bc97e148b76b-O ended ABORTED'; retry in 15 s
+07:07:07   field_dr2_prefilter L4 pixel 1792 failed (JobFailed); splitting
+07:08:49   field_dr2_prefilter L4 pixel 1808 failed (JobFailed); splitting
+07:08:49   field_dr2_prefilter/L4_01825: JobFailed 'job 1f63829c-d452-11f1-9d98-bc97e148b76b-O ended ABORTED'; retry in 15 s
+07:16:03   field_dr2_prefilter/L3_00457: JobFailed 'job 20574033-d453-11f1-9d98-bc97e148b76b-O ended ABORTED'; retry in 15 s
+07:16:39   field_dr2_prefilter/L4_01793: JobFailed 'job 33b3c3bb-d453-11f1-9d98-bc97e148b76b-O ended ABORTED'; retry in 15 s
+07:16:45   field_dr2_prefilter/L3_00462: JobFailed 'job 3735225e-d453-11f1-9d98-bc97e148b76b-O ended ABORTED'; retry in 15 s

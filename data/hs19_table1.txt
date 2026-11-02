@@ -1,0 +1,350 @@
+Title: Hot Jupiters are Destroyed by Tides While Their Host Stars 
+       are on the Main Sequence 
+Authors: Hamer J.H., Schlaufman K.C. 
+Table: Main Sequence hot Jupiter Hosts with Good Astrometry
+================================================================================
+Byte-by-byte Description of file: ajab3c56t1_mrt.txt
+--------------------------------------------------------------------------------
+   Bytes Format Units Label        Explanations
+--------------------------------------------------------------------------------
+   1- 17 A17    ---   ArchiveName  Exoplanet Archive name of hot Jupiter host
+  19- 42 A24    ---   SimbadName   Corresponding SIMBAD host name 
+--------------------------------------------------------------------------------
+KELT-9            KELT-9                   
+HD 212301         HD 212301                
+51 Peg            51 Peg                   
+HD 217107         HD 217107                
+WASP-33           WASP-33                  
+HIP 14810         HIP 14810                
+HD 2638           HD 2638                  
+KELT-7            KELT-7                   
+KELT-2 A          KELT-2 A                 
+HD 46375          HD 46375                 
+HAT-P-56          HAT-P-56                 
+HD 63454          HD 63454                 
+HD 68988          HD 68988                 
+HD 75289          HD 75289                 
+HD 76700          HD 76700                 
+HD 83443          HD 83443                 
+KELT-4 A          KELT-4 A                 
+HD 102195         HD 102195                
+HD 103720         HD 103720                
+HD 103774         HD 103774                
+HD 109749         HD 109749                
+tau Boo           tau Boo A                
+ups And           ups And                  
+WASP-18           WASP-18                  
+HD 330075         HD 330075                
+HD 143105         HD 143105                
+HAT-P-2           HAT-P-2                  
+HD 149026         HD 149026                
+HD 162020         HD 162020                
+HD 168746         HD 168746                
+HIP 91258         HIP 91258                
+KELT-20           KELT-20                  
+HD 187123         HD 187123                
+HD 189733         HD 189733                
+HAT-P-31          HAT-P-31                 
+HAT-P-33          HAT-P-33                 
+HAT-P-34          HAT-P-34                 
+HAT-P-35          HAT-P-35                 
+HAT-P-36          HAT-P-36                 
+HAT-P-37          HAT-P-37                 
+HAT-P-38          HAT-P-38                 
+HAT-P-39          HAT-P-39                 
+HAT-P-40          HAT-P-40                 
+HAT-P-41          HAT-P-41                 
+HAT-P-42          HAT-P-42                 
+HAT-P-43          HAT-P-43                 
+HAT-P-44          HAT-P-44                 
+HAT-P-46          HAT-P-46                 
+HAT-P-49          HAT-P-49                 
+HAT-P-54          HAT-P-54                 
+HATS-1            HATS-1                   
+HATS-2            HATS-2                   
+HATS-3            HATS-3                   
+Kepler-74         Kepler-74                
+Kepler-32         Kepler-32                
+KELT-1            KELT-1                   
+KELT-6            KELT-6                   
+TrES-2            TYC 3549-2811-1          
+HAT-P-7           HAT-P-7                  
+Kepler-5          Kepler-5                 
+Kepler-6          Kepler-6                 
+Kepler-8          Kepler-8                 
+Kepler-12         Kepler-12                
+Kepler-15         Kepler-15                
+Kepler-17         Kepler-17                
+Kepler-41         Kepler-41                
+Kepler-43         Kepler-43                
+Kepler-44         Kepler-44                
+Kepler-45         Kepler-45                
+Kepler-49         Kepler-49                
+Kepler-75         Kepler-75                
+Kepler-76         Kepler-76                
+Kepler-77         Kepler-77                
+Kepler-52         Kepler-52                
+Kepler-54         Kepler-54                
+Kepler-23         Kepler-23                
+Kepler-24         Kepler-24                
+Kepler-57         Kepler-57                
+Kepler-28         Kepler-28                
+Kepler-63         Kepler-63                
+HATS-4            HATS-4                   
+HATS-5            HATS-5                   
+HATS-6            HATS-6                   
+HAT-P-1           HAT-P-1                  
+HAT-P-3           HAT-P-3                  
+HAT-P-4           HAT-P-4                  
+HAT-P-5           HAT-P-5                  
+HAT-P-6           HAT-P-6                  
+HAT-P-8           HAT-P-8                  
+HAT-P-9           HAT-P-9                  
+HAT-P-12          HAT-P-12                 
+HAT-P-14          HAT-P-14                 
+HAT-P-16          HAT-P-16                 
+HAT-P-18          HAT-P-18                 
+CoRoT-1           CoRoT-1                  
+CoRoT-2           CoRoT-2                  
+CoRoT-3           CoRoT-3                  
+CoRoT-4           CoRoT-4                  
+CoRoT-5           CoRoT-5                  
+CoRoT-6           CoRoT-6                  
+CoRoT-8           CoRoT-8                  
+CoRoT-12          CoRoT-12                 
+CoRoT-13          CoRoT-13                 
+CoRoT-14          CoRoT-14                 
+CoRoT-17          CoRoT-17                 
+CoRoT-18          CoRoT-18                 
+CoRoT-20          CoRoT-20                 
+CoRoT-23          CoRoT-23                 
+CoRoT-25          CoRoT-25                 
+CoRoT-27          CoRoT-27                 
+CoRoT-28          CoRoT-28                 
+HAT-P-19          HAT-P-19                 
+HAT-P-20          HAT-P-20                 
+HAT-P-21          HAT-P-21                 
+HAT-P-22          HAT-P-22                 
+HAT-P-23          HAT-P-23                 
+HAT-P-24          HAT-P-24                 
+HAT-P-25          HAT-P-25                 
+HAT-P-27          HAT-P-27                 
+HAT-P-28          HAT-P-28                 
+HAT-P-29          HAT-P-29                 
+HAT-P-30          HAT-P-30                 
+WASP-135          WASP-135                 
+K2-31             K2-31                    
+WASP-119          WASP-119                 
+WASP-124          WASP-124                 
+WASP-126          WASP-126                 
+WASP-129          WASP-129                 
+WASP-133          WASP-133                 
+KELT-8            KELT-8                   
+HATS-13           HATS-13                  
+HATS-14           HATS-14                  
+K2-29             K2-29                    
+KELT-10           KELT-10                  
+WASP-76           WASP-76                  
+WASP-90           WASP-90                  
+BD-10 3166        BD-10 3166               
+HAT-P-57          HAT-P-57                 
+HAT-P-50          HAT-P-50                 
+HAT-P-51          HAT-P-51                 
+HAT-P-53          HAT-P-53                 
+KELT-14           KELT-14                  
+KELT-15           KELT-15                  
+Kepler-412        Kepler-412               
+Kepler-415        2MASS J19351306+3838208  
+Kepler-416        Kepler-416               
+Kepler-422        Kepler-422               
+Kepler-423        Kepler-423               
+Kepler-424        Kepler-424               
+Kepler-425        Kepler-425               
+Kepler-426        Kepler-426               
+Kepler-428        Kepler-428               
+Kepler-433        Kepler-433               
+Kepler-447        Kepler-447               
+NGC 2682 YBP 1194 Cl* NGC 2682 YBP 1194    
+NGC 2682 YBP 1514 Cl* NGC 2682 YBP 1514    
+POTS-1            POTS-1                   
+Pr0201            TYC 1398-00321-1         
+Pr0211            2MASS J08421149+1916373  
+Qatar-1           Qatar 1                  
+Qatar-2           Qatar 2                  
+TrES-1            TYC 2652-1324-1          
+TrES-3            2MASS J17520702+3732461  
+TrES-4            TYC 2620-648-1           
+TrES-5            2MASS J20205324+5926556  
+WASP-1            WASP-1                   
+WASP-2            WASP-2                   
+WASP-3            WASP-3                   
+WASP-4            WASP-4                   
+WASP-5            WASP-5                   
+WASP-6            WASP-6                   
+WASP-7            WASP-7                   
+WASP-8            WASP-8                   
+WASP-10           WASP-10                  
+WASP-11           WASP-11                  
+WASP-12           WASP-12                  
+WASP-13           WASP-13                  
+WASP-14           WASP-14                  
+WASP-15           WASP-15                  
+WASP-17           WASP-17                  
+WASP-19           WASP-19                  
+WASP-21           WASP-21                  
+WASP-22           WASP-22                  
+WASP-23           WASP-23                  
+WASP-24           WASP-24                  
+WASP-25           WASP-25                  
+WASP-28           WASP-28                  
+WASP-29           WASP-29                  
+WASP-31           WASP-31                  
+WASP-32           WASP-32                  
+WASP-34           WASP-34                  
+WASP-35           WASP-35                  
+WASP-36           WASP-36                  
+WASP-37           WASP-37                  
+WASP-38           WASP-38                  
+WASP-39           WASP-39                  
+WASP-41           WASP-41                  
+WASP-42           WASP-42                  
+WASP-44           WASP-44                  
+XO-6              XO-6                     
+NGC 2682 YBP 401  Cl* NGC 2682 YBP 401     
+WASP-45           WASP-45                  
+WASP-46           WASP-46                  
+WASP-48           WASP-48                  
+WASP-49           WASP-49                  
+WASP-50           WASP-50                  
+WASP-52           WASP-52                  
+WASP-54           WASP-54                  
+WASP-55           WASP-55                  
+WASP-56           WASP-56                  
+WASP-57           WASP-57                  
+WASP-58           WASP-58                  
+WASP-59           WASP-59                  
+WASP-60           WASP-60                  
+WASP-61           WASP-61                  
+WASP-62           WASP-62                  
+WASP-120          WASP-120                 
+WASP-64           WASP-64                  
+WASP-66           WASP-66                  
+WASP-67           WASP-67                  
+WASP-68           WASP-68                  
+WASP-69           WASP-69                  
+WASP-70 A         TYC 5782-970-1           
+WASP-75           WASP-75                  
+WASP-78           WASP-78                  
+WASP-79           WASP-79                  
+WASP-80           WASP-80                  
+WASP-84           WASP-84                  
+WASP-88           WASP-88                  
+WASP-123          WASP-123                 
+HATS-25           HATS-25                  
+HATS-26           HATS-26                  
+HATS-27           HATS-27                  
+HATS-28           HATS-28                  
+HATS-29           HATS-29                  
+HATS-30           HATS-30                  
+WASP-121          WASP-121                 
+HATS-16           HATS-16                  
+WASP-94 A         WASP-94 A                
+WASP-94 B         WASP-94 B                
+WASP-95           WASP-95                  
+WASP-96           WASP-96                  
+WASP-97           WASP-97                  
+WASP-98           WASP-98                  
+WASP-99           WASP-99                  
+WASP-100          WASP-100                 
+WASP-101          WASP-101                 
+WASP-104          WASP-104                 
+WASP-106          WASP-106                 
+XO-1              XO-1                     
+XO-2 N            XO-2 N                   
+XO-3              XO-3                     
+XO-4              XO-4                     
+XO-5              XO-5                     
+HATS-10           HATS-10                  
+HAT-P-55          HAT-P-55                 
+WASP-74           WASP-74                  
+WASP-83           WASP-83                  
+WASP-89           WASP-89                  
+HATS-8            HATS-8                   
+K2-30             K2-30                    
+HATS-39           GSC 06550-00341          
+HATS-40           GSC 06533-01514          
+HATS-41           GSC 06530-01596          
+HATS-42           2MASS J07134857-3326143  
+WASP-161          TYC 5435-1109-1          
+WASP-163          WASP-163                 
+WASP-170          WASP-170                 
+HATS-60           HATS-60                  
+HATS-62           HATS-62                  
+HATS-63           HATS-63                  
+HATS-64           HATS-64                  
+HATS-65           HATS-65                  
+HATS-66           HATS-66                  
+HATS-67           2MASS J01000141-5854172  
+HATS-69           HATS-69                  
+HATS-70           HATS-70                  
+HD 2685           HD 2685                  
+HATS-59           HATS-59                  
+HATS-50           GSC 06896-01012          
+HATS-51           GSC 06534-00607          
+HATS-52           GSC 07153-01785          
+HATS-53           2MASS J11463084-3351361  
+KELT-19 A         KELT-19                  
+WASP-53           WASP-53                  
+WASP-81           WASP-81                  
+HATS-22           HATS-22                  
+HATS-23           HATS-23                  
+HATS-24           HATS-24                  
+NGTS-2            TYC 7282-1298-1          
+WASP-147          TYC 6411-312-1           
+K2-77             2MASS J03405481+1234216  
+KELT-21           KELT-21                  
+KELT-17           KELT-17                  
+WASP-92           WASP-92                  
+WASP-91           WASP-91                  
+WASP-107          WASP-107                 
+NGTS-1            2MASS J05305145-3637508  
+WASP-174          WASP-174                 
+WASP-93           WASP-93                  
+WASP-118          WASP-118                 
+WASP-113          WASP-113                 
+KPS-1             2MASS J11004017+6457504  
+HATS-43           HATS-43                  
+HATS-44           HATS-44                  
+HATS-45           HATS-45                  
+HATS-46           HATS-46                  
+HATS-7            HATS-7                   
+NGTS-3 A          2MASS J06174675-3542230  
+HAT-P-65          HAT-P-65                 
+HAT-P-66          HAT-P-66                 
+HATS-18           HATS-18                  
+WASP-131          WASP-131                 
+WASP-132          WASP-132                 
+WASP-139          WASP-139                 
+WASP-140          WASP-140                 
+WASP-141          WASP-141                 
+WASP-142          WASP-142                 
+WASP-151          EPIC 246441449           
+WASP-153          2MASS J18370297+4001073  
+WASP-156          TYC 38-617-1             
+CoRoTID 223977153 CoRoT-32                 
+HATS-31           HATS-31                  
+HATS-32           HATS-32                  
+HATS-33           HATS-33                  
+HATS-34           HATS-34                  
+HATS-35           HATS-35                  
+WASP-127          WASP-127                 
+WASP-136          WASP-136                 
+WASP-138          WASP-138                 
+Qatar-4           Qatar 4                  
+Qatar-5           Qatar 5                  
+KELT-18           KELT-18                  
+K2-260            K2-260                   
+WASP-158          TYC 5264-1048-1          
+WASP-168          TYC 8103-143-1           
+WASP-172          2MASS J13174412-4714152  
+WASP-173 A        TYC 7518-468-1           

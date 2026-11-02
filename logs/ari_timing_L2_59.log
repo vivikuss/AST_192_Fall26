@@ -1,0 +1,5 @@
+The current archive release 3.15 contains two breaking changes. Please see https://www.cosmos.esa.int/web/gaia/news#GACSrelease315 for details. In case of questions or feedback, please consult the Gaia helpdesk at https://www.cosmos.esa.int/web/gaia/gaia-helpdesk.
+12:04:09   field_dr2_prefilter/L2_00059: ARI job 1793376248777 submitted
+12:04:40   field_dr2_prefilter/L2_00059: ARI job 1793376248777 COMPLETED in 31 s, 13659 rows
+12:04:40 TIMING L2 pixel 59: 13659 rows in 35 s
+exit 0

@@ -1,0 +1,249 @@
+500 Error 500:
+null
+  field_dr2_prefilter L2 pixel 5 failed (HTTPError); splitting
+500 Error 500:
+null
+  field_dr2_prefilter L2 pixel 6 failed (HTTPError); splitting
+500 Error 500:
+null
+  field_dr2_prefilter L2 pixel 7 failed (HTTPError); splitting
+500 Error 500:
+null
+  field_dr2_prefilter L2 pixel 11 failed (HTTPError); splitting
+500 Error 500:
+null
+  field_dr2_prefilter L2 pixel 12 failed (HTTPError); splitting
+500 Error 500:
+null
+  field_dr2_prefilter L2 pixel 13 failed (HTTPError); splitting
+500 Error 500:
+null
+  field_dr2_prefilter L2 pixel 14 failed (HTTPError); splitting
+500 Error 500:
+null
+  field_dr2_prefilter L3 pixel 47 failed (HTTPError); splitting
+500 Error 500:
+null
+  field_dr2_prefilter L2 pixel 50 failed (HTTPError); splitting
+500 Error 500:
+null
+  field_dr2_prefilter L2 pixel 51 failed (HTTPError); splitting
+500 Error 500:
+null
+  field_dr2_prefilter L2 pixel 54 failed (HTTPError); splitting
+500 Error 500:
+null
+  field_dr2_prefilter L2 pixel 55 failed (HTTPError); splitting
+500 Error 500:
+null
+  field_dr2_prefilter L3 pixel 202 failed (HTTPError); splitting
+500 Error 500:
+null
+  field_dr2_prefilter L2 pixel 56 failed (HTTPError); splitting
+500 Error 500:
+null
+  field_dr2_prefilter L3 pixel 224 failed (HTTPError); splitting
+500 Error 500:
+null
+  field_dr2_prefilter L2 pixel 57 failed (HTTPError); splitting
+500 Error 500:
+null
+  field_dr2_prefilter L2 pixel 58 failed (HTTPError); splitting
+  field_dr2_prefilter L3 pixel 228 failed (ValueError); splitting
+500 Error 500:
+null
+  field_dr2_prefilter L2 pixel 59 failed (HTTPError); splitting
+500 Error 500:
+null
+  field_dr2_prefilter L3 pixel 225 failed (HTTPError); splitting
+500 Error 500:
+null
+  field_dr2_prefilter L2 pixel 60 failed (HTTPError); splitting
+500 Error 500:
+null
+  field_dr2_prefilter L2 pixel 61 failed (HTTPError); splitting
+500 Error 500:
+null
+  field_dr2_prefilter L3 pixel 230 failed (HTTPError); splitting
+500 Error 500:
+null
+  field_dr2_prefilter L3 pixel 241 failed (HTTPError); splitting
+  field_dr2_prefilter L4 pixel 964 failed (ValueError); splitting
+500 Error 500:
+null
+  field_dr2_prefilter L3 pixel 245 failed (HTTPError); splitting
+500 Error 500:
+null
+  field_dr2_prefilter L3 pixel 226 failed (HTTPError); splitting
+500 Error 500:
+null
+  field_dr2_prefilter L4 pixel 921 failed (HTTPError); splitting
+500 Error 500:
+null
+500 Error 500:
+null
+  field_dr2_prefilter L4 pixel 904 failed (HTTPError); splitting
+500 Error 500:
+null
+500 Error 500:
+null
+  field_dr2_prefilter L2 pixel 62 failed (HTTPError); splitting
+500 Error 500:
+null
+  field_dr2_prefilter L4 pixel 981 failed (HTTPError); splitting
+  field_dr2_prefilter L3 pixel 248 failed (TimeoutError); splitting
+  field_dr2_prefilter L2 pixel 63 failed (TimeoutError); splitting
+  field_dr2_prefilter L4 pixel 992 failed (OSError); splitting
+  field_dr2_prefilter L3 pixel 252 failed (OSError); splitting
+500 Error 500:
+null
+  field_dr2_prefilter L3 pixel 253 failed (HTTPError); splitting
+  field_dr2_prefilter L2 pixel 64 failed (RemoteDisconnected); splitting
+500 Error 500:
+null
+  field_dr2_prefilter L4 pixel 1012 failed (HTTPError); splitting
+  field_dr2_prefilter L3 pixel 256 failed (ConnectionResetError); splitting
+500 Error 500:
+null
+500 Error 500:
+null
+  field_dr2_prefilter L4 pixel 1024 failed (HTTPError); splitting
+500 Error 500:
+null
+  field_dr2_prefilter L2 pixel 65 failed (TimeoutError); splitting
+  field_dr2_prefilter L3 pixel 261 failed (RemoteDisconnected); splitting
+  field_dr2_prefilter L4 pixel 993 failed (ConnectionResetError); splitting
+  field_dr2_prefilter L3 pixel 263 failed (RemoteDisconnected); splitting
+  field_dr2_prefilter L4 pixel 995 failed (RemoteDisconnected); splitting
+Traceback (most recent call last):
+  File "/Users/victoriabarriola/Documents/Astro2026/AST_192_Fall26/08_HS19_Kinematics/src/gaia_tap.py", line 57, in run
+    try:
+  File "/Users/victoriabarriola/Documents/Astro2026/AST_192_Fall26/08_HS19_Kinematics/src/gaia_tap.py", line 28, in query
+    gaia = GaiaClass(show_server_messages=False)     # one client per call (thread-safe)
+  File "/Users/victoriabarriola/miniforge3/envs/ast192-hj/lib/python3.10/site-packages/astroquery/gaia/core.py", line 1154, in launch_job_async
+    return TapPlus.launch_job_async(self, query=query,
+  File "/Users/victoriabarriola/miniforge3/envs/ast192-hj/lib/python3.10/site-packages/astroquery/utils/tap/core.py", line 480, in launch_job_async
+    job.get_results()
+  File "/Users/victoriabarriola/miniforge3/envs/ast192-hj/lib/python3.10/site-packages/astroquery/utils/tap/model/job.py", line 247, in get_results
+    self.__load_async_job_results()
+  File "/Users/victoriabarriola/miniforge3/envs/ast192-hj/lib/python3.10/site-packages/astroquery/utils/tap/model/job.py", line 353, in __load_async_job_results
+    check_launch_response_status(resultsResponse,
+  File "/Users/victoriabarriola/miniforge3/envs/ast192-hj/lib/python3.10/site-packages/astroquery/utils/tap/conn/tapconn.py", line 688, in check_launch_response_status
+    raise requests.exceptions.HTTPError(errMsg)
+requests.exceptions.HTTPError: Error 500:
+null
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/victoriabarriola/Documents/Astro2026/AST_192_Fall26/08_HS19_Kinematics/src/gaia_tap.py", line 57, in run
+    try:
+  File "/Users/victoriabarriola/Documents/Astro2026/AST_192_Fall26/08_HS19_Kinematics/src/gaia_tap.py", line 28, in query
+    gaia = GaiaClass(show_server_messages=False)     # one client per call (thread-safe)
+  File "/Users/victoriabarriola/miniforge3/envs/ast192-hj/lib/python3.10/site-packages/astroquery/gaia/core.py", line 1154, in launch_job_async
+    return TapPlus.launch_job_async(self, query=query,
+  File "/Users/victoriabarriola/miniforge3/envs/ast192-hj/lib/python3.10/site-packages/astroquery/utils/tap/core.py", line 480, in launch_job_async
+    job.get_results()
+  File "/Users/victoriabarriola/miniforge3/envs/ast192-hj/lib/python3.10/site-packages/astroquery/utils/tap/model/job.py", line 247, in get_results
+    self.__load_async_job_results()
+  File "/Users/victoriabarriola/miniforge3/envs/ast192-hj/lib/python3.10/site-packages/astroquery/utils/tap/model/job.py", line 353, in __load_async_job_results
+    check_launch_response_status(resultsResponse,
+  File "/Users/victoriabarriola/miniforge3/envs/ast192-hj/lib/python3.10/site-packages/astroquery/utils/tap/conn/tapconn.py", line 688, in check_launch_response_status
+    raise requests.exceptions.HTTPError(errMsg)
+requests.exceptions.HTTPError: Error 500:
+null
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/victoriabarriola/Documents/Astro2026/AST_192_Fall26/08_HS19_Kinematics/src/gaia_tap.py", line 57, in run
+    try:
+  File "/Users/victoriabarriola/Documents/Astro2026/AST_192_Fall26/08_HS19_Kinematics/src/gaia_tap.py", line 28, in query
+    gaia = GaiaClass(show_server_messages=False)     # one client per call (thread-safe)
+  File "/Users/victoriabarriola/miniforge3/envs/ast192-hj/lib/python3.10/site-packages/astroquery/gaia/core.py", line 1154, in launch_job_async
+    return TapPlus.launch_job_async(self, query=query,
+  File "/Users/victoriabarriola/miniforge3/envs/ast192-hj/lib/python3.10/site-packages/astroquery/utils/tap/core.py", line 480, in launch_job_async
+    job.get_results()
+  File "/Users/victoriabarriola/miniforge3/envs/ast192-hj/lib/python3.10/site-packages/astroquery/utils/tap/model/job.py", line 247, in get_results
+    self.__load_async_job_results()
+  File "/Users/victoriabarriola/miniforge3/envs/ast192-hj/lib/python3.10/site-packages/astroquery/utils/tap/model/job.py", line 353, in __load_async_job_results
+    check_launch_response_status(resultsResponse,
+  File "/Users/victoriabarriola/miniforge3/envs/ast192-hj/lib/python3.10/site-packages/astroquery/utils/tap/conn/tapconn.py", line 688, in check_launch_response_status
+    raise requests.exceptions.HTTPError(errMsg)
+requests.exceptions.HTTPError: Error 500:
+null
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/private/tmp/claude-501/-Users-victoriabarriola-Documents-Astro2026/20004fd5-cacc-4c62-a7f1-f9a8a1747657/scratchpad/dl_field.py", line 5, in <module>
+    df = field.download(cfg); print(len(df), "rows", round(time.time()-t), "s"); print(df.isna().sum()[lambda s: s>0])
+  File "/Users/victoriabarriola/Documents/Astro2026/AST_192_Fall26/08_HS19_Kinematics/src/field.py", line 20, in download
+    tbl = gaia_tap.query_chunked(field_adql(cfg), f"field_{cfg['gaia']['release']}_prefilter",
+  File "/Users/victoriabarriola/Documents/Astro2026/AST_192_Fall26/08_HS19_Kinematics/src/gaia_tap.py", line 68, in query_chunked
+    with ThreadPoolExecutor(workers) as ex:
+  File "/Users/victoriabarriola/Documents/Astro2026/AST_192_Fall26/08_HS19_Kinematics/src/gaia_tap.py", line 68, in <listcomp>
+    with ThreadPoolExecutor(workers) as ex:
+  File "/Users/victoriabarriola/miniforge3/envs/ast192-hj/lib/python3.10/concurrent/futures/_base.py", line 621, in result_iterator
+    yield _result_or_cancel(fs.pop())
+  File "/Users/victoriabarriola/miniforge3/envs/ast192-hj/lib/python3.10/concurrent/futures/_base.py", line 319, in _result_or_cancel
+    return fut.result(timeout)
+  File "/Users/victoriabarriola/miniforge3/envs/ast192-hj/lib/python3.10/concurrent/futures/_base.py", line 458, in result
+    return self.__get_result()
+  File "/Users/victoriabarriola/miniforge3/envs/ast192-hj/lib/python3.10/concurrent/futures/_base.py", line 403, in __get_result
+    raise self._exception
+  File "/Users/victoriabarriola/miniforge3/envs/ast192-hj/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/Users/victoriabarriola/Documents/Astro2026/AST_192_Fall26/08_HS19_Kinematics/src/gaia_tap.py", line 68, in <lambda>
+    with ThreadPoolExecutor(workers) as ex:
+  File "/Users/victoriabarriola/Documents/Astro2026/AST_192_Fall26/08_HS19_Kinematics/src/gaia_tap.py", line 62, in run
+    print(f"  {name} L{lev} pixel {pix} failed ({type(err).__name__}); splitting")
+  File "/Users/victoriabarriola/Documents/Astro2026/AST_192_Fall26/08_HS19_Kinematics/src/gaia_tap.py", line 62, in <listcomp>
+    print(f"  {name} L{lev} pixel {pix} failed ({type(err).__name__}); splitting")
+  File "/Users/victoriabarriola/Documents/Astro2026/AST_192_Fall26/08_HS19_Kinematics/src/gaia_tap.py", line 62, in run
+    print(f"  {name} L{lev} pixel {pix} failed ({type(err).__name__}); splitting")
+  File "/Users/victoriabarriola/Documents/Astro2026/AST_192_Fall26/08_HS19_Kinematics/src/gaia_tap.py", line 62, in <listcomp>
+    print(f"  {name} L{lev} pixel {pix} failed ({type(err).__name__}); splitting")
+  File "/Users/victoriabarriola/Documents/Astro2026/AST_192_Fall26/08_HS19_Kinematics/src/gaia_tap.py", line 62, in run
+    print(f"  {name} L{lev} pixel {pix} failed ({type(err).__name__}); splitting")
+  File "/Users/victoriabarriola/Documents/Astro2026/AST_192_Fall26/08_HS19_Kinematics/src/gaia_tap.py", line 62, in <listcomp>
+    print(f"  {name} L{lev} pixel {pix} failed ({type(err).__name__}); splitting")
+  File "/Users/victoriabarriola/Documents/Astro2026/AST_192_Fall26/08_HS19_Kinematics/src/gaia_tap.py", line 57, in run
+    try:
+  File "/Users/victoriabarriola/Documents/Astro2026/AST_192_Fall26/08_HS19_Kinematics/src/gaia_tap.py", line 28, in query
+    gaia = GaiaClass(show_server_messages=False)     # one client per call (thread-safe)
+  File "/Users/victoriabarriola/miniforge3/envs/ast192-hj/lib/python3.10/site-packages/astroquery/gaia/core.py", line 1154, in launch_job_async
+    return TapPlus.launch_job_async(self, query=query,
+  File "/Users/victoriabarriola/miniforge3/envs/ast192-hj/lib/python3.10/site-packages/astroquery/utils/tap/core.py", line 480, in launch_job_async
+    job.get_results()
+  File "/Users/victoriabarriola/miniforge3/envs/ast192-hj/lib/python3.10/site-packages/astroquery/utils/tap/model/job.py", line 247, in get_results
+    self.__load_async_job_results()
+  File "/Users/victoriabarriola/miniforge3/envs/ast192-hj/lib/python3.10/site-packages/astroquery/utils/tap/model/job.py", line 342, in __load_async_job_results
+    wjResponse, phase = self.wait_for_job_end()
+  File "/Users/victoriabarriola/miniforge3/envs/ast192-hj/lib/python3.10/site-packages/astroquery/utils/tap/model/job.py", line 328, in wait_for_job_end
+    responseData = self.get_phase(update=True)
+  File "/Users/victoriabarriola/miniforge3/envs/ast192-hj/lib/python3.10/site-packages/astroquery/utils/tap/model/job.py", line 186, in get_phase
+    response = self.connHandler.execute_tapget(phase_request)
+  File "/Users/victoriabarriola/miniforge3/envs/ast192-hj/lib/python3.10/site-packages/astroquery/utils/tap/conn/tapconn.py", line 192, in execute_tapget
+    return self.__execute_get(context, verbose=verbose)
+  File "/Users/victoriabarriola/miniforge3/envs/ast192-hj/lib/python3.10/site-packages/astroquery/utils/tap/conn/tapconn.py", line 239, in __execute_get
+    conn.request("GET", context, None, self.__getHeaders)
+  File "/Users/victoriabarriola/miniforge3/envs/ast192-hj/lib/python3.10/http/client.py", line 1331, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "/Users/victoriabarriola/miniforge3/envs/ast192-hj/lib/python3.10/http/client.py", line 1377, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "/Users/victoriabarriola/miniforge3/envs/ast192-hj/lib/python3.10/http/client.py", line 1326, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/Users/victoriabarriola/miniforge3/envs/ast192-hj/lib/python3.10/http/client.py", line 1086, in _send_output
+    self.send(msg)
+  File "/Users/victoriabarriola/miniforge3/envs/ast192-hj/lib/python3.10/http/client.py", line 1024, in send
+    self.connect()
+  File "/Users/victoriabarriola/miniforge3/envs/ast192-hj/lib/python3.10/http/client.py", line 1496, in connect
+    super().connect()
+  File "/Users/victoriabarriola/miniforge3/envs/ast192-hj/lib/python3.10/http/client.py", line 990, in connect
+    self.sock = self._create_connection(
+  File "/Users/victoriabarriola/miniforge3/envs/ast192-hj/lib/python3.10/socket.py", line 857, in create_connection
+    raise err
+  File "/Users/victoriabarriola/miniforge3/envs/ast192-hj/lib/python3.10/socket.py", line 845, in create_connection
+    sock.connect(sa)
+TimeoutError: [Errno 60] Operation timed out

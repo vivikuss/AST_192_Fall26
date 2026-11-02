@@ -1,0 +1,167 @@
+Pre-registered: EBLM IV primaries vs matched field and vs HJ hosts (Galactic UVW dispersion), project 08
+Approved by the user on 2026-11-02 and frozen here. Written before any EBLM gamma, UVW,
+dispersion or colour-matched evolved fraction was computed or seen. Source: DECISIONS.md, entry C12
+(revision 2); text below copied verbatim. Changes after this date are amendments, dated and recorded
+separately; this file is not edited.
+
+**C12. PRE-REGISTRATION (PROPOSED; revision 2, 2026-11-01; pending user approval).**
+Written before any EBLM γ, UVW, dispersion, or colour-matched evolved fraction has
+been computed or seen. After approval it is frozen as
+`PREREG_eblm_kinematics_<date>.txt` with a sha256.
+Revision 2 (user, 2026-11-01): one explicit primary result (B); |z| matching added
+(G); the evolved-fraction exploratory analysis added (I); the CORALIE offset fixed
+at 0 ± 20 m/s (A).
+
+A. **Pipeline.** Gaia DR2, identical to the Phase 1 HJ analysis: same config,
+   cuts, BJ18 distances, STILISM extinction with CV18 coefficients, published MS
+   polynomial, astropy UVW, and the mean-residual-speed statistic
+   σ = (1/N) Σ |v_i − v̄|.
+   - **EBLM sample:** EBLM IV only (EBLM XIX excluded; C8). Cuts 1–4 as for the
+     HJ hosts (per-cut counts: 118 → 117 → 115 → 107 → 107), then the MS cut
+     → **79**.
+   - **RV:** γ only, from the amended fit (C6): fixed P and T0 (`tab:obs`), e
+     and ω (`tab:params`; e = 0 where only an upper limit is given), published
+     drift and outer orbit subtracted as fixed terms.
+   - **CORALIE07→14 offset:** 0 m/s, with 0.020 km/s added in quadrature to every
+     σ_γ as a systematic. No Gaia RV is used.
+   - **Exclusions:** systems whose fit is flagged as uncomputable are excluded
+     and listed. No other exclusion is made after the fit.
+
+B. **THE PRIMARY RESULT.** Δσ = σ_EBLM − σ_field, the difference between the
+   EBLM primaries' mean-residual-speed dispersion and that of the matched field,
+   with a 95 % confidence interval. Everything else in this entry is secondary,
+   sensitivity or exploratory.
+   - **Matched field:** HS19's Monte Carlo, 40,000 control samples. One field
+     star within 0.025 mag in (BP−RP)₀ per EBLM, none reused within a sample,
+     from a field subsample matched in **z (50 pc fixed bins, as in Phase 1) and
+     distance (5 quantile bins of the EBLM distances)** by joint histogram
+     weighting. Hosts without a match in an iteration are dropped from both sides
+     (D13b).
+   - **Point estimate:** Δσ̂ = σ_EBLM − median(σ_control).
+   - **95 % CI:** percentile interval over 40,000 bootstrap resamples of the
+     EBLM sample, Δσ_b = σ(EBLM resample b) − median(σ_control). The control
+     median is a fixed reference (its Monte Carlo uncertainty is ≈ SD/200,
+     negligible). The bootstrap bias, mean(Δσ_b) − Δσ̂, is reported. If
+     |bias| > 0.2 × the CI half-width, a bias-corrected (BCa) interval is
+     reported alongside; the percentile interval stays primary.
+   - **Interpretation:** "EBLM primaries are colder than the field" if the
+     whole CI is < 0; "hotter" if the whole CI is > 0; otherwise "consistent".
+   - **Expected precision:** under a field-like EBLM population, the SD of σ
+     for N = 79 is ≈ 2.84 km/s (D). The CI half-width is therefore
+     ≈ ±5.6 km/s. The HJ hosts' offset was −6.6 km/s.
+
+C. **Secondary results.**
+   - **C-1, HS19-style:** the fraction of the 40,000 controls with σ_control ≤
+     σ_EBLM (paired as in D13b), and the Gaussian-equivalent significance.
+   - **C-2, EBLM vs HJ directly:** colour- and distance-matched resampling.
+     In each of 40,000 iterations:
+     1. Bootstrap the 79 EBLMs.
+     2. For each drawn EBLM, draw one HJ host (Phase 1 primary, 297) within
+        0.05 mag in (BP−RP)₀ and in the same EBLM-distance quintile, with
+        replacement.
+     3. Compute Δσ_HJ = σ(EBLM resample) − σ(matched HJ resample).
+
+     Report the median and the 95 % interval. EBLMs without an HJ match in an
+     iteration are dropped from both sides.
+
+D. **Expected precision** (`data/processed/eblm/precision.json`; field
+   velocities only).
+   - **Control SD:** for N = 79 with z + distance matching, 2.84 km/s (z only:
+     2.72), against 1.46 for the 297 HJ hosts.
+   - **Primary (B):** the smallest detectable Δσ (two-sided 5 %, 80 % power) is
+     **≈ 7.9 km/s**. Power for an HJ-sized offset (6.6 km/s) is **≈ 65 %**.
+   - **C-2:** SD ≈ 3.0 km/s, smallest detectable difference ≈ 8.5 km/s, power
+     ≈ 59 % if the EBLMs are field-like.
+   - **So:** a CI that includes 0 is weak evidence of no effect. It is reported
+     as a constraint, not as a null result.
+
+E. **[Fe/H]:** not feasible homogeneously (C13). Exploratory only: done if
+   spectroscopic [Fe/H] can be assembled for ≥ 50 % of the 79 from the
+   literature, with the field from GALAH DR4 and the HJ hosts from `st_met`.
+   Otherwise it is dropped, with the reason recorded.
+
+F. **Measurement errors** (estimated without RVs).
+   - **γ errors:** σ_γ estimated from EBLM IV's *published* summaries has median
+     0.025 km/s (max 2.5); with the 0.020 km/s offset systematic, about
+     0.032 km/s. The inflation of a ~42 km/s dispersion is ≈ 0.001 km/s.
+   - **DR2 astrometric errors:** the 3D velocity error has median 0.40 km/s
+     (EBLM) and 0.31 km/s (HJ); the inflation is 0.011 vs 0.005 km/s.
+   - **Correction:** none, because these are negligible. Fixed rule: if the
+     fitted median σ_γ (with the systematic) exceeds 1 km/s, also report the
+     deconvolved (σ² − ⟨σ_err²⟩)^½. The raw value stays primary.
+
+G. **Sensitivity analyses** (5,000 iterations each; report Δσ̂, its CI and the
+   C-1 fraction):
+   1. z-only matching (as Phase 1).
+   2. z and distance with quantile bins (5 × 5).
+   3. **|z| instead of signed z** (50 pc fixed bins on |z|), with distance.
+      The EBLMs lie mostly below the plane (median z = −124 pc), and the
+      dispersion depends on |z|, not on its sign.
+   4. **|z| only** (no distance).
+   5. Field restricted to Dec < 0 (the EBLMs are 87 % southern).
+   6. Excluding the 11 drift or triple systems (9 + 2 among the 79).
+   7. Excluding the 2 "active" systems.
+   8. RMS statistic instead of mean residual speed.
+   9. F stars only (54), against the field and against F-type HJ hosts.
+   10. The simple average used in place of γ (method check of the γ fit).
+
+H. **What each outcome would mean** (primary result B, read with C-2).
+   - **Δσ CI includes 0, its lower bound is above −6.6 km/s (so an HJ-sized
+     deficit is excluded), and C-2 shows the EBLMs hotter than the HJ hosts.** The cold kinematics are specific to HJ
+     hosts and not shared by close binaries from the same surveys. This
+     supports the planet-specific (tidal) interpretation and argues against a
+     survey-selection origin.
+   - **Δσ CI entirely < 0, and C-2 consistent with 0.** EBLM primaries are as
+     young as the HJ hosts. A shared bias in transit-survey targets is more
+     likely (e.g. WASP-South magnitude and colour windows), or a common age
+     dependence of close companions. That would weaken the tidal-destruction
+     interpretation of the HJ signal.
+   - **In between or inconclusive.** Likely: power is ≈ 60 % even for an
+     HJ-sized effect (D). Report the intervals and make no claim. More power
+     needs Phase 2 (DR3) and more EBLMs with γ.
+   - **Scope:** conclusions stay within the stated precision. Anything not
+     listed here is labelled exploratory.
+
+I. **EXPLORATORY (pre-registered now, before any colour-matched value has been
+   computed): fraction of evolved primaries, EBLM vs HJ hosts at matched colour.**
+   - **Question:** at the same (BP−RP)₀, is the fraction of primaries that fail
+     the MS cut (M_G0 more than 1 mag above the Pleiades MS) different for
+     EBLMs and HJ hosts?
+   - **Disclosure:** the *raw* counts are already known from the count tables:
+     EBLMs 28 of 107 fail the MS cut (26 %); archive HJ hosts 55 of 457 (12 %).
+     The colour-matched comparison has not been computed.
+   - **Samples:** stars passing cuts 1–4 with a distance and finite
+     extinction-corrected photometry. No RV requirement for either sample,
+     because the MS cut does not need one.
+     - **EBLMs:** EBLM IV, 107.
+     - **HJ hosts:** the **archive HJ list (disc. ≤ 2019), 457**, not HS19
+       Table 1. Table 1 was selected as MS hosts by HS19, so its evolved
+       fraction is near zero by construction.
+     - Same colour range for both: EBLM min–max (BP−RP)₀.
+   - **Method:**
+     1. Bin (BP−RP)₀ in 0.1 mag bins over the EBLM colour range.
+     2. Reweight the HJ hosts to the EBLM colour distribution
+        (w = n_EBLM,bin / n_HJ,bin, normalised; bins with no HJ host are
+        dropped from both sides and counted).
+     3. Compute f_evolved for each sample and Δf = f_EBLM − f_HJ,weighted.
+     4. 95 % CI from 10,000 joint bootstrap resamples of both samples.
+   - **Sensitivity:** 0.05 and 0.2 mag bins; HJ hosts from the current archive
+     list (no year limit); a threshold of 0.5 mag above the MS instead of 1.
+   - **Interpretation (several explanations, none tested here):**
+     - (i) **Tidal survival.** If HJs are destroyed as their hosts evolve and
+       expand (HS19's argument), evolved hosts should be rarer among HJ hosts.
+       Close M-dwarf companions are not destroyed the same way.
+     - (ii) **Detection selection.** Transit depth scales as (R_p/R_*)², so a
+       Jupiter around a subgiant gives a shallower, harder-to-detect transit.
+       An M-dwarf companion (R ≈ 0.1–0.5 R☉) still gives a deep eclipse.
+       Planet RV confirmation is also harder for evolved, active or broadened
+       stars. Both effects favour evolved EBLM primaries.
+     - (iii) **Colour and mass.** The EBLMs are bluer (68 % F stars). At fixed
+       colour, more massive primaries live shorter on the MS, and the MS turnoff
+       region crosses the F colours. Colour matching removes the first-order
+       effect but not mass differences at a given colour (metallicity).
+     - (iv) **The cut itself.** The MS cut uses the Pleiades polynomial. Binary
+       light from the M dwarf is negligible in G, but extinction or distance
+       errors move stars across the cut equally in both samples.
+   - **Reported as exploratory only.** No conclusion about tidal survival is
+     drawn from it alone.

@@ -1,0 +1,799 @@
+The current archive release 3.15 contains two breaking changes. Please see https://www.cosmos.esa.int/web/gaia/news#GACSrelease315 for details. In case of questions or feedback, please consult the Gaia helpdesk at https://www.cosmos.esa.int/web/gaia/gaia-helpdesk.
+12:12:38 ARI level-2 ranges: 1 complete, 191 remaining of 192
+12:12:38 remaining: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191]
+12:12:40   field_dr2_prefilter/L2_00001: ARI job 1793376759030 submitted12:12:40   field_dr2_prefilter/L2_00002: ARI job 1793376759028 submitted
+
+12:12:40   field_dr2_prefilter/L2_00000: ARI job 1793376759029 submitted
+12:12:51   field_dr2_prefilter/L2_00002: ARI job 1793376759028 COMPLETED in 11 s, 1513 rows
+12:12:52   field_dr2_prefilter/L2_00003: ARI job 1793376772044 submitted
+12:13:02   field_dr2_prefilter/L2_00000: ARI job 1793376759029 COMPLETED in 21 s, 1568 rows
+12:13:02   field_dr2_prefilter/L2_00001: ARI job 1793376759030 COMPLETED in 22 s, 3669 rows
+12:13:03   field_dr2_prefilter/L2_00004: ARI job 1793376782378 submitted
+12:13:03   field_dr2_prefilter/L2_00005: ARI job 1793376782500 submitted
+12:13:14   field_dr2_prefilter/L2_00003: ARI job 1793376772044 COMPLETED in 22 s, 2617 rows
+12:13:15   field_dr2_prefilter/L2_00006: ARI job 1793376794903 submitted
+12:13:35   field_dr2_prefilter/L2_00004: ARI job 1793376782378 COMPLETED in 32 s, 5855 rows
+12:13:36   field_dr2_prefilter/L2_00007: ARI job 1793376815812 submitted
+12:13:56   field_dr2_prefilter/L2_00005: ARI job 1793376782500 COMPLETED in 53 s, 10642 rows
+12:13:57   field_dr2_prefilter/L2_00008: ARI job 1793376836857 submitted
+12:14:08   field_dr2_prefilter/L2_00006: ARI job 1793376794903 COMPLETED in 53 s, 11479 rows
+12:14:10   field_dr2_prefilter/L2_00009: ARI job 1793376849310 submitted
+12:14:19   field_dr2_prefilter/L2_00008: ARI job 1793376836857 COMPLETED in 21 s, 1865 rows
+12:14:20   field_dr2_prefilter/L2_00010: ARI job 1793376859612 submitted
+12:14:29   field_dr2_prefilter/L2_00007: ARI job 1793376815812 COMPLETED in 53 s, 9929 rows
+12:14:31   field_dr2_prefilter/L2_00011: ARI job 1793376870163 submitted
+12:14:42   field_dr2_prefilter/L2_00009: ARI job 1793376849310 COMPLETED in 32 s, 4369 rows
+12:14:43   field_dr2_prefilter/L2_00012: ARI job 1793376882680 submitted
+12:14:52   field_dr2_prefilter/L2_00010: ARI job 1793376859612 COMPLETED in 32 s, 6700 rows
+12:14:54   field_dr2_prefilter/L2_00013: ARI job 1793376893112 submitted
+12:15:37   field_dr2_prefilter/L2_00011: ARI job 1793376870163 COMPLETED in 67 s, 17840 rows
+12:15:39   field_dr2_prefilter/L2_00014: ARI job 1793376938094 submitted
+12:15:47   field_dr2_prefilter/L2_00012: ARI job 1793376882680 COMPLETED in 64 s, 14430 rows
+12:15:48   field_dr2_prefilter/L2_00015: ARI job 1793376947701 submitted
+12:16:08   field_dr2_prefilter/L2_00013: ARI job 1793376893112 COMPLETED in 74 s, 11086 rows
+12:16:09   field_dr2_prefilter/L2_00016: ARI job 1793376968951 submitted
+12:17:02   field_dr2_prefilter/L2_00015: ARI job 1793376947701 COMPLETED in 74 s, 9850 rows
+12:17:03   field_dr2_prefilter/L2_00014: ARI job 1793376938094 COMPLETED in 85 s, 15622 rows
+12:17:04   field_dr2_prefilter/L2_00017: ARI job 1793377023096 submitted
+12:17:04   field_dr2_prefilter/L2_00018: ARI job 1793377024008 submitted
+12:17:12   field_dr2_prefilter/L2_00016: ARI job 1793376968951 COMPLETED in 63 s, 2000 rows
+12:17:14   field_dr2_prefilter/L2_00019: ARI job 1793377033102 submitted
+12:17:15   field_dr2_prefilter/L2_00017: ARI job 1793377023096 COMPLETED in 11 s, 656 rows
+12:17:16   field_dr2_prefilter/L2_00020: ARI job 1793377035496 submitted
+12:17:25   field_dr2_prefilter/L2_00019: ARI job 1793377033102 COMPLETED in 11 s, 2258 rows
+12:17:26   field_dr2_prefilter/L2_00018: ARI job 1793377024008 COMPLETED in 22 s, 3833 rows
+12:17:26   field_dr2_prefilter/L2_00021: ARI job 1793377045655 submitted
+12:17:27   field_dr2_prefilter/L2_00020: ARI job 1793377035496 COMPLETED in 11 s, 630 rows
+12:17:27   field_dr2_prefilter/L2_00022: ARI job 1793377046909 submitted
+12:17:28   field_dr2_prefilter/L2_00023: ARI job 1793377047769 submitted
+12:17:37   field_dr2_prefilter/L2_00021: ARI job 1793377045655 COMPLETED in 11 s, 814 rows
+12:17:38   field_dr2_prefilter/L2_00024: ARI job 1793377058016 submitted
+12:17:38   field_dr2_prefilter/L2_00022: ARI job 1793377046909 COMPLETED in 11 s, 1833 rows
+12:17:39   field_dr2_prefilter/L2_00023: ARI job 1793377047769 COMPLETED in 11 s, 1505 rows
+12:17:40   field_dr2_prefilter/L2_00025: ARI job 1793377059306 submitted
+12:17:41   field_dr2_prefilter/L2_00026: ARI job 1793377060183 submitted
+12:17:51   field_dr2_prefilter/L2_00025: ARI job 1793377059306 COMPLETED in 11 s, 3099 rows
+12:17:52   field_dr2_prefilter/L2_00027: ARI job 1793377071854 submitted
+12:18:00   field_dr2_prefilter/L2_00024: ARI job 1793377058016 COMPLETED in 22 s, 3895 rows
+12:18:01   field_dr2_prefilter/L2_00028: ARI job 1793377080979 submitted
+12:18:25   field_dr2_prefilter/L2_00026: ARI job 1793377060183 COMPLETED in 44 s, 4923 rows
+12:18:26   field_dr2_prefilter/L2_00029: ARI job 1793377105876 submitted
+12:21:01   field_dr2_prefilter/L2_00027: ARI job 1793377071854 COMPLETED in 189 s, 5199 rows
+12:21:03   field_dr2_prefilter/L2_00030: ARI job 1793377262117 submitted
+12:21:11   field_dr2_prefilter/L2_00028: ARI job 1793377080979 COMPLETED in 190 s, 2343 rows
+12:21:13   field_dr2_prefilter/L2_00031: ARI job 1793377272235 submitted
+12:21:23   field_dr2_prefilter/L2_00029: ARI job 1793377105876 COMPLETED in 177 s, 1895 rows
+12:21:24   field_dr2_prefilter/L2_00032: ARI job 1793377283690 submitted
+12:23:29   field_dr2_prefilter/L2_00030: ARI job 1793377262117 COMPLETED in 147 s, 4676 rows
+12:23:30   field_dr2_prefilter/L2_00033: ARI job 1793377409985 submitted
+12:23:39   field_dr2_prefilter/L2_00031: ARI job 1793377272235 COMPLETED in 147 s, 5096 rows
+12:23:41   field_dr2_prefilter/L2_00034: ARI job 1793377420319 submitted
+12:24:00   field_dr2_prefilter/L2_00032: ARI job 1793377283690 COMPLETED in 156 s, 1339 rows
+12:24:01   field_dr2_prefilter/L2_00035: ARI job 1793377440768 submitted
+12:24:13   field_dr2_prefilter/L2_00034: ARI job 1793377420319 COMPLETED in 32 s, 1436 rows
+12:24:13   field_dr2_prefilter/L2_00033: ARI job 1793377409985 COMPLETED in 42 s, 1952 rows
+12:24:14   field_dr2_prefilter/L2_00037: ARI job 1793377453552 submitted12:24:14   field_dr2_prefilter/L2_00036: ARI job 1793377453553 submitted
+
+12:24:23   field_dr2_prefilter/L2_00035: ARI job 1793377440768 COMPLETED in 21 s, 1175 rows
+12:24:24   field_dr2_prefilter/L2_00038: ARI job 1793377463544 submitted
+12:24:35   field_dr2_prefilter/L2_00038: ARI job 1793377463544 COMPLETED in 11 s, 2352 rows
+12:24:36   field_dr2_prefilter/L2_00036: ARI job 1793377453553 COMPLETED in 22 s, 2586 rows
+12:24:36   field_dr2_prefilter/L2_00037: ARI job 1793377453552 COMPLETED in 22 s, 4889 rows
+12:24:37   field_dr2_prefilter/L2_00039: ARI job 1793377476109 submitted
+12:24:37   field_dr2_prefilter/L2_00040: ARI job 1793377476512 submitted
+12:24:37   field_dr2_prefilter/L2_00041: ARI job 1793377476650 submitted
+12:24:58   field_dr2_prefilter/L2_00039: ARI job 1793377476109 COMPLETED in 22 s, 4225 rows
+12:25:00   field_dr2_prefilter/L2_00042: ARI job 1793377499186 submitted
+12:25:09   field_dr2_prefilter/L2_00040: ARI job 1793377476512 COMPLETED in 32 s, 1103 rows
+12:25:09   field_dr2_prefilter/L2_00041: ARI job 1793377476650 COMPLETED in 32 s, 1329 rows
+12:25:10   field_dr2_prefilter/L2_00043: ARI job 1793377509569 submitted
+12:25:10   field_dr2_prefilter/L2_00044: ARI job 1793377509639 submitted
+12:25:21   field_dr2_prefilter/L2_00042: ARI job 1793377499186 COMPLETED in 21 s, 1018 rows
+12:25:21   field_dr2_prefilter/L2_00043: ARI job 1793377509569 COMPLETED in 11 s, 1642 rows
+12:25:22   field_dr2_prefilter/L2_00045: ARI job 1793377521928 submitted
+12:25:22   field_dr2_prefilter/L2_00046: ARI job 1793377521960 submitted
+12:25:32   field_dr2_prefilter/L2_00044: ARI job 1793377509639 COMPLETED in 22 s, 2574 rows
+12:25:33   field_dr2_prefilter/L2_00047: ARI job 1793377532541 submitted
+12:27:07   field_dr2_prefilter/L2_00045: ARI job 1793377521928 COMPLETED in 105 s, 4855 rows
+12:27:08   field_dr2_prefilter/L2_00048: ARI job 1793377627905 submitted
+12:27:17   field_dr2_prefilter/L2_00046: ARI job 1793377521960 COMPLETED in 115 s, 2801 rows
+12:27:18   field_dr2_prefilter/L2_00049: ARI job 1793377638053 submitted
+12:27:28   field_dr2_prefilter/L2_00047: ARI job 1793377532541 COMPLETED in 115 s, 4795 rows
+12:27:29   field_dr2_prefilter/L2_00050: ARI job 1793377648607 submitted
+12:27:51   field_dr2_prefilter/L2_00049: ARI job 1793377638053 COMPLETED in 32 s, 3877 rows
+12:27:51   field_dr2_prefilter/L2_00048: ARI job 1793377627905 COMPLETED in 43 s, 7514 rows
+12:27:52   field_dr2_prefilter/L2_00051: ARI job 1793377671621 submitted
+12:27:52   field_dr2_prefilter/L2_00052: ARI job 1793377671783 submitted
+12:29:27   field_dr2_prefilter/L2_00051: ARI job 1793377671621 COMPLETED in 95 s, 20618 rows
+12:29:28   field_dr2_prefilter/L2_00053: ARI job 1793377767937 submitted
+12:29:47   field_dr2_prefilter/L2_00052: ARI job 1793377671783 COMPLETED in 115 s, 6509 rows
+12:29:48   field_dr2_prefilter/L2_00054: ARI job 1793377787920 submitted
+12:30:06   field_dr2_prefilter/L2_00050: ARI job 1793377648607 COMPLETED in 157 s, 22377 rows
+12:30:08   field_dr2_prefilter/L2_00055: ARI job 1793377807066 submitted
+12:30:11   field_dr2_prefilter/L2_00053: ARI job 1793377767937 COMPLETED in 43 s, 9035 rows
+12:30:12   field_dr2_prefilter/L2_00056: ARI job 1793377811973 submitted
+12:31:12   field_dr2_prefilter/L2_00055: ARI job 1793377807066 COMPLETED in 64 s, 27180 rows
+12:31:13   field_dr2_prefilter/L2_00057: ARI job 1793377872606 submitted
+12:31:13   field_dr2_prefilter/L2_00054: ARI job 1793377787920 COMPLETED in 85 s, 28629 rows
+12:31:15   field_dr2_prefilter/L2_00058: ARI job 1793377874541 submitted
+12:31:17   field_dr2_prefilter/L2_00056: ARI job 1793377811973 COMPLETED in 65 s, 32145 rows
+12:31:19   field_dr2_prefilter/L2_00060: ARI job 1793377878066 submitted
+12:31:26   field_dr2_prefilter/L2_00057: ARI job 1793377872606 COMPLETED in 12 s, 20195 rows
+12:31:27   field_dr2_prefilter/L2_00058: ARI job 1793377874541 COMPLETED in 12 s, 13961 rows
+12:31:30   field_dr2_prefilter/L2_00061: ARI job 1793377889188 submitted
+12:31:31   field_dr2_prefilter/L2_00062: ARI job 1793377890194 submitted
+12:32:23   field_dr2_prefilter/L2_00060: ARI job 1793377878066 COMPLETED in 65 s, 18816 rows
+12:32:24   field_dr2_prefilter/L2_00061: ARI job 1793377889188 COMPLETED in 54 s, 15447 rows
+12:32:25   field_dr2_prefilter/L2_00063: ARI job 1793377944554 submitted
+12:32:25   field_dr2_prefilter/L2_00064: ARI job 1793377944693 submitted
+12:32:34   field_dr2_prefilter/L2_00062: ARI job 1793377890194 COMPLETED in 64 s, 12527 rows
+12:32:35   field_dr2_prefilter/L2_00065: ARI job 1793377955032 submitted
+12:32:36   field_dr2_prefilter/L2_00064: ARI job 1793377944693 COMPLETED in 11 s, 1495 rows
+12:32:38   field_dr2_prefilter/L2_00066: ARI job 1793377957101 submitted
+12:32:47   field_dr2_prefilter/L2_00065: ARI job 1793377955032 COMPLETED in 11 s, 1737 rows
+12:32:47   field_dr2_prefilter/L2_00063: ARI job 1793377944554 COMPLETED in 22 s, 9789 rows
+12:32:48   field_dr2_prefilter/L2_00067: ARI job 1793377967644 submitted
+12:32:48   field_dr2_prefilter/L2_00068: ARI job 1793377967899 submitted
+12:32:49   field_dr2_prefilter/L2_00066: ARI job 1793377957101 COMPLETED in 11 s, 878 rows
+12:32:50   field_dr2_prefilter/L2_00069: ARI job 1793377969395 submitted
+12:32:59   field_dr2_prefilter/L2_00067: ARI job 1793377967644 COMPLETED in 11 s, 1835 rows
+12:32:59   field_dr2_prefilter/L2_00068: ARI job 1793377967899 COMPLETED in 11 s, 1379 rows
+12:33:01   field_dr2_prefilter/L2_00070: ARI job 1793377980119 submitted
+12:33:01   field_dr2_prefilter/L2_00071: ARI job 1793377980278 submitted
+12:33:01   field_dr2_prefilter/L2_00069: ARI job 1793377969395 COMPLETED in 11 s, 1134 rows
+12:33:02   field_dr2_prefilter/L2_00072: ARI job 1793377981809 submitted
+12:33:12   field_dr2_prefilter/L2_00070: ARI job 1793377980119 COMPLETED in 11 s, 1708 rows
+12:33:12   field_dr2_prefilter/L2_00071: ARI job 1793377980278 COMPLETED in 11 s, 1671 rows
+12:33:13   field_dr2_prefilter/L2_00073: ARI job 1793377992603 submitted
+12:33:13   field_dr2_prefilter/L2_00074: ARI job 1793377992707 submitted
+12:33:13   field_dr2_prefilter/L2_00072: ARI job 1793377981809 COMPLETED in 11 s, 635 rows
+12:33:15   field_dr2_prefilter/L2_00075: ARI job 1793377994094 submitted
+12:33:24   field_dr2_prefilter/L2_00074: ARI job 1793377992707 COMPLETED in 11 s, 866 rows
+12:33:24   field_dr2_prefilter/L2_00073: ARI job 1793377992603 COMPLETED in 11 s, 1867 rows
+12:33:26   field_dr2_prefilter/L2_00077: ARI job 1793378005142 submitted12:33:26   field_dr2_prefilter/L2_00076: ARI job 1793378005143 submitted
+
+12:33:36   field_dr2_prefilter/L2_00075: ARI job 1793377994094 COMPLETED in 21 s, 815 rows
+12:33:37   field_dr2_prefilter/L2_00077: ARI job 1793378005142 COMPLETED in 11 s, 1798 rows
+12:33:37   field_dr2_prefilter/L2_00076: ARI job 1793378005143 COMPLETED in 11 s, 1991 rows
+12:33:37   field_dr2_prefilter/L2_00078: ARI job 1793378016836 submitted
+12:33:38   field_dr2_prefilter/L2_00079: ARI job 1793378017676 submitted
+12:33:38   field_dr2_prefilter/L2_00080: ARI job 1793378017709 submitted
+12:33:49   field_dr2_prefilter/L2_00078: ARI job 1793378016836 COMPLETED in 11 s, 2454 rows
+12:33:49   field_dr2_prefilter/L2_00079: ARI job 1793378017676 COMPLETED in 11 s, 2922 rows
+12:33:50   field_dr2_prefilter/L2_00081: ARI job 1793378029528 submitted
+12:33:51   field_dr2_prefilter/L2_00082: ARI job 1793378030254 submitted
+12:34:21   field_dr2_prefilter/L2_00080: ARI job 1793378017709 COMPLETED in 43 s, 7121 rows
+12:34:22   field_dr2_prefilter/L2_00083: ARI job 1793378061560 submitted
+12:34:33   field_dr2_prefilter/L2_00082: ARI job 1793378030254 COMPLETED in 42 s, 3775 rows
+12:34:34   field_dr2_prefilter/L2_00084: ARI job 1793378073861 submitted
+12:34:43   field_dr2_prefilter/L2_00081: ARI job 1793378029528 COMPLETED in 53 s, 12791 rows
+12:34:45   field_dr2_prefilter/L2_00085: ARI job 1793378084144 submitted
+12:35:05   field_dr2_prefilter/L2_00083: ARI job 1793378061560 COMPLETED in 43 s, 5779 rows
+12:35:06   field_dr2_prefilter/L2_00086: ARI job 1793378105397 submitted
+12:35:27   field_dr2_prefilter/L2_00085: ARI job 1793378084144 COMPLETED in 43 s, 5903 rows
+12:35:28   field_dr2_prefilter/L2_00087: ARI job 1793378127965 submitted
+12:35:48   field_dr2_prefilter/L2_00084: ARI job 1793378073861 COMPLETED in 74 s, 12823 rows
+12:35:49   field_dr2_prefilter/L2_00088: ARI job 1793378149020 submitted
+12:36:19   field_dr2_prefilter/L2_00086: ARI job 1793378105397 COMPLETED in 74 s, 5511 rows
+12:36:21   field_dr2_prefilter/L2_00089: ARI job 1793378180279 submitted
+12:36:21   field_dr2_prefilter/L2_00087: ARI job 1793378127965 COMPLETED in 53 s, 5097 rows
+12:36:21   field_dr2_prefilter/L2_00088: ARI job 1793378149020 COMPLETED in 32 s, 2787 rows
+12:36:23   field_dr2_prefilter/L2_00090: ARI job 1793378182261 submitted12:36:23   field_dr2_prefilter/L2_00091: ARI job 1793378182269 submitted
+
+12:36:34   field_dr2_prefilter/L2_00090: ARI job 1793378182261 COMPLETED in 11 s, 2486 rows
+12:36:35   field_dr2_prefilter/L2_00092: ARI job 1793378194847 submitted
+12:36:43   field_dr2_prefilter/L2_00089: ARI job 1793378180279 COMPLETED in 22 s, 4744 rows
+12:36:44   field_dr2_prefilter/L2_00093: ARI job 1793378203445 submitted
+12:36:44   field_dr2_prefilter/L2_00091: ARI job 1793378182269 COMPLETED in 22 s, 3905 rows
+12:36:46   field_dr2_prefilter/L2_00094: ARI job 1793378205181 submitted
+12:37:18   field_dr2_prefilter/L2_00092: ARI job 1793378194847 COMPLETED in 42 s, 5091 rows
+12:37:19   field_dr2_prefilter/L2_00095: ARI job 1793378238628 submitted
+12:37:26   field_dr2_prefilter/L2_00093: ARI job 1793378203445 COMPLETED in 42 s, 4912 rows
+12:37:28   field_dr2_prefilter/L2_00096: ARI job 1793378247234 submitted
+12:37:38   field_dr2_prefilter/L2_00094: ARI job 1793378205181 COMPLETED in 53 s, 6522 rows
+12:37:41   field_dr2_prefilter/L2_00097: ARI job 1793378260620 submitted
+12:37:51   field_dr2_prefilter/L2_00095: ARI job 1793378238628 COMPLETED in 32 s, 5137 rows
+12:37:53   field_dr2_prefilter/L2_00098: ARI job 1793378272363 submitted
+12:38:01   field_dr2_prefilter/L2_00096: ARI job 1793378247234 COMPLETED in 34 s, 4284 rows
+12:38:03   field_dr2_prefilter/L2_00099: ARI job 1793378282131 submitted
+12:38:03   field_dr2_prefilter/L2_00097: ARI job 1793378260620 COMPLETED in 22 s, 2162 rows
+12:38:04   field_dr2_prefilter/L2_00100: ARI job 1793378283553 submitted
+12:38:14   field_dr2_prefilter/L2_00099: ARI job 1793378282131 COMPLETED in 11 s, 1826 rows
+12:38:14   field_dr2_prefilter/L2_00098: ARI job 1793378272363 COMPLETED in 22 s, 2361 rows
+12:38:15   field_dr2_prefilter/L2_00101: ARI job 1793378294640 submitted
+12:38:15   field_dr2_prefilter/L2_00100: ARI job 1793378283553 COMPLETED in 11 s, 2095 rows
+12:38:16   field_dr2_prefilter/L2_00102: ARI job 1793378295308 submitted
+12:38:16   field_dr2_prefilter/L2_00103: ARI job 1793378296097 submitted
+12:38:26   field_dr2_prefilter/L2_00101: ARI job 1793378294640 COMPLETED in 11 s, 1313 rows
+12:38:27   field_dr2_prefilter/L2_00102: ARI job 1793378295308 COMPLETED in 11 s, 1528 rows
+12:38:28   field_dr2_prefilter/L2_00104: ARI job 1793378307114 submitted
+12:38:28   field_dr2_prefilter/L2_00105: ARI job 1793378307696 submitted
+12:38:38   field_dr2_prefilter/L2_00103: ARI job 1793378296097 COMPLETED in 21 s, 1403 rows
+12:38:39   field_dr2_prefilter/L2_00104: ARI job 1793378307114 COMPLETED in 11 s, 687 rows
+12:38:39   field_dr2_prefilter/L2_00105: ARI job 1793378307696 COMPLETED in 11 s, 1579 rows
+12:38:39   field_dr2_prefilter/L2_00106: ARI job 1793378318831 submitted
+12:38:40   field_dr2_prefilter/L2_00107: ARI job 1793378319414 submitted
+12:38:41   field_dr2_prefilter/L2_00108: ARI job 1793378320089 submitted
+12:38:50   field_dr2_prefilter/L2_00106: ARI job 1793378318831 COMPLETED in 11 s, 545 rows
+12:38:51   field_dr2_prefilter/L2_00107: ARI job 1793378319414 COMPLETED in 11 s, 358 rows
+12:38:52   field_dr2_prefilter/L2_00109: ARI job 1793378331169 submitted
+12:38:52   field_dr2_prefilter/L2_00110: ARI job 1793378331602 submitted
+12:39:03   field_dr2_prefilter/L2_00110: ARI job 1793378331602 COMPLETED in 11 s, 412 rows
+12:39:03   field_dr2_prefilter/L2_00109: ARI job 1793378331169 COMPLETED in 12 s, 1372 rows
+12:39:03   field_dr2_prefilter/L2_00108: ARI job 1793378320089 COMPLETED in 23 s, 1499 rows
+12:39:04   field_dr2_prefilter/L2_00111: ARI job 1793378343841 submitted
+12:39:04   field_dr2_prefilter/L2_00113: ARI job 1793378344029 submitted12:39:04   field_dr2_prefilter/L2_00112: ARI job 1793378344021 submitted
+
+12:39:15   field_dr2_prefilter/L2_00111: ARI job 1793378343841 COMPLETED in 11 s, 831 rows
+12:39:17   field_dr2_prefilter/L2_00114: ARI job 1793378356154 submitted
+12:42:11   field_dr2_prefilter/L2_00112: ARI job 1793378344021 EXECUTING, 3.1 min12:42:11   field_dr2_prefilter/L2_00113: ARI job 1793378344029 EXECUTING, 3.1 min
+
+12:42:23   field_dr2_prefilter/L2_00114: ARI job 1793378356154 QUEUED, 3.1 min
+12:43:55   field_dr2_prefilter/L2_00113: ARI job 1793378344029 COMPLETED in 291 s, 4751 rows
+12:43:57   field_dr2_prefilter/L2_00115: ARI job 1793378636238 submitted
+12:45:17   field_dr2_prefilter/L2_00112: ARI job 1793378344021 EXECUTING, 6.2 min
+12:45:29   field_dr2_prefilter/L2_00114: ARI job 1793378356154 EXECUTING, 6.2 min
+12:45:39   field_dr2_prefilter/L2_00112: ARI job 1793378344021 COMPLETED in 394 s, 3482 rows
+12:45:40   field_dr2_prefilter/L2_00116: ARI job 1793378739686 submitted
+12:47:03   field_dr2_prefilter/L2_00115: ARI job 1793378636238 EXECUTING, 3.1 min
+12:47:55   field_dr2_prefilter/L2_00114: ARI job 1793378356154 COMPLETED in 518 s, 6904 rows
+12:47:56   field_dr2_prefilter/L2_00117: ARI job 1793378875708 submitted
+12:48:26   field_dr2_prefilter/L2_00115: ARI job 1793378636238 COMPLETED in 270 s, 3030 rows
+12:48:28   field_dr2_prefilter/L2_00118: ARI job 1793378907247 submitted
+12:48:46   field_dr2_prefilter/L2_00116: ARI job 1793378739686 EXECUTING, 3.1 min
+12:49:41   field_dr2_prefilter/L2_00117: ARI job 1793378875708 COMPLETED in 105 s, 11223 rows
+12:49:42   field_dr2_prefilter/L2_00119: ARI job 1793378981836 submitted
+12:50:01   field_dr2_prefilter/L2_00116: ARI job 1793378739686 COMPLETED in 261 s, 9358 rows
+12:50:02   field_dr2_prefilter/L2_00120: ARI job 1793379001829 submitted
+12:51:34   field_dr2_prefilter/L2_00118: ARI job 1793378907247 EXECUTING, 3.1 min
+12:52:38   field_dr2_prefilter/L2_00118: ARI job 1793378907247 COMPLETED in 250 s, 3810 rows
+12:52:39   field_dr2_prefilter/L2_00121: ARI job 1793379158699 submitted
+12:52:48   field_dr2_prefilter/L2_00119: ARI job 1793378981836 EXECUTING, 3.1 min
+12:53:08   field_dr2_prefilter/L2_00120: ARI job 1793379001829 EXECUTING, 3.1 min
+12:53:20   field_dr2_prefilter/L2_00120: ARI job 1793379001829 COMPLETED in 198 s, 5462 rows
+12:53:21   field_dr2_prefilter/L2_00119: ARI job 1793378981836 COMPLETED in 219 s, 14862 rows
+12:53:21   field_dr2_prefilter/L2_00122: ARI job 1793379200634 submitted
+12:53:22   field_dr2_prefilter/L2_00123: ARI job 1793379202084 submitted
+12:53:43   field_dr2_prefilter/L2_00122: ARI job 1793379200634 COMPLETED in 22 s, 2640 rows
+12:53:44   field_dr2_prefilter/L2_00124: ARI job 1793379223708 submitted
+12:53:53   field_dr2_prefilter/L2_00121: ARI job 1793379158699 COMPLETED in 74 s, 7631 rows
+12:53:54   field_dr2_prefilter/L2_00125: ARI job 1793379233580 submitted
+12:54:05   field_dr2_prefilter/L2_00123: ARI job 1793379202084 COMPLETED in 42 s, 3865 rows
+12:54:06   field_dr2_prefilter/L2_00126: ARI job 1793379245702 submitted
+12:55:08   field_dr2_prefilter/L2_00124: ARI job 1793379223708 COMPLETED in 84 s, 11656 rows
+12:55:10   field_dr2_prefilter/L2_00127: ARI job 1793379309213 submitted
+12:55:30   field_dr2_prefilter/L2_00126: ARI job 1793379245702 COMPLETED in 84 s, 5986 rows
+12:55:31   field_dr2_prefilter/L2_00128: ARI job 1793379330967 submitted
+12:56:00   field_dr2_prefilter/L2_00125: ARI job 1793379233580 COMPLETED in 126 s, 18338 rows
+12:56:01   field_dr2_prefilter/L2_00129: ARI job 1793379360956 submitted
+12:56:03   field_dr2_prefilter/L2_00127: ARI job 1793379309213 COMPLETED in 53 s, 9903 rows
+12:56:04   field_dr2_prefilter/L2_00130: ARI job 1793379363590 submitted
+12:56:14   field_dr2_prefilter/L2_00128: ARI job 1793379330967 COMPLETED in 42 s, 5500 rows
+12:56:15   field_dr2_prefilter/L2_00131: ARI job 1793379374781 submitted
+12:56:46   field_dr2_prefilter/L2_00130: ARI job 1793379363590 COMPLETED in 42 s, 3536 rows
+12:56:48   field_dr2_prefilter/L2_00132: ARI job 1793379407178 submitted
+12:56:58   field_dr2_prefilter/L2_00131: ARI job 1793379374781 COMPLETED in 42 s, 3860 rows
+12:56:59   field_dr2_prefilter/L2_00133: ARI job 1793379418497 submitted
+12:57:15   field_dr2_prefilter/L2_00129: ARI job 1793379360956 COMPLETED in 73 s, 5477 rows
+12:57:16   field_dr2_prefilter/L2_00134: ARI job 1793379435741 submitted
+12:57:21   field_dr2_prefilter/L2_00132: ARI job 1793379407178 COMPLETED in 33 s, 4632 rows
+12:57:22   field_dr2_prefilter/L2_00135: ARI job 1793379441596 submitted
+12:57:27   field_dr2_prefilter/L2_00134: ARI job 1793379435741 COMPLETED in 11 s, 2398 rows
+12:57:29   field_dr2_prefilter/L2_00136: ARI job 1793379448294 submitted
+12:57:31   field_dr2_prefilter/L2_00133: ARI job 1793379418497 COMPLETED in 32 s, 4721 rows
+12:57:32   field_dr2_prefilter/L2_00137: ARI job 1793379451902 submitted
+12:57:33   field_dr2_prefilter/L2_00135: ARI job 1793379441596 COMPLETED in 11 s, 3011 rows
+12:57:35   field_dr2_prefilter/L2_00138: ARI job 1793379454162 submitted
+12:57:40   field_dr2_prefilter/L2_00136: ARI job 1793379448294 COMPLETED in 11 s, 2878 rows
+12:57:41   field_dr2_prefilter/L2_00139: ARI job 1793379460903 submitted
+12:57:43   field_dr2_prefilter/L2_00137: ARI job 1793379451902 COMPLETED in 11 s, 1849 rows
+12:57:45   field_dr2_prefilter/L2_00140: ARI job 1793379464360 submitted
+12:57:46   field_dr2_prefilter/L2_00138: ARI job 1793379454162 COMPLETED in 11 s, 1399 rows
+12:57:47   field_dr2_prefilter/L2_00141: ARI job 1793379466608 submitted
+12:57:52   field_dr2_prefilter/L2_00139: ARI job 1793379460903 COMPLETED in 11 s, 1531 rows
+12:57:54   field_dr2_prefilter/L2_00142: ARI job 1793379473291 submitted
+12:57:56   field_dr2_prefilter/L2_00140: ARI job 1793379464360 COMPLETED in 11 s, 1370 rows
+12:57:58   field_dr2_prefilter/L2_00141: ARI job 1793379466608 COMPLETED in 11 s, 1740 rows
+12:57:59   field_dr2_prefilter/L2_00143: ARI job 1793379477731 submitted
+12:58:00   field_dr2_prefilter/L2_00144: ARI job 1793379479335 submitted
+12:58:05   field_dr2_prefilter/L2_00142: ARI job 1793379473291 COMPLETED in 11 s, 1142 rows
+12:58:06   field_dr2_prefilter/L2_00145: ARI job 1793379485699 submitted
+12:58:09   field_dr2_prefilter/L2_00143: ARI job 1793379477731 COMPLETED in 11 s, 892 rows
+12:58:11   field_dr2_prefilter/L2_00146: ARI job 1793379490374 submitted
+12:58:43   field_dr2_prefilter/L2_00144: ARI job 1793379479335 COMPLETED in 43 s, 11390 rows
+12:58:44   field_dr2_prefilter/L2_00147: ARI job 1793379523431 submitted
+12:59:35   field_dr2_prefilter/L2_00146: ARI job 1793379490374 COMPLETED in 84 s, 12823 rows
+12:59:36   field_dr2_prefilter/L2_00148: ARI job 1793379575876 submitted
+13:01:04   field_dr2_prefilter/L2_00145: ARI job 1793379485699 COMPLETED in 178 s, 23940 rows
+13:01:05   field_dr2_prefilter/L2_00149: ARI job 1793379664735 submitted
+13:01:22   field_dr2_prefilter/L2_00147: ARI job 1793379523431 COMPLETED in 158 s, 24999 rows
+13:01:23   field_dr2_prefilter/L2_00150: ARI job 1793379682913 submitted
+13:02:19   field_dr2_prefilter/L2_00149: ARI job 1793379664735 COMPLETED in 74 s, 11598 rows
+13:02:20   field_dr2_prefilter/L2_00151: ARI job 1793379739891 submitted
+13:02:43   field_dr2_prefilter/L2_00148: ARI job 1793379575876 EXECUTING, 3.1 min
+13:03:40   field_dr2_prefilter/L2_00150: ARI job 1793379682913 COMPLETED in 136 s, 21683 rows
+13:03:41   field_dr2_prefilter/L2_00152: ARI job 1793379820493 submitted
+13:03:55   field_dr2_prefilter/L2_00151: ARI job 1793379739891 COMPLETED in 95 s, 6416 rows
+13:03:56   field_dr2_prefilter/L2_00153: ARI job 1793379835793 submitted
+13:03:58   field_dr2_prefilter/L2_00148: ARI job 1793379575876 COMPLETED in 261 s, 32985 rows
+13:03:59   field_dr2_prefilter/L2_00154: ARI job 1793379838480 submitted
+13:04:34   field_dr2_prefilter/L2_00152: ARI job 1793379820493 COMPLETED in 53 s, 11565 rows
+13:04:35   field_dr2_prefilter/L2_00155: ARI job 1793379874970 submitted
+13:05:02   field_dr2_prefilter/L2_00154: ARI job 1793379838480 COMPLETED in 63 s, 11252 rows
+13:05:04   field_dr2_prefilter/L2_00156: ARI job 1793379903278 submitted
+13:05:21   field_dr2_prefilter/L2_00153: ARI job 1793379835793 COMPLETED in 85 s, 18647 rows
+13:05:22   field_dr2_prefilter/L2_00157: ARI job 1793379921740 submitted
+13:06:19   field_dr2_prefilter/L2_00156: ARI job 1793379903278 COMPLETED in 75 s, 19086 rows
+13:06:20   field_dr2_prefilter/L2_00158: ARI job 1793379979482 submitted
+13:06:21   field_dr2_prefilter/L2_00155: ARI job 1793379874970 COMPLETED in 105 s, 21535 rows
+13:06:22   field_dr2_prefilter/L2_00159: ARI job 1793379981599 submitted
+13:06:36   field_dr2_prefilter/L2_00157: ARI job 1793379921740 COMPLETED in 73 s, 3389 rows
+13:06:37   field_dr2_prefilter/L2_00160: ARI job 1793379996469 submitted
+13:06:44   field_dr2_prefilter/L2_00159: ARI job 1793379981599 COMPLETED in 22 s, 5148 rows
+13:06:45   field_dr2_prefilter/L2_00161: ARI job 1793380004705 submitted
+13:07:03   field_dr2_prefilter/L2_00158: ARI job 1793379979482 COMPLETED in 43 s, 17806 rows
+13:07:05   field_dr2_prefilter/L2_00162: ARI job 1793380024182 submitted
+13:08:01   field_dr2_prefilter/L2_00160: ARI job 1793379996469 COMPLETED in 85 s, 18336 rows
+13:08:03   field_dr2_prefilter/L2_00163: ARI job 1793380082367 submitted
+13:09:51   field_dr2_prefilter/L2_00161: ARI job 1793380004705 EXECUTING, 3.1 min
+13:10:12   field_dr2_prefilter/L2_00162: ARI job 1793380024182 EXECUTING, 3.1 min
+13:10:15   field_dr2_prefilter/L2_00161: ARI job 1793380004705 COMPLETED in 210 s, 37042 rows
+13:10:16   field_dr2_prefilter/L2_00164: ARI job 1793380215658 submitted
+13:11:09   field_dr2_prefilter/L2_00163: ARI job 1793380082367 EXECUTING, 3.1 min
+13:12:39   field_dr2_prefilter/L2_00162: ARI job 1793380024182 COMPLETED in 335 s, 34314 rows
+13:12:41   field_dr2_prefilter/L2_00165: ARI job 1793380360198 submitted
+13:13:23   field_dr2_prefilter/L2_00164: ARI job 1793380215658 EXECUTING, 3.1 min
+13:14:17   field_dr2_prefilter/L2_00163: ARI job 1793380082367 COMPLETED in 374 s, 21042 rows
+13:14:18   field_dr2_prefilter/L2_00166: ARI job 1793380457803 submitted
+13:15:49   field_dr2_prefilter/L2_00165: ARI job 1793380360198 EXECUTING, 3.1 min
+13:16:30   field_dr2_prefilter/L2_00164: ARI job 1793380215658 EXECUTING, 6.2 min
+13:16:53   field_dr2_prefilter/L2_00164: ARI job 1793380215658 COMPLETED in 397 s, 30291 rows
+13:16:55   field_dr2_prefilter/L2_00167: ARI job 1793380614447 submitted
+13:17:24   field_dr2_prefilter/L2_00166: ARI job 1793380457803 EXECUTING, 3.1 min
+13:18:55   field_dr2_prefilter/L2_00165: ARI job 1793380360198 EXECUTING, 6.2 min
+13:19:07   field_dr2_prefilter/L2_00165: ARI job 1793380360198 COMPLETED in 386 s, 10443 rows
+13:19:08   field_dr2_prefilter/L2_00168: ARI job 1793380747948 submitted
+13:19:41   field_dr2_prefilter/L2_00166: ARI job 1793380457803 COMPLETED in 323 s, 26751 rows
+13:19:42   field_dr2_prefilter/L2_00169: ARI job 1793380781896 submitted
+13:20:01   field_dr2_prefilter/L2_00167: ARI job 1793380614447 EXECUTING, 3.1 min
+13:22:15   field_dr2_prefilter/L2_00168: ARI job 1793380747948 EXECUTING, 3.1 min
+13:22:17   field_dr2_prefilter/L2_00167: ARI job 1793380614447 COMPLETED in 322 s, 12877 rows
+13:22:18   field_dr2_prefilter/L2_00170: ARI job 1793380937716 submitted
+13:22:27   field_dr2_prefilter/L2_00168: ARI job 1793380747948 COMPLETED in 199 s, 24663 rows
+13:22:28   field_dr2_prefilter/L2_00171: ARI job 1793380948045 submitted
+13:22:48   field_dr2_prefilter/L2_00169: ARI job 1793380781896 EXECUTING, 3.1 min
+13:23:10   field_dr2_prefilter/L2_00169: ARI job 1793380781896 COMPLETED in 208 s, 5279 rows
+13:23:11   field_dr2_prefilter/L2_00170: ARI job 1793380937716 COMPLETED in 53 s, 8072 rows
+13:23:11   field_dr2_prefilter/L2_00172: ARI job 1793380991009 submitted
+13:23:12   field_dr2_prefilter/L2_00173: ARI job 1793380991987 submitted
+13:23:21   field_dr2_prefilter/L2_00171: ARI job 1793380948045 COMPLETED in 53 s, 2629 rows
+13:23:23   field_dr2_prefilter/L2_00174: ARI job 1793381002122 submitted
+13:25:20   field_dr2_prefilter/L2_00172: ARI job 1793380991009 COMPLETED in 128 s, 4448 rows
+13:25:20   field_dr2_prefilter/L2_00174: ARI job 1793381002122 COMPLETED in 118 s, 2144 rows
+13:25:21   field_dr2_prefilter/L2_00173: ARI job 1793380991987 COMPLETED in 128 s, 5555 rows
+13:25:21   field_dr2_prefilter/L2_00175: ARI job 1793381120870 submitted
+13:25:22   field_dr2_prefilter/L2_00176: ARI job 1793381121378 submitted
+13:25:22   field_dr2_prefilter/L2_00177: ARI job 1793381121636 submitted
+13:25:43   field_dr2_prefilter/L2_00175: ARI job 1793381120870 COMPLETED in 22 s, 2348 rows
+13:25:44   field_dr2_prefilter/L2_00176: ARI job 1793381121378 COMPLETED in 22 s, 4928 rows
+13:25:44   field_dr2_prefilter/L2_00178: ARI job 1793381143873 submitted
+13:25:45   field_dr2_prefilter/L2_00179: ARI job 1793381144476 submitted
+13:25:54   field_dr2_prefilter/L2_00177: ARI job 1793381121636 COMPLETED in 32 s, 3073 rows
+13:25:56   field_dr2_prefilter/L2_00180: ARI job 1793381155107 submitted
+13:26:07   field_dr2_prefilter/L2_00179: ARI job 1793381144476 COMPLETED in 22 s, 4880 rows
+13:26:08   field_dr2_prefilter/L2_00181: ARI job 1793381167534 submitted
+13:26:17   field_dr2_prefilter/L2_00178: ARI job 1793381143873 COMPLETED in 33 s, 8146 rows
+13:26:17   field_dr2_prefilter/L2_00180: ARI job 1793381155107 COMPLETED in 22 s, 3150 rows
+13:26:20   field_dr2_prefilter/L2_00182: ARI job 1793381178217 submitted
+13:26:20   field_dr2_prefilter/L2_00183: ARI job 1793381178325 submitted
+13:26:21   field_dr2_prefilter/L2_00181: ARI job 1793381167534 COMPLETED in 13 s, 1371 rows
+13:26:22   field_dr2_prefilter/L2_00184: ARI job 1793381181398 submitted
+13:26:42   field_dr2_prefilter/L2_00182: ARI job 1793381178217 COMPLETED in 22 s, 3371 rows
+13:26:43   field_dr2_prefilter/L2_00185: ARI job 1793381202661 submitted
+13:26:52   field_dr2_prefilter/L2_00183: ARI job 1793381178325 COMPLETED in 32 s, 1461 rows
+13:26:54   field_dr2_prefilter/L2_00186: ARI job 1793381213064 submitted
+13:27:16   field_dr2_prefilter/L2_00185: ARI job 1793381202661 COMPLETED in 33 s, 7205 rows
+13:27:18   field_dr2_prefilter/L2_00187: ARI job 1793381237012 submitted
+13:27:26   field_dr2_prefilter/L2_00184: ARI job 1793381181398 COMPLETED in 64 s, 10538 rows
+13:27:27   field_dr2_prefilter/L2_00188: ARI job 1793381246764 submitted
+13:28:52   field_dr2_prefilter/L2_00187: ARI job 1793381237012 COMPLETED in 94 s, 9456 rows
+13:28:54   field_dr2_prefilter/L2_00189: ARI job 1793381333177 submitted
+13:29:12   field_dr2_prefilter/L2_00188: ARI job 1793381246764 COMPLETED in 104 s, 4250 rows
+13:29:13   field_dr2_prefilter/L2_00190: ARI job 1793381352531 submitted
+13:29:20   field_dr2_prefilter/L2_00186: ARI job 1793381213064 COMPLETED in 146 s, 8238 rows
+13:29:21   field_dr2_prefilter/L2_00191: ARI job 1793381360664 submitted
+13:29:25   field_dr2_prefilter/L2_00189: ARI job 1793381333177 COMPLETED in 32 s, 1222 rows
+13:29:43   field_dr2_prefilter/L2_00191: ARI job 1793381360664 COMPLETED in 22 s, 3827 rows
+13:29:45   field_dr2_prefilter/L2_00190: ARI job 1793381352531 COMPLETED in 32 s, 7749 rows
+13:29:48 1372060 rows in 4630 s
+13:29:48 no failed ranges
+13:29:48 ARI level-2 ranges: 192 complete, 0 remaining of 192
+download exit 0
+The current archive release 3.15 contains two breaking changes. Please see https://www.cosmos.esa.int/web/gaia/news#GACSrelease315 for details. In case of questions or feedback, please consult the Gaia helpdesk at https://www.cosmos.esa.int/web/gaia/gaia-helpdesk.
+13:30:02   field_dr2_prefilter_count/L2_00002: ARI job 1793381401064 submitted13:30:02   field_dr2_prefilter_count/L2_00001: ARI job 1793381401063 submitted
+
+13:30:02   field_dr2_prefilter_count/L2_00000: ARI job 1793381401062 submitted
+13:30:12   field_dr2_prefilter_count/L2_00001: ARI job 1793381401063 COMPLETED in 11 s, 1 rows
+13:30:12   field_dr2_prefilter_count/L2_00002: ARI job 1793381401064 COMPLETED in 11 s, 1 rows
+13:30:12   field_dr2_prefilter_count/L2_00000: ARI job 1793381401062 COMPLETED in 11 s, 1 rows
+13:30:14   field_dr2_prefilter_count/L2_00003: ARI job 1793381413127 submitted
+13:30:14   field_dr2_prefilter_count/L2_00004: ARI job 1793381413166 submitted
+13:30:14   field_dr2_prefilter_count/L2_00005: ARI job 1793381413275 submitted
+13:30:24   field_dr2_prefilter_count/L2_00003: ARI job 1793381413127 COMPLETED in 11 s, 1 rows
+13:30:24   field_dr2_prefilter_count/L2_00004: ARI job 1793381413166 COMPLETED in 11 s, 1 rows
+13:30:24   field_dr2_prefilter_count/L2_00005: ARI job 1793381413275 COMPLETED in 11 s, 1 rows
+13:30:25   field_dr2_prefilter_count/L2_00006: ARI job 1793381425042 submitted
+13:30:26   field_dr2_prefilter_count/L2_00007: ARI job 1793381425083 submitted
+13:30:26   field_dr2_prefilter_count/L2_00008: ARI job 1793381425183 submitted
+13:30:36   field_dr2_prefilter_count/L2_00006: ARI job 1793381425042 COMPLETED in 11 s, 1 rows
+13:30:36   field_dr2_prefilter_count/L2_00007: ARI job 1793381425083 COMPLETED in 11 s, 1 rows
+13:30:36   field_dr2_prefilter_count/L2_00008: ARI job 1793381425183 COMPLETED in 11 s, 1 rows
+13:30:37   field_dr2_prefilter_count/L2_00009: ARI job 1793381436973 submitted
+13:30:37   field_dr2_prefilter_count/L2_00010: ARI job 1793381437013 submitted
+13:30:38   field_dr2_prefilter_count/L2_00011: ARI job 1793381437111 submitted
+13:30:48   field_dr2_prefilter_count/L2_00009: ARI job 1793381436973 COMPLETED in 11 s, 1 rows
+13:30:48   field_dr2_prefilter_count/L2_00010: ARI job 1793381437013 COMPLETED in 11 s, 1 rows
+13:30:48   field_dr2_prefilter_count/L2_00011: ARI job 1793381437111 COMPLETED in 11 s, 1 rows
+13:30:50   field_dr2_prefilter_count/L2_00012: ARI job 1793381448931 submitted
+13:30:50   field_dr2_prefilter_count/L2_00013: ARI job 1793381449057 submitted
+13:30:50   field_dr2_prefilter_count/L2_00014: ARI job 1793381449255 submitted
+13:31:01   field_dr2_prefilter_count/L2_00012: ARI job 1793381448931 COMPLETED in 11 s, 1 rows
+13:31:01   field_dr2_prefilter_count/L2_00013: ARI job 1793381449057 COMPLETED in 11 s, 1 rows
+13:31:01   field_dr2_prefilter_count/L2_00014: ARI job 1793381449255 COMPLETED in 11 s, 1 rows
+13:31:02   field_dr2_prefilter_count/L2_00015: ARI job 1793381461547 submitted
+13:31:02   field_dr2_prefilter_count/L2_00016: ARI job 1793381461645 submitted13:31:02   field_dr2_prefilter_count/L2_00017: ARI job 1793381461646 submitted
+
+13:31:13   field_dr2_prefilter_count/L2_00015: ARI job 1793381461547 COMPLETED in 11 s, 1 rows
+13:31:13   field_dr2_prefilter_count/L2_00016: ARI job 1793381461645 COMPLETED in 11 s, 1 rows
+13:31:13   field_dr2_prefilter_count/L2_00017: ARI job 1793381461646 COMPLETED in 11 s, 1 rows
+13:31:14   field_dr2_prefilter_count/L2_00018: ARI job 1793381473638 submitted
+13:31:14   field_dr2_prefilter_count/L2_00019: ARI job 1793381473829 submitted
+13:31:14   field_dr2_prefilter_count/L2_00020: ARI job 1793381473847 submitted
+13:31:25   field_dr2_prefilter_count/L2_00018: ARI job 1793381473638 COMPLETED in 11 s, 1 rows
+13:31:25   field_dr2_prefilter_count/L2_00019: ARI job 1793381473829 COMPLETED in 11 s, 1 rows13:31:25   field_dr2_prefilter_count/L2_00020: ARI job 1793381473847 COMPLETED in 11 s, 1 rows
+
+13:31:26   field_dr2_prefilter_count/L2_00021: ARI job 1793381485601 submitted
+13:31:26   field_dr2_prefilter_count/L2_00023: ARI job 1793381485786 submitted13:31:26   field_dr2_prefilter_count/L2_00022: ARI job 1793381485785 submitted
+
+13:31:37   field_dr2_prefilter_count/L2_00021: ARI job 1793381485601 COMPLETED in 11 s, 1 rows
+13:31:37   field_dr2_prefilter_count/L2_00022: ARI job 1793381485785 COMPLETED in 11 s, 1 rows
+13:31:37   field_dr2_prefilter_count/L2_00023: ARI job 1793381485786 COMPLETED in 11 s, 1 rows
+13:31:38   field_dr2_prefilter_count/L2_00024: ARI job 1793381497562 submitted
+13:31:38   field_dr2_prefilter_count/L2_00026: ARI job 1793381497805 submitted13:31:38   field_dr2_prefilter_count/L2_00025: ARI job 1793381497804 submitted
+
+13:31:49   field_dr2_prefilter_count/L2_00024: ARI job 1793381497562 COMPLETED in 11 s, 1 rows
+13:31:49   field_dr2_prefilter_count/L2_00026: ARI job 1793381497805 COMPLETED in 11 s, 1 rows
+13:31:49   field_dr2_prefilter_count/L2_00025: ARI job 1793381497804 COMPLETED in 11 s, 1 rows
+13:31:50   field_dr2_prefilter_count/L2_00027: ARI job 1793381509495 submitted
+13:31:50   field_dr2_prefilter_count/L2_00028: ARI job 1793381509856 submitted13:31:50   field_dr2_prefilter_count/L2_00029: ARI job 1793381509855 submitted
+
+13:32:01   field_dr2_prefilter_count/L2_00027: ARI job 1793381509495 COMPLETED in 11 s, 1 rows
+13:32:01   field_dr2_prefilter_count/L2_00029: ARI job 1793381509855 COMPLETED in 11 s, 1 rows13:32:01   field_dr2_prefilter_count/L2_00028: ARI job 1793381509856 COMPLETED in 11 s, 1 rows
+
+13:32:02   field_dr2_prefilter_count/L2_00030: ARI job 1793381521504 submitted
+13:32:02   field_dr2_prefilter_count/L2_00031: ARI job 1793381521863 submitted13:32:02   field_dr2_prefilter_count/L2_00032: ARI job 1793381521864 submitted
+
+13:32:13   field_dr2_prefilter_count/L2_00030: ARI job 1793381521504 COMPLETED in 11 s, 1 rows
+13:32:13   field_dr2_prefilter_count/L2_00032: ARI job 1793381521864 COMPLETED in 11 s, 1 rows13:32:13   field_dr2_prefilter_count/L2_00031: ARI job 1793381521863 COMPLETED in 11 s, 1 rows
+
+13:32:14   field_dr2_prefilter_count/L2_00033: ARI job 1793381533502 submitted
+13:32:14   field_dr2_prefilter_count/L2_00034: ARI job 1793381533853 submitted13:32:14   field_dr2_prefilter_count/L2_00035: ARI job 1793381533859 submitted
+
+13:32:25   field_dr2_prefilter_count/L2_00033: ARI job 1793381533502 COMPLETED in 11 s, 1 rows
+13:32:25   field_dr2_prefilter_count/L2_00035: ARI job 1793381533859 COMPLETED in 11 s, 1 rows13:32:25   field_dr2_prefilter_count/L2_00034: ARI job 1793381533853 COMPLETED in 11 s, 1 rows
+
+13:32:26   field_dr2_prefilter_count/L2_00036: ARI job 1793381545499 submitted
+13:32:26   field_dr2_prefilter_count/L2_00038: ARI job 1793381545808 submitted13:32:26   field_dr2_prefilter_count/L2_00037: ARI job 1793381545807 submitted
+
+13:32:37   field_dr2_prefilter_count/L2_00036: ARI job 1793381545499 COMPLETED in 11 s, 1 rows
+13:32:37   field_dr2_prefilter_count/L2_00037: ARI job 1793381545807 COMPLETED in 11 s, 1 rows13:32:37   field_dr2_prefilter_count/L2_00038: ARI job 1793381545808 COMPLETED in 11 s, 1 rows
+
+13:32:38   field_dr2_prefilter_count/L2_00039: ARI job 1793381557447 submitted
+13:32:38   field_dr2_prefilter_count/L2_00040: ARI job 1793381557828 submitted13:32:38   field_dr2_prefilter_count/L2_00041: ARI job 1793381557829 submitted
+
+13:32:49   field_dr2_prefilter_count/L2_00039: ARI job 1793381557447 COMPLETED in 11 s, 1 rows
+13:32:49   field_dr2_prefilter_count/L2_00041: ARI job 1793381557829 COMPLETED in 11 s, 1 rows13:32:49   field_dr2_prefilter_count/L2_00040: ARI job 1793381557828 COMPLETED in 11 s, 1 rows
+
+13:32:50   field_dr2_prefilter_count/L2_00042: ARI job 1793381569396 submitted
+13:32:50   field_dr2_prefilter_count/L2_00044: ARI job 1793381569880 submitted13:32:50   field_dr2_prefilter_count/L2_00043: ARI job 1793381569881 submitted
+
+13:33:01   field_dr2_prefilter_count/L2_00042: ARI job 1793381569396 COMPLETED in 11 s, 1 rows
+13:33:01   field_dr2_prefilter_count/L2_00044: ARI job 1793381569880 COMPLETED in 11 s, 1 rows13:33:01   field_dr2_prefilter_count/L2_00043: ARI job 1793381569881 COMPLETED in 11 s, 1 rows
+
+13:33:02   field_dr2_prefilter_count/L2_00045: ARI job 1793381581418 submitted
+13:33:02   field_dr2_prefilter_count/L2_00047: ARI job 1793381581896 submitted13:33:02   field_dr2_prefilter_count/L2_00046: ARI job 1793381581895 submitted
+
+13:33:13   field_dr2_prefilter_count/L2_00045: ARI job 1793381581418 COMPLETED in 11 s, 1 rows
+13:33:13   field_dr2_prefilter_count/L2_00046: ARI job 1793381581895 COMPLETED in 11 s, 1 rows13:33:13   field_dr2_prefilter_count/L2_00047: ARI job 1793381581896 COMPLETED in 11 s, 1 rows
+
+13:33:14   field_dr2_prefilter_count/L2_00048: ARI job 1793381593344 submitted
+13:33:14   field_dr2_prefilter_count/L2_00049: ARI job 1793381593906 submitted13:33:14   field_dr2_prefilter_count/L2_00050: ARI job 1793381593907 submitted
+
+13:33:24   field_dr2_prefilter_count/L2_00048: ARI job 1793381593344 COMPLETED in 11 s, 1 rows
+13:33:25   field_dr2_prefilter_count/L2_00050: ARI job 1793381593907 COMPLETED in 11 s, 1 rows13:33:25   field_dr2_prefilter_count/L2_00049: ARI job 1793381593906 COMPLETED in 11 s, 1 rows
+
+13:33:26   field_dr2_prefilter_count/L2_00051: ARI job 1793381605325 submitted
+13:33:26   field_dr2_prefilter_count/L2_00052: ARI job 1793381605927 submitted13:33:26   field_dr2_prefilter_count/L2_00053: ARI job 1793381605929 submitted
+
+13:33:37   field_dr2_prefilter_count/L2_00052: ARI job 1793381605927 COMPLETED in 11 s, 1 rows
+13:33:37   field_dr2_prefilter_count/L2_00051: ARI job 1793381605325 COMPLETED in 12 s, 1 rows13:33:37   field_dr2_prefilter_count/L2_00053: ARI job 1793381605929 COMPLETED in 11 s, 1 rows
+
+13:33:39   field_dr2_prefilter_count/L2_00054: ARI job 1793381618310 submitted
+13:33:39   field_dr2_prefilter_count/L2_00056: ARI job 1793381618354 submitted13:33:39   field_dr2_prefilter_count/L2_00055: ARI job 1793381618341 submitted
+
+13:33:49   field_dr2_prefilter_count/L2_00056: ARI job 1793381618354 COMPLETED in 11 s, 1 rows13:33:49   field_dr2_prefilter_count/L2_00054: ARI job 1793381618310 COMPLETED in 11 s, 1 rows
+
+13:33:49   field_dr2_prefilter_count/L2_00055: ARI job 1793381618341 COMPLETED in 11 s, 1 rows
+13:33:51   field_dr2_prefilter_count/L2_00057: ARI job 1793381630288 submitted
+13:33:51   field_dr2_prefilter_count/L2_00059: ARI job 1793381630381 submitted
+13:33:51   field_dr2_prefilter_count/L2_00058: ARI job 1793381630382 submitted
+13:34:01   field_dr2_prefilter_count/L2_00057: ARI job 1793381630288 COMPLETED in 11 s, 1 rows
+13:34:02   field_dr2_prefilter_count/L2_00058: ARI job 1793381630382 COMPLETED in 11 s, 1 rows13:34:02   field_dr2_prefilter_count/L2_00059: ARI job 1793381630381 COMPLETED in 11 s, 1 rows
+
+13:34:03   field_dr2_prefilter_count/L2_00060: ARI job 1793381642259 submitted
+13:34:03   field_dr2_prefilter_count/L2_00061: ARI job 1793381642345 submitted
+13:34:03   field_dr2_prefilter_count/L2_00062: ARI job 1793381642361 submitted
+13:34:13   field_dr2_prefilter_count/L2_00060: ARI job 1793381642259 COMPLETED in 11 s, 1 rows
+13:34:13   field_dr2_prefilter_count/L2_00061: ARI job 1793381642345 COMPLETED in 11 s, 1 rows
+13:34:14   field_dr2_prefilter_count/L2_00062: ARI job 1793381642361 COMPLETED in 11 s, 1 rows
+13:34:15   field_dr2_prefilter_count/L2_00063: ARI job 1793381654243 submitted
+13:34:15   field_dr2_prefilter_count/L2_00064: ARI job 1793381654285 submitted
+13:34:15   field_dr2_prefilter_count/L2_00065: ARI job 1793381654321 submitted
+13:34:25   field_dr2_prefilter_count/L2_00063: ARI job 1793381654243 COMPLETED in 11 s, 1 rows
+13:34:25   field_dr2_prefilter_count/L2_00064: ARI job 1793381654285 COMPLETED in 11 s, 1 rows
+13:34:25   field_dr2_prefilter_count/L2_00065: ARI job 1793381654321 COMPLETED in 11 s, 1 rows
+13:34:27   field_dr2_prefilter_count/L2_00066: ARI job 1793381666236 submitted13:34:27   field_dr2_prefilter_count/L2_00067: ARI job 1793381666255 submitted
+
+13:34:27   field_dr2_prefilter_count/L2_00068: ARI job 1793381666284 submitted
+13:34:37   field_dr2_prefilter_count/L2_00067: ARI job 1793381666255 COMPLETED in 11 s, 1 rows
+13:34:37   field_dr2_prefilter_count/L2_00066: ARI job 1793381666236 COMPLETED in 11 s, 1 rows
+13:34:37   field_dr2_prefilter_count/L2_00068: ARI job 1793381666284 COMPLETED in 11 s, 1 rows
+13:34:39   field_dr2_prefilter_count/L2_00070: ARI job 1793381678323 submitted
+13:34:39   field_dr2_prefilter_count/L2_00069: ARI job 1793381678324 submitted
+13:34:39   field_dr2_prefilter_count/L2_00071: ARI job 1793381678325 submitted
+13:34:49   field_dr2_prefilter_count/L2_00069: ARI job 1793381678324 COMPLETED in 11 s, 1 rows
+13:34:49   field_dr2_prefilter_count/L2_00071: ARI job 1793381678325 COMPLETED in 11 s, 1 rows13:34:49   field_dr2_prefilter_count/L2_00070: ARI job 1793381678323 COMPLETED in 11 s, 1 rows
+
+13:34:51   field_dr2_prefilter_count/L2_00072: ARI job 1793381690389 submitted
+13:34:51   field_dr2_prefilter_count/L2_00073: ARI job 1793381690399 submitted
+13:34:51   field_dr2_prefilter_count/L2_00074: ARI job 1793381690398 submitted
+13:35:02   field_dr2_prefilter_count/L2_00073: ARI job 1793381690399 COMPLETED in 11 s, 1 rows13:35:02   field_dr2_prefilter_count/L2_00072: ARI job 1793381690389 COMPLETED in 11 s, 1 rows
+13:35:02   field_dr2_prefilter_count/L2_00074: ARI job 1793381690398 COMPLETED in 11 s, 1 rows
+
+13:35:03   field_dr2_prefilter_count/L2_00077: ARI job 1793381702517 submitted13:35:03   field_dr2_prefilter_count/L2_00076: ARI job 1793381702516 submitted
+13:35:03   field_dr2_prefilter_count/L2_00075: ARI job 1793381702518 submitted
+
+13:35:14   field_dr2_prefilter_count/L2_00077: ARI job 1793381702517 COMPLETED in 11 s, 1 rows
+13:35:14   field_dr2_prefilter_count/L2_00076: ARI job 1793381702516 COMPLETED in 11 s, 1 rows13:35:14   field_dr2_prefilter_count/L2_00075: ARI job 1793381702518 COMPLETED in 11 s, 1 rows
+
+13:35:15   field_dr2_prefilter_count/L2_00078: ARI job 1793381714601 submitted
+13:35:15   field_dr2_prefilter_count/L2_00080: ARI job 1793381714600 submitted
+13:35:15   field_dr2_prefilter_count/L2_00079: ARI job 1793381714599 submitted
+13:35:26   field_dr2_prefilter_count/L2_00079: ARI job 1793381714599 COMPLETED in 11 s, 1 rows
+13:35:26   field_dr2_prefilter_count/L2_00078: ARI job 1793381714601 COMPLETED in 11 s, 1 rows13:35:26   field_dr2_prefilter_count/L2_00080: ARI job 1793381714600 COMPLETED in 11 s, 1 rows
+
+13:35:27   field_dr2_prefilter_count/L2_00083: ARI job 1793381726706 submitted13:35:27   field_dr2_prefilter_count/L2_00081: ARI job 1793381726683 submitted13:35:27   field_dr2_prefilter_count/L2_00082: ARI job 1793381726682 submitted
+
+
+13:35:38   field_dr2_prefilter_count/L2_00081: ARI job 1793381726683 COMPLETED in 11 s, 1 rows13:35:38   field_dr2_prefilter_count/L2_00082: ARI job 1793381726682 COMPLETED in 11 s, 1 rows
+
+13:35:38   field_dr2_prefilter_count/L2_00083: ARI job 1793381726706 COMPLETED in 11 s, 1 rows
+13:35:39   field_dr2_prefilter_count/L2_00086: ARI job 1793381738745 submitted13:35:39   field_dr2_prefilter_count/L2_00085: ARI job 1793381738746 submitted13:35:39   field_dr2_prefilter_count/L2_00084: ARI job 1793381738749 submitted
+
+
+13:35:50   field_dr2_prefilter_count/L2_00086: ARI job 1793381738745 COMPLETED in 11 s, 1 rows
+13:35:50   field_dr2_prefilter_count/L2_00085: ARI job 1793381738746 COMPLETED in 11 s, 1 rows13:35:50   field_dr2_prefilter_count/L2_00084: ARI job 1793381738749 COMPLETED in 11 s, 1 rows
+
+13:35:51   field_dr2_prefilter_count/L2_00087: ARI job 1793381750768 submitted
+13:35:51   field_dr2_prefilter_count/L2_00088: ARI job 1793381750809 submitted13:35:51   field_dr2_prefilter_count/L2_00089: ARI job 1793381750819 submitted
+
+13:36:02   field_dr2_prefilter_count/L2_00087: ARI job 1793381750768 COMPLETED in 11 s, 1 rows
+13:36:02   field_dr2_prefilter_count/L2_00089: ARI job 1793381750819 COMPLETED in 11 s, 1 rows
+13:36:02   field_dr2_prefilter_count/L2_00088: ARI job 1793381750809 COMPLETED in 11 s, 1 rows
+13:36:03   field_dr2_prefilter_count/L2_00090: ARI job 1793381762761 submitted
+13:36:03   field_dr2_prefilter_count/L2_00091: ARI job 1793381762841 submitted
+13:36:03   field_dr2_prefilter_count/L2_00092: ARI job 1793381762842 submitted
+13:36:14   field_dr2_prefilter_count/L2_00091: ARI job 1793381762841 COMPLETED in 11 s, 1 rows13:36:14   field_dr2_prefilter_count/L2_00092: ARI job 1793381762842 COMPLETED in 11 s, 1 rows
+13:36:14   field_dr2_prefilter_count/L2_00090: ARI job 1793381762761 COMPLETED in 11 s, 1 rows
+
+13:36:15   field_dr2_prefilter_count/L2_00095: ARI job 1793381774900 submitted
+13:36:15   field_dr2_prefilter_count/L2_00094: ARI job 1793381774897 submitted13:36:15   field_dr2_prefilter_count/L2_00093: ARI job 1793381774901 submitted
+
+13:36:26   field_dr2_prefilter_count/L2_00094: ARI job 1793381774897 COMPLETED in 11 s, 1 rows13:36:26   field_dr2_prefilter_count/L2_00093: ARI job 1793381774901 COMPLETED in 11 s, 1 rows
+13:36:26   field_dr2_prefilter_count/L2_00095: ARI job 1793381774900 COMPLETED in 11 s, 1 rows
+
+13:36:27   field_dr2_prefilter_count/L2_00096: ARI job 1793381786975 submitted
+13:36:27   field_dr2_prefilter_count/L2_00098: ARI job 1793381786996 submitted13:36:27   field_dr2_prefilter_count/L2_00097: ARI job 1793381786995 submitted
+
+13:36:38   field_dr2_prefilter_count/L2_00096: ARI job 1793381786975 COMPLETED in 11 s, 1 rows
+13:36:38   field_dr2_prefilter_count/L2_00098: ARI job 1793381786996 COMPLETED in 11 s, 1 rows13:36:38   field_dr2_prefilter_count/L2_00097: ARI job 1793381786995 COMPLETED in 11 s, 1 rows
+
+13:36:39   field_dr2_prefilter_count/L2_00101: ARI job 1793381799016 submitted13:36:39   field_dr2_prefilter_count/L2_00099: ARI job 1793381798996 submitted13:36:39   field_dr2_prefilter_count/L2_00100: ARI job 1793381799014 submitted
+
+
+13:36:50   field_dr2_prefilter_count/L2_00099: ARI job 1793381798996 COMPLETED in 11 s, 1 rows
+13:36:50   field_dr2_prefilter_count/L2_00101: ARI job 1793381799016 COMPLETED in 11 s, 1 rows13:36:50   field_dr2_prefilter_count/L2_00100: ARI job 1793381799014 COMPLETED in 11 s, 1 rows
+
+13:36:52   field_dr2_prefilter_count/L2_00102: ARI job 1793381811155 submitted13:36:52   field_dr2_prefilter_count/L2_00103: ARI job 1793381811156 submitted
+13:36:52   field_dr2_prefilter_count/L2_00104: ARI job 1793381811154 submitted
+
+13:37:02   field_dr2_prefilter_count/L2_00103: ARI job 1793381811156 COMPLETED in 11 s, 1 rows
+13:37:02   field_dr2_prefilter_count/L2_00104: ARI job 1793381811154 COMPLETED in 11 s, 1 rows13:37:02   field_dr2_prefilter_count/L2_00102: ARI job 1793381811155 COMPLETED in 11 s, 1 rows
+
+13:37:04   field_dr2_prefilter_count/L2_00106: ARI job 1793381823244 submitted13:37:04   field_dr2_prefilter_count/L2_00107: ARI job 1793381823245 submitted
+
+13:37:04   field_dr2_prefilter_count/L2_00105: ARI job 1793381823243 submitted
+13:37:14   field_dr2_prefilter_count/L2_00105: ARI job 1793381823243 COMPLETED in 11 s, 1 rows
+13:37:14   field_dr2_prefilter_count/L2_00107: ARI job 1793381823245 COMPLETED in 11 s, 1 rows13:37:14   field_dr2_prefilter_count/L2_00106: ARI job 1793381823244 COMPLETED in 11 s, 1 rows
+
+13:37:16   field_dr2_prefilter_count/L2_00110: ARI job 1793381835331 submitted
+13:37:16   field_dr2_prefilter_count/L2_00108: ARI job 1793381835332 submitted13:37:16   field_dr2_prefilter_count/L2_00109: ARI job 1793381835330 submitted
+
+13:37:27   field_dr2_prefilter_count/L2_00110: ARI job 1793381835331 COMPLETED in 11 s, 1 rows
+13:37:27   field_dr2_prefilter_count/L2_00109: ARI job 1793381835330 COMPLETED in 11 s, 1 rows13:37:27   field_dr2_prefilter_count/L2_00108: ARI job 1793381835332 COMPLETED in 11 s, 1 rows
+
+13:37:28   field_dr2_prefilter_count/L2_00113: ARI job 1793381847451 submitted13:37:28   field_dr2_prefilter_count/L2_00111: ARI job 1793381847450 submitted13:37:28   field_dr2_prefilter_count/L2_00112: ARI job 1793381847452 submitted
+
+
+13:37:39   field_dr2_prefilter_count/L2_00113: ARI job 1793381847451 COMPLETED in 11 s, 1 rows
+13:37:40   field_dr2_prefilter_count/L2_00114: ARI job 1793381859469 submitted
+13:37:49   field_dr2_prefilter_count/L2_00112: ARI job 1793381847452 COMPLETED in 21 s, 1 rows
+13:37:49   field_dr2_prefilter_count/L2_00111: ARI job 1793381847450 COMPLETED in 21 s, 1 rows
+13:37:50   field_dr2_prefilter_count/L2_00115: ARI job 1793381869844 submitted
+13:37:50   field_dr2_prefilter_count/L2_00116: ARI job 1793381869845 submitted
+13:37:51   field_dr2_prefilter_count/L2_00114: ARI job 1793381859469 COMPLETED in 11 s, 1 rows
+13:37:52   field_dr2_prefilter_count/L2_00117: ARI job 1793381871458 submitted
+13:38:01   field_dr2_prefilter_count/L2_00115: ARI job 1793381869844 COMPLETED in 11 s, 1 rows13:38:01   field_dr2_prefilter_count/L2_00116: ARI job 1793381869845 COMPLETED in 11 s, 1 rows
+
+13:38:02   field_dr2_prefilter_count/L2_00119: ARI job 1793381881869 submitted13:38:02   field_dr2_prefilter_count/L2_00118: ARI job 1793381881858 submitted
+
+13:38:03   field_dr2_prefilter_count/L2_00117: ARI job 1793381871458 COMPLETED in 11 s, 1 rows
+13:38:04   field_dr2_prefilter_count/L2_00120: ARI job 1793381883361 submitted
+13:38:13   field_dr2_prefilter_count/L2_00118: ARI job 1793381881858 COMPLETED in 11 s, 1 rows13:38:13   field_dr2_prefilter_count/L2_00119: ARI job 1793381881869 COMPLETED in 11 s, 1 rows
+
+13:38:14   field_dr2_prefilter_count/L2_00121: ARI job 1793381893834 submitted
+13:38:14   field_dr2_prefilter_count/L2_00122: ARI job 1793381893843 submitted
+13:38:14   field_dr2_prefilter_count/L2_00120: ARI job 1793381883361 COMPLETED in 11 s, 1 rows
+13:38:16   field_dr2_prefilter_count/L2_00123: ARI job 1793381895282 submitted
+13:38:25   field_dr2_prefilter_count/L2_00122: ARI job 1793381893843 COMPLETED in 11 s, 1 rows13:38:25   field_dr2_prefilter_count/L2_00121: ARI job 1793381893834 COMPLETED in 11 s, 1 rows
+
+13:38:26   field_dr2_prefilter_count/L2_00125: ARI job 1793381905919 submitted13:38:26   field_dr2_prefilter_count/L2_00124: ARI job 1793381905904 submitted
+
+13:38:26   field_dr2_prefilter_count/L2_00123: ARI job 1793381895282 COMPLETED in 11 s, 1 rows
+13:38:28   field_dr2_prefilter_count/L2_00126: ARI job 1793381907270 submitted
+13:38:37   field_dr2_prefilter_count/L2_00125: ARI job 1793381905919 COMPLETED in 11 s, 1 rows13:38:37   field_dr2_prefilter_count/L2_00124: ARI job 1793381905904 COMPLETED in 11 s, 1 rows
+
+13:38:38   field_dr2_prefilter_count/L2_00126: ARI job 1793381907270 COMPLETED in 11 s, 1 rows
+13:38:39   field_dr2_prefilter_count/L2_00128: ARI job 1793381918056 submitted
+13:38:39   field_dr2_prefilter_count/L2_00127: ARI job 1793381918058 submitted
+13:38:40   field_dr2_prefilter_count/L2_00129: ARI job 1793381919237 submitted
+13:38:49   field_dr2_prefilter_count/L2_00127: ARI job 1793381918058 COMPLETED in 11 s, 1 rows13:38:49   field_dr2_prefilter_count/L2_00128: ARI job 1793381918056 COMPLETED in 11 s, 1 rows
+
+13:38:50   field_dr2_prefilter_count/L2_00129: ARI job 1793381919237 COMPLETED in 11 s, 1 rows
+13:38:51   field_dr2_prefilter_count/L2_00131: ARI job 1793381930403 submitted13:38:51   field_dr2_prefilter_count/L2_00130: ARI job 1793381930402 submitted
+
+13:38:52   field_dr2_prefilter_count/L2_00132: ARI job 1793381931190 submitted
+13:39:02   field_dr2_prefilter_count/L2_00130: ARI job 1793381930402 COMPLETED in 11 s, 1 rows
+13:39:02   field_dr2_prefilter_count/L2_00131: ARI job 1793381930403 COMPLETED in 11 s, 1 rows
+13:39:02   field_dr2_prefilter_count/L2_00132: ARI job 1793381931190 COMPLETED in 11 s, 1 rows
+13:39:03   field_dr2_prefilter_count/L2_00134: ARI job 1793381942433 submitted
+13:39:03   field_dr2_prefilter_count/L2_00133: ARI job 1793381942434 submitted
+13:39:04   field_dr2_prefilter_count/L2_00135: ARI job 1793381943135 submitted
+13:39:14   field_dr2_prefilter_count/L2_00134: ARI job 1793381942433 COMPLETED in 11 s, 1 rows
+13:39:14   field_dr2_prefilter_count/L2_00133: ARI job 1793381942434 COMPLETED in 11 s, 1 rows
+13:39:14   field_dr2_prefilter_count/L2_00135: ARI job 1793381943135 COMPLETED in 11 s, 1 rows
+13:39:15   field_dr2_prefilter_count/L2_00136: ARI job 1793381954447 submitted
+13:39:15   field_dr2_prefilter_count/L2_00137: ARI job 1793381954454 submitted
+13:39:15   field_dr2_prefilter_count/L2_00138: ARI job 1793381955045 submitted
+13:39:26   field_dr2_prefilter_count/L2_00136: ARI job 1793381954447 COMPLETED in 11 s, 1 rows
+13:39:26   field_dr2_prefilter_count/L2_00137: ARI job 1793381954454 COMPLETED in 11 s, 1 rows
+13:39:26   field_dr2_prefilter_count/L2_00138: ARI job 1793381955045 COMPLETED in 11 s, 1 rows
+13:39:27   field_dr2_prefilter_count/L2_00139: ARI job 1793381966450 submitted13:39:27   field_dr2_prefilter_count/L2_00140: ARI job 1793381966451 submitted
+
+13:39:27   field_dr2_prefilter_count/L2_00141: ARI job 1793381966978 submitted
+13:39:38   field_dr2_prefilter_count/L2_00140: ARI job 1793381966451 COMPLETED in 11 s, 1 rows13:39:38   field_dr2_prefilter_count/L2_00139: ARI job 1793381966450 COMPLETED in 11 s, 1 rows
+
+13:39:38   field_dr2_prefilter_count/L2_00141: ARI job 1793381966978 COMPLETED in 11 s, 1 rows
+13:39:39   field_dr2_prefilter_count/L2_00142: ARI job 1793381978493 submitted13:39:39   field_dr2_prefilter_count/L2_00143: ARI job 1793381978494 submitted
+
+13:39:39   field_dr2_prefilter_count/L2_00144: ARI job 1793381978983 submitted
+13:39:50   field_dr2_prefilter_count/L2_00142: ARI job 1793381978493 COMPLETED in 11 s, 1 rows13:39:50   field_dr2_prefilter_count/L2_00143: ARI job 1793381978494 COMPLETED in 11 s, 1 rows
+
+13:39:50   field_dr2_prefilter_count/L2_00144: ARI job 1793381978983 COMPLETED in 11 s, 1 rows
+13:39:51   field_dr2_prefilter_count/L2_00146: ARI job 1793381990525 submitted13:39:51   field_dr2_prefilter_count/L2_00145: ARI job 1793381990511 submitted
+
+13:39:51   field_dr2_prefilter_count/L2_00147: ARI job 1793381990955 submitted
+13:40:02   field_dr2_prefilter_count/L2_00146: ARI job 1793381990525 COMPLETED in 11 s, 1 rows
+13:40:02   field_dr2_prefilter_count/L2_00145: ARI job 1793381990511 COMPLETED in 11 s, 1 rows
+13:40:03   field_dr2_prefilter_count/L2_00148: ARI job 1793382002539 submitted13:40:03   field_dr2_prefilter_count/L2_00149: ARI job 1793382002555 submitted
+
+13:40:12   field_dr2_prefilter_count/L2_00147: ARI job 1793381990955 COMPLETED in 21 s, 1 rows
+13:40:14   field_dr2_prefilter_count/L2_00148: ARI job 1793382002539 COMPLETED in 11 s, 1 rows13:40:14   field_dr2_prefilter_count/L2_00149: ARI job 1793382002555 COMPLETED in 11 s, 1 rows
+
+13:40:14   field_dr2_prefilter_count/L2_00150: ARI job 1793382013285 submitted
+13:40:15   field_dr2_prefilter_count/L2_00151: ARI job 1793382014541 submitted
+13:40:15   field_dr2_prefilter_count/L2_00152: ARI job 1793382014576 submitted
+13:40:24   field_dr2_prefilter_count/L2_00150: ARI job 1793382013285 COMPLETED in 11 s, 1 rows
+13:40:26   field_dr2_prefilter_count/L2_00151: ARI job 1793382014541 COMPLETED in 11 s, 1 rows
+13:40:26   field_dr2_prefilter_count/L2_00152: ARI job 1793382014576 COMPLETED in 11 s, 1 rows
+13:40:26   field_dr2_prefilter_count/L2_00153: ARI job 1793382025314 submitted
+13:40:27   field_dr2_prefilter_count/L2_00154: ARI job 1793382026500 submitted
+13:40:27   field_dr2_prefilter_count/L2_00155: ARI job 1793382026533 submitted
+13:40:36   field_dr2_prefilter_count/L2_00153: ARI job 1793382025314 COMPLETED in 11 s, 1 rows
+13:40:38   field_dr2_prefilter_count/L2_00154: ARI job 1793382026500 COMPLETED in 11 s, 1 rows
+13:40:38   field_dr2_prefilter_count/L2_00155: ARI job 1793382026533 COMPLETED in 11 s, 1 rows
+13:40:38   field_dr2_prefilter_count/L2_00156: ARI job 1793382037257 submitted
+13:40:39   field_dr2_prefilter_count/L2_00157: ARI job 1793382038411 submitted
+13:40:39   field_dr2_prefilter_count/L2_00158: ARI job 1793382038446 submitted
+13:40:48   field_dr2_prefilter_count/L2_00156: ARI job 1793382037257 COMPLETED in 11 s, 1 rows
+13:40:50   field_dr2_prefilter_count/L2_00158: ARI job 1793382038446 COMPLETED in 11 s, 1 rows13:40:50   field_dr2_prefilter_count/L2_00157: ARI job 1793382038411 COMPLETED in 11 s, 1 rows
+
+13:40:50   field_dr2_prefilter_count/L2_00159: ARI job 1793382049211 submitted
+13:40:51   field_dr2_prefilter_count/L2_00161: ARI job 1793382050383 submitted13:40:51   field_dr2_prefilter_count/L2_00160: ARI job 1793382050381 submitted
+
+13:41:00   field_dr2_prefilter_count/L2_00159: ARI job 1793382049211 COMPLETED in 11 s, 1 rows
+13:41:01   field_dr2_prefilter_count/L2_00160: ARI job 1793382050381 COMPLETED in 11 s, 1 rows13:41:01   field_dr2_prefilter_count/L2_00161: ARI job 1793382050383 COMPLETED in 11 s, 1 rows
+
+13:41:02   field_dr2_prefilter_count/L2_00162: ARI job 1793382061160 submitted
+13:41:03   field_dr2_prefilter_count/L2_00163: ARI job 1793382062350 submitted13:41:03   field_dr2_prefilter_count/L2_00164: ARI job 1793382062365 submitted
+
+13:41:12   field_dr2_prefilter_count/L2_00162: ARI job 1793382061160 COMPLETED in 11 s, 1 rows
+13:41:13   field_dr2_prefilter_count/L2_00163: ARI job 1793382062350 COMPLETED in 11 s, 1 rows
+13:41:14   field_dr2_prefilter_count/L2_00165: ARI job 1793382073096 submitted
+13:41:15   field_dr2_prefilter_count/L2_00166: ARI job 1793382074301 submitted
+13:41:25   field_dr2_prefilter_count/L2_00164: ARI job 1793382062365 COMPLETED in 22 s, 1 rows
+13:41:26   field_dr2_prefilter_count/L2_00167: ARI job 1793382085717 submitted
+13:41:35   field_dr2_prefilter_count/L2_00165: ARI job 1793382073096 COMPLETED in 22 s, 1 rows
+13:41:36   field_dr2_prefilter_count/L2_00166: ARI job 1793382074301 COMPLETED in 21 s, 1 rows
+13:41:36   field_dr2_prefilter_count/L2_00168: ARI job 1793382096037 submitted
+13:41:37   field_dr2_prefilter_count/L2_00167: ARI job 1793382085717 COMPLETED in 11 s, 1 rows
+13:41:37   field_dr2_prefilter_count/L2_00169: ARI job 1793382096520 submitted
+13:41:38   field_dr2_prefilter_count/L2_00170: ARI job 1793382097646 submitted
+13:41:47   field_dr2_prefilter_count/L2_00168: ARI job 1793382096037 COMPLETED in 11 s, 1 rows
+13:41:48   field_dr2_prefilter_count/L2_00169: ARI job 1793382096520 COMPLETED in 11 s, 1 rows
+13:41:48   field_dr2_prefilter_count/L2_00171: ARI job 1793382107973 submitted
+13:41:49   field_dr2_prefilter_count/L2_00172: ARI job 1793382108449 submitted
+13:41:59   field_dr2_prefilter_count/L2_00170: ARI job 1793382097646 COMPLETED in 21 s, 1 rows
+13:41:59   field_dr2_prefilter_count/L2_00171: ARI job 1793382107973 COMPLETED in 11 s, 1 rows
+13:42:00   field_dr2_prefilter_count/L2_00172: ARI job 1793382108449 COMPLETED in 11 s, 1 rows
+13:42:00   field_dr2_prefilter_count/L2_00173: ARI job 1793382119935 submitted13:42:00   field_dr2_prefilter_count/L2_00174: ARI job 1793382119934 submitted
+
+13:42:01   field_dr2_prefilter_count/L2_00175: ARI job 1793382120365 submitted
+13:42:11   field_dr2_prefilter_count/L2_00174: ARI job 1793382119934 COMPLETED in 11 s, 1 rows
+13:42:11   field_dr2_prefilter_count/L2_00173: ARI job 1793382119935 COMPLETED in 11 s, 1 rows
+13:42:11   field_dr2_prefilter_count/L2_00175: ARI job 1793382120365 COMPLETED in 11 s, 1 rows
+13:42:12   field_dr2_prefilter_count/L2_00177: ARI job 1793382131976 submitted
+13:42:12   field_dr2_prefilter_count/L2_00176: ARI job 1793382131969 submitted
+13:42:13   field_dr2_prefilter_count/L2_00178: ARI job 1793382132297 submitted
+13:42:23   field_dr2_prefilter_count/L2_00176: ARI job 1793382131969 COMPLETED in 11 s, 1 rows13:42:23   field_dr2_prefilter_count/L2_00177: ARI job 1793382131976 COMPLETED in 11 s, 1 rows
+
+13:42:23   field_dr2_prefilter_count/L2_00178: ARI job 1793382132297 COMPLETED in 11 s, 1 rows
+13:42:24   field_dr2_prefilter_count/L2_00180: ARI job 1793382143986 submitted13:42:24   field_dr2_prefilter_count/L2_00179: ARI job 1793382143985 submitted
+
+13:42:25   field_dr2_prefilter_count/L2_00181: ARI job 1793382144245 submitted
+13:42:35   field_dr2_prefilter_count/L2_00180: ARI job 1793382143986 COMPLETED in 11 s, 1 rows
+13:42:35   field_dr2_prefilter_count/L2_00179: ARI job 1793382143985 COMPLETED in 11 s, 1 rows
+13:42:35   field_dr2_prefilter_count/L2_00181: ARI job 1793382144245 COMPLETED in 11 s, 1 rows
+13:42:36   field_dr2_prefilter_count/L2_00183: ARI job 1793382155978 submitted
+13:42:36   field_dr2_prefilter_count/L2_00182: ARI job 1793382155979 submitted
+13:42:37   field_dr2_prefilter_count/L2_00184: ARI job 1793382156182 submitted
+13:42:47   field_dr2_prefilter_count/L2_00182: ARI job 1793382155979 COMPLETED in 11 s, 1 rows13:42:47   field_dr2_prefilter_count/L2_00183: ARI job 1793382155978 COMPLETED in 11 s, 1 rows
+
+13:42:47   field_dr2_prefilter_count/L2_00184: ARI job 1793382156182 COMPLETED in 11 s, 1 rows
+13:42:48   field_dr2_prefilter_count/L2_00185: ARI job 1793382167968 submitted13:42:48   field_dr2_prefilter_count/L2_00186: ARI job 1793382167969 submitted
+
+13:42:49   field_dr2_prefilter_count/L2_00187: ARI job 1793382168114 submitted
+13:42:59   field_dr2_prefilter_count/L2_00185: ARI job 1793382167968 COMPLETED in 11 s, 1 rows13:42:59   field_dr2_prefilter_count/L2_00186: ARI job 1793382167969 COMPLETED in 11 s, 1 rows
+
+13:43:00   field_dr2_prefilter_count/L2_00188: ARI job 1793382179949 submitted13:43:00   field_dr2_prefilter_count/L2_00189: ARI job 1793382179948 submitted
+
+13:43:10   field_dr2_prefilter_count/L2_00187: ARI job 1793382168114 COMPLETED in 21 s, 1 rows
+13:43:11   field_dr2_prefilter_count/L2_00190: ARI job 1793382190397 submitted
+13:43:21   field_dr2_prefilter_count/L2_00188: ARI job 1793382179949 COMPLETED in 21 s, 1 rows
+13:43:21   field_dr2_prefilter_count/L2_00189: ARI job 1793382179948 COMPLETED in 21 s, 1 rows
+13:43:22   field_dr2_prefilter_count/L2_00190: ARI job 1793382190397 COMPLETED in 11 s, 1 rows
+13:43:23   field_dr2_prefilter_count/L2_00191: ARI job 1793382202277 submitted
+13:43:33   field_dr2_prefilter_count/L2_00191: ARI job 1793382202277 COMPLETED in 11 s, 1 rows
+13:43:33 192 ARI ranges: server COUNT(*) = 1372060, cached rows = 1372060, mismatched = 0
+13:43:37 duplicate source_ids: 0
+verify exit 0
