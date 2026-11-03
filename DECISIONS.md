@@ -947,3 +947,84 @@ removed.
   - CORALIE references only (12 systems): median 0.000 km/s, robust SD 0.11 km/s.
   - Pulls: 5 beyond 3σ. Some published errors are implausibly small (10⁻⁵–10⁻⁴ km/s), and published fits with a
     drift refer to their own epochs.
+
+### User decisions at STOP D1 (2026-11-02, before any EBLM kinematics was computed)
+**D7. Drift epoch: option (a) is primary** (D2): t_ref = the midpoint of each system's RV span. Chosen at D1, before
+any UVW, dispersion or Monte Carlo of the EBLMs.
+- **Caveat:** for drift and triple systems, the fitted γ is the RV level at the mid-epoch, or the inner-binary
+  centre of mass with the published outer orbit removed. It can differ from the system's (triple's) centre-of-mass
+  velocity by up to a few km/s.
+- **Coverage:** pre-registered test G6 (excluding the 9 drift and 2 triple systems among the 79) covers this.
+
+**D8. The J1500-33 K discrepancy (D4): file check, without residuals.**
+- **What was read:** only the `object`, `alpha` and `delta` columns of the keyword file
+  `150057S332621_coralie_extract.rdb`. No RV, residual or other column.
+- **Result:**
+  - All 26 exposures are object `1SWASPJ150057.38-332620.7`, with header position 15h00m57.0 −33:26:21.
+  - The object name's coordinates coincide with EBLM IV's J1500-33 position (separation 0.00″).
+  - 07's header-based match (`rv_star_matches.csv`) also assigns this file to this system (4.7″ from Gaia).
+  - It is the right star, so **J1500-33 stays in the primary analysis** (pre-registration A).
+- **Added sensitivity test G11 (user, after D1 and before any kinematics; not in the frozen pre-registration):** the
+  primary analysis without J1500-33. It is labelled as post-D1 wherever it is reported.
+
+### D2 implementation (`src/eblm_kinematics.py`; recorded before the first run)
+**D9. Field.**
+- The Phase 1 field: same cuts, MS and UVW, with the Phase 1 host IDs removed as before. **The 118 EBLM IV primaries
+  are also removed**, mirroring Phase 1, which removes the stars it tests from the field. The pre-registration is
+  silent on this.
+- Per-system EBLM tables (UVW from γ) are kept in `data/private/eblm_d2/`. Monte Carlo checkpoints there hold only
+  per-iteration dispersions.
+- **Fig. 3 for the EBLMs:** drawn with the ellipses only and no per-star velocity points, because the figure is
+  committed and per-system values stay private (C7).
+
+**D10. Details the pre-registration leaves open.**
+- **B:**
+  - The CI uses 40,000 bootstrap resamples, as stated.
+  - The sensitivity tests (G) each use 5,000 Monte Carlo iterations (as stated) and 5,000 bootstrap resamples.
+  - BCa is computed with jackknife acceleration.
+- **C-2:**
+  - Distance quintile edges come from the 79 EBLM distances; HJ hosts outside the EBLM distance range are not
+    eligible.
+  - Colour match: |Δ(BP−RP)₀| ≤ 0.05, with replacement.
+  - HJ sample: the Phase 1 primary sample (297).
+- **G2:** 5 quantile bins in z × 5 quantile bins in distance.
+- **G3/G4:** |z| in 50 pc fixed bins.
+- **G9:** F-type EBLMs vs the field (B), plus C-2 against F-type HJ hosts.
+- **G10:** RV = the simple average (γ − (γ − mean)), through the same pipeline.
+- **I:**
+  - Colour bins start at the bluest EBLM colour.
+  - HJ hosts outside the EBLM colour range are removed.
+  - The "current archive" variant reruns the host list with `disc_year_max: null`.
+
+### STOP D2 results (2026-11-02; `data/processed/eblm/d2/results.json`; report: EBLM_REPORT.md)
+**D11. Run.**
+- `python -m src.eblm_kinematics`: about 3.5 min, exit 0. Sample sizes:
+  - **EBLMs:** 79 (F 54, G 24, K 1), as pre-registered.
+  - **Field:** 376,786 (Phase 1's 376,791 minus 5 EBLM primaries, D9).
+  - **HJ hosts:** 297.
+- **Monte Carlo coverage:** no EBLM was ever unmatched, and none fell in an empty bin.
+- **B, the primary result:**
+  - σ_EBLM = 42.27 km/s; matched-field median 41.77 km/s (SD 2.84).
+  - **Δσ = +0.50 km/s, 95 % CI [−4.23, +4.71]**: consistent with the field.
+  - Bootstrap bias −0.27 km/s, below 0.2 × the half-width (0.89), so no BCa interval is needed.
+- **C-1:** 22,864 of 40,000 controls are as cold or colder (0.572), a Gaussian-equivalent −0.18σ.
+- **C-2 (EBLM − matched HJ hosts):** median +7.90 km/s, 95 % interval [+2.07, +13.74]. 2 EBLMs have no HJ host in
+  their colour and distance cell, so about 2 are dropped per iteration.
+- **H, which outcome:** the first case. The CI includes 0, its lower bound (−4.23) excludes an HJ-sized deficit
+  (−6.6), and C-2 has the EBLMs hotter than the HJ hosts.
+- **G sensitivity:** every variant gives a CI that includes 0.
+  - Δσ ranges from −0.91 (G8, RMS statistic) to +1.23 (G6, without drift and triple systems).
+  - G9, F stars only: Δσ −0.85, CI [−6.52, 4.04]; C-2 against F-type HJ hosts +6.27, CI [−0.08, 12.54].
+  - G11 (post-D1, without J1500-33): Δσ −0.19, CI [−4.72, 3.86].
+
+**D12. E ([Fe/H]): dropped, as the pre-registration requires.**
+- **Count:** spectroscopic [Fe/H] was found for **27 of the 79** primaries, below the required 40 (50 %).
+- **Search:** a background agent read the 27 cached EBLM/BEBOP arXiv sources
+  (`data/processed/eblm/feh_feasibility.csv`). Contributions: EBLM XI (11), PAWS (6), EBLM XIX (4), EBLM V (3),
+  Gill+2019 (2) and EBLM I (1).
+- **Not searched:** sources that are not cached, such as Freckelton+2024 itself and GALAH DR4 for the EBLMs. The agent
+  judged that they would not add the 13 systems needed. That is an assessment, not a measured count.
+- Five systems have discrepant values between sources (up to 0.56 dex), which also argues against homogeneity.
+
+**D13. F (errors).** The fitted median σ_γ is 0.028 km/s, below the 1 km/s trigger, so no deconvolved value is
+reported.

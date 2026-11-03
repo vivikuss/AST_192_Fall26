@@ -67,8 +67,10 @@ def _cov_ellipse(ax, x, y, n_sigma, **kw):
     ax.add_patch(Ellipse((np.mean(x), np.mean(y)), w, h, angle=ang, **kw))
 
 
-def fig_uvw(field, host, path=None):
-    """Fig. 3: 1/2/3-sigma Gaussian ellipses for field (grey fill) and hosts (blue lines), by F/G/K."""
+def fig_uvw(field, host, path=None, label="HJ hosts", points=True):
+    """Fig. 3: 1/2/3-sigma Gaussian ellipses for field (grey fill) and hosts (blue lines), by F/G/K.
+
+    points=False draws the ellipses only (no per-star velocities, e.g. for private-RV samples)."""
     pairs = [("U", "V"), ("U", "W"), ("V", "W")]
     fig, axes = plt.subplots(3, 3, figsize=(10, 10), sharex=True, sharey=True)
     for i, sp in enumerate(("F", "G", "K")):
@@ -80,7 +82,8 @@ def fig_uvw(field, host, path=None):
             for ns in (1, 2, 3):
                 _cov_ellipse(ax, h[a], h[b], ns, facecolor="none", edgecolor=HOST, lw=2 if ns == 1 else 1.2,
                              alpha=1.0 if ns == 1 else 0.6)
-            ax.scatter(h[a], h[b], s=5, color=HOST, lw=0)
+            if points:
+                ax.scatter(h[a], h[b], s=5, color=HOST, lw=0)
             ax.text(0.04, 0.94, f"{sp} stars", transform=ax.transAxes, fontsize=9, color=INK)
             ax.text(0.96, 0.94, f"N={len(h)}", transform=ax.transAxes, ha="right", fontsize=9, color=INK)
             ax.set(xlim=(-100, 100), ylim=(-100, 100))
@@ -92,7 +95,7 @@ def fig_uvw(field, host, path=None):
     from matplotlib.lines import Line2D
     from matplotlib.patches import Patch
     fig.legend(handles=[Patch(facecolor=MUTED, alpha=0.4, label="Field MS stars in the same colour bin: 1, 2, 3$\\sigma$"),
-                        Line2D([], [], color=HOST, lw=2, label="HJ hosts: 1, 2, 3$\\sigma$")],
+                        Line2D([], [], color=HOST, lw=2, label=f"{label}: 1, 2, 3$\\sigma$")],
                loc="upper center", ncol=2, frameon=False, bbox_to_anchor=(0.5, 1.02))
     fig.tight_layout(rect=(0, 0, 1, 0.98))
     _save(fig, path)
