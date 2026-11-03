@@ -160,3 +160,14 @@ eblm:
     max_sep_arcsec: 3.0       # after propagating Gaia to J2000 with the DR2 proper motion
     G_minus_V_range: [-1.0, 0.3]   # FGK primaries: G - V ~ -0.1 to -0.5
     min_dG_second: 2.0        # a second source within 10" brighter than G1 + 2 mag = possible confusion
+  gamma:                      # Stage D gamma fit; 07 amendment PREREG_amendment_rv_gamma_2026-11-02 (C6, D1)
+    rv_dirs:                  # 07's private copies of the CORALIE folders (identical to the originals; read only)
+      - ../07_EBLM_vs_HJ_Tertiaries/data/private/rv/coralie07/dbase
+      - ../07_EBLM_vs_HJ_Tertiaries/data/private/rv/coralie14/dbase
+    match_radius_arcsec: 30.0 # file-name coordinates vs EBLM IV J2000 positions (C3)
+    offset_kms: 0.0           # one global CORALIE07->14 offset, applied to no one (user, 2026-11-01)
+    offset_sys_kms: 0.020     # added in quadrature to every sigma_gamma
+    drift_ref: mid            # t_ref of published drift polynomials: mid | none | bjd2455000 (D2)
+    min_rv: 3                 # fewer RVs -> flagged uncomputable
+    max_cond: 1.0e+12         # condition number of the 2x2 normal matrix -> flagged singular
+    out_dir: data/private/eblm_gamma   # gitignored; per-system results never leave it (C7)

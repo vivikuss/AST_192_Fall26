@@ -834,3 +834,116 @@ removed.
   ARI check).
 - The sensitivity-variant folders (≈ 440 MB of regenerable `field_ms.csv.gz` copies), at the user's
   request.
+
+## Stage D: EBLM γ fits and kinematics (2026-11-02)
+
+### User decisions (2026-11-02)
+- **CORALIE data permission granted** by the data owners (via the user). C7 still applies: per-system tables stay in
+  `data/private/` and only aggregates go into reports or git.
+- **EBLM XIX (C8):** the northern EBLM XIX systems resemble the BEBOP sample, which was selected for circumbinary-planet
+  searches, so they are not merged with EBLM IV. If they are added later, they form a separate sample with its own
+  selection caveat.
+- **07 amendment adopted** and frozen in project 07 as `PREREG_amendment_rv_gamma_2026-11-02.txt` (sha256
+  `36c49d2f…2746d`), committed there as dd73827 **before any γ fit**. The text is the approved draft
+  (`docs/DRAFT_07_PREREG_amendment_rv_gamma_2026-10-30.txt`) with only the status, permission and adoption lines
+  changed.
+- Stage D runs under the frozen `PREREG_eblm_kinematics_2026-11-02.txt`. STOP D1 after the γ fits, with no
+  kinematics; STOP D2 after the pre-registered comparisons.
+
+### Implementation (`src/gamma_fit.py`; settings in config `eblm.gamma`; tests `tests/test_gamma_fit.py`)
+**D1. Inputs as the amendment states.**
+- **Data:** only the columns `jdb`, `vrad` and `svrad` of the curated `<star>_coralie.rdb` files, read from 07's
+  private copies (identical to the originals, which are not touched).
+- **Matching:** files are matched to systems by file-name coordinates within 30″ (C3). All 118 systems have files:
+  69 have CORALIE07 and CORALIE14 files, 49 have CORALIE07 only.
+- **Fixed orbit inputs:**
+  - P and T0,pri from `tab:obs`; e and ω from `tab:params`. For the 65 systems with only an upper limit on e, e = 0.
+  - Weights are 1/(svrad² + σ_add²), with σ_add from `tab:obs` in m/s.
+  - The 4 outer orbits in `tab:triple` are subtracted as fixed Keplerians.
+- **What the fit returns:** `fit_gamma()` returns exactly γ, σ_γ, K, γ − mean and a flag. A test enforces this.
+  The per-system table is written only to `data/private/eblm_gamma/`.
+- **ω convention, checked before any fit using published values only:**
+  - **Eccentric orbits:** T_peri computed from (T0,pri, e, ω), with the eclipse at ν = π/2 − ω, matches the
+    `tab:params` T_peri to |Δphase| ≤ 0.0002 for all 36 orbits with e > 0.05.
+  - **Circular orbits:** for all 65 upper-limit systems, (T_peri − T0)/P = 0.75 exactly, as expected for ω = 0.
+- **Not done, because the amendment does not list it:** EBLM IV's bisector-based outlier rejection and removal of
+  in-eclipse points. The amendment allows no other column, and the rejection rule needs the bisectors. The effect on
+  γ is expected to be small: a Rossiter–McLaughlin anomaly is ≲ 0.1 km/s on a few points, against K ~ 10–40 km/s.
+  It is part of what the published-K and Gaia checks (D3) test.
+
+**D2. Drift polynomials: the reference epoch is not published (judgment call; flagged for the user at STOP D1).**
+- **The problem:** EBLM IV's `tab:params` gives lin/quad/cubic coefficients (m/s/yr^j) but no reference epoch t_ref.
+  For a quadratic or cubic term, t_ref changes the shape of the polynomial, not only its zero point.
+- **Options:**
+  - (a) t_ref = the midpoint of the system's RV span;
+  - (b) t_ref = BJD 2,455,000, the zero point of the table's time columns;
+  - (c) no drift subtracted, so γ averages over the drift.
+- **Evidence, from published values only:**
+  - Under (a), the polynomials span 0.06–10 km/s over each system's RV baseline for the 9 drift systems among the
+    79. That is plausible for tertiaries.
+  - Under (b), the cubic terms would reach thousands of km/s (for example J0629-67: cubic −1.1 × 10⁵ m/s/yr³, with
+    data years from 2009.5).
+- **Choice: (a) is primary** (config `drift_ref: mid`); (b) and (c) are computed as variants. Pre-registration G6
+  (excluding the drift and triple systems) covers the residual risk.
+- **Affected systems:** 9 drift and 2 triple systems among the 79, plus J0021-16 ("active", with a linear term).
+
+**D3. Cross-checks and descriptive "poor fit" criteria (fixed before the first summary was run).**
+- **Uncomputable** (fewer than 3 RVs, or a singular design) → excluded and listed (pre-registration A).
+- **Descriptive flags only; no exclusion (pre-registration A):**
+  - **K disagrees:** |K_fit − K_pub|/K_pub > 5 % **and** more than 5 published σ_K away.
+  - **Poorly constrained:** σ_γ > 0.5 km/s.
+- **Variants** (only the permitted outputs): drift (b) and (c); and the `tab:params` P and T_peri in place of the
+  `tab:obs` P and T0, a check on the 4-decimal `tab:obs` period.
+- **Gaia DR3** `nss_two_body_orbit`: SB1 solutions with a centre-of-mass velocity and a period within 1 % of EBLM IV's
+  (the inner orbit). Reported: γ_fit − v_com, its robust SD and pulls. A zero-point difference between the CORALIE and
+  Gaia RV scales is expected, so the median is reported and not removed.
+- **Published γ (C2):** compiled from the cached arXiv sources (`data/processed/eblm/published_gamma.csv`, public
+  values) and compared in the same way.
+
+### STOP D1 results (2026-11-02; aggregates only, from `data/processed/eblm/gamma_d1_summary.json`)
+**D4. γ fits.**
+- **Computable:** 118/118, so pre-registration A excludes no system.
+- **σ_γ (including the 0.020 km/s systematic), kinematics sample of 79:**
+
+  | Statistic | Value |
+  |---|---|
+  | Median | 0.028 km/s |
+  | 10–90 % | 0.020–0.144 km/s |
+  | Max | 2.10 km/s |
+  | > 0.1 km/s | 14 systems |
+  | > 0.5 km/s | 2 systems |
+  | > 1 km/s | 1 system |
+
+  For all 118 the median is 0.029 km/s, and 4 systems have σ_γ > 0.5 km/s. All 4 have EBLM IV σ_add of 3–9 km/s
+  (broad lines). The pre-registration F rule (median > 1 km/s) is not triggered.
+- **Fitted K vs published K:** median |ΔK/K| = 0.03 % (90th percentile 0.3 %).
+  - One system (in the 79) has K_fit ≈ 0.51 K_pub with both ephemerides.
+  - EBLM IV's own f(m) is consistent with its published K, and the system has no Gaia orbit.
+  - The amendment rules out a residual-based diagnosis. Per pre-registration A, the system is kept.
+- **γ − simple average:** median |·| 1.7 km/s, max 10.3 km/s. This measures phase coverage, as expected.
+
+**D5. Variants (γ_variant − γ_primary).**
+- **`tab:params` P and T_peri:** median +0.001 km/s, range −0.07 to +0.15 km/s.
+- **No drift subtracted:** |Δ| > 0.1 km/s for 4 of the 79 (max 2.3 km/s).
+- **Drift t_ref = BJD 2,455,000:** up to 3.3 × 10³ km/s. This confirms D2 option (b) is not the published convention.
+
+**D6. Cross-checks.**
+- **Gaia DR3 two-body orbits:**
+  - 68/118 systems have a solution; 65 are SB1 with a centre-of-mass velocity, all at the EBLM IV period (48 of
+    the 79).
+  - γ_fit − v_com: median −0.08 km/s (79: −0.13), robust SD 0.73 km/s; 18/65 differ by more than 1 km/s.
+  - Pulls: robust SD 1.6, with 3 beyond 3σ. The Gaia NSS errors look underestimated by ~1.6×, consistent with the
+    extra NSS scatter EBLM XIV reports.
+  - K_fit − K_NSS: 10–90 % range −1.6 to +1.4 km/s. The scatter is Gaia-dominated.
+- **Published γ:**
+  - The compilation has 28 rows for 16 systems. Six rows were dropped as not comparable:
+    - 4 secondary-star CCF velocities;
+    - 2 ESPRESSO values derived by the compiling agent as γ + offset.
+  - One name match was false. WASP-30 (Dec −10° 07′) is not EBLM IV J2353-10 (Dec −10° 53′); both its rows are
+    marked EXCLUDED.
+  - That leaves **15 systems, 11 of them in the 79**, with one reference value each (CORALIE first).
+  - γ_fit − γ_pub: median +0.007 km/s, robust SD 0.14 km/s, range −0.67 to +0.15 km/s. None differs by more than
+    1 km/s.
+  - CORALIE references only (12 systems): median 0.000 km/s, robust SD 0.11 km/s.
+  - Pulls: 5 beyond 3σ. Some published errors are implausibly small (10⁻⁵–10⁻⁴ km/s), and published fits with a
+    drift refer to their own epochs.
