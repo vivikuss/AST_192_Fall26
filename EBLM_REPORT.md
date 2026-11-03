@@ -163,15 +163,59 @@ hosts are reweighted to the EBLM colour distribution, and the CI comes from 10,0
   UV/UW/VW, for F, G and K.
   - Per-star points are omitted because the γ values are private (D9).
   - The K panel has N = 1, so no EBLM ellipse is drawn there.
-- **`fig4_mc_eblm.png`** (as HS19 Fig. 4): the control-dispersion histogram for the EBLM primaries, with their value
-  and percentiles. Below it, for reference, the Phase 1 HJ-host panel.
+- **`fig4_mc_eblm.png`** (as HS19 Fig. 4): the control-dispersion histogram for the EBLM primaries (z and distance
+  matched), with their value and percentiles. Below it, for reference, the Phase 1 HJ-host panel (z matched). Both
+  panels share one horizontal range (30–58 km/s), so the two distributions can be compared directly (redrawn
+  2026-11-02 at the collaborator's request).
 
-## 11. Reproduce
+## 11. EXPLORATORY [not pre-registered]: why the EBLM control distribution is wider
+Requested by the collaborator after STOP D2 (`python -m src.eblm_width`; `data/processed/eblm/d2/width_exploratory.json`).
+The EBLM control SD is 2.84 km/s against 1.48 km/s for the 297 HJ hosts. Pure 1/√N scaling predicts
+1.48 × √(297/79) = **2.87 km/s**.
+
+**(a) Spread of individual control-star velocities.** Residual speeds |v − v̄| of the control stars actually picked,
+over 2,000 control samples per setup:
+
+| Control pool | N hosts | Per-star mean | Per-star SD | SD/√N | Control SD measured | Pool median d, \|z\| |
+|---|---|---|---|---|---|---|
+| EBLM, z + distance (primary) | 79 | 42.1 | 25.0 | 2.81 | 2.84 | 486 pc, 211 pc |
+| EBLM, z only | 79 | 42.1 | 24.7 | 2.78 | 2.81 | 549 pc, 176 pc |
+| HJ, z only (Phase 1) | 297 | 42.9 | 25.1 | 1.46 | 1.45 | 412 pc, 130 pc |
+| HJ, z + distance | 297 | 43.6 | 25.8 | 1.50 | 1.48 | 412 pc, 157 pc |
+
+- The per-star spreads of the two pools are the same to within 0.1 km/s (25.0 vs 25.1).
+- In every setup, SD/√N reproduces the measured control SD.
+
+**(b) Random subsamples of 79 HJ hosts.** 200 subsamples, each with its own matched controls and 1,000 iterations:
+
+| Matching | Control SD: median (16–84 %) | Control median |
+|---|---|---|
+| z only (as Phase 1) | **2.86** (2.80–2.93) km/s | 42.6 km/s |
+| z + distance (as the EBLM primary) | **2.95** (2.87–3.05) km/s | 43.2 km/s |
+
+**Conclusion.** The wider EBLM distribution comes from sample size. (b) gives 2.86 km/s for 79 HJ hosts, and (a)
+shows the same per-star spread.
+
+**How much comes from distance.** Very little, a few per cent of the width:
+- 79 HJ hosts: +0.08 km/s (2.86 → 2.95);
+- the EBLMs: about +0.03 to +0.10 km/s (2.81 → 2.84 here; 2.74 for G1 at 5,000 iterations, against 2.84 for the
+  primary);
+- per star: matching on distance raises the per-star SD by 0.3–0.7 km/s, because it pulls in farther, higher-|z|
+  stars.
+
+Of the 1.36 km/s difference between the two widths, essentially all is 1/√N.
+
+**Aside.** For the 200 subsamples of 79 HJ hosts, σ_host − control median has median −6.6 km/s (16–84 %: −8.4 to
+−5.0) with z matching, and −7.5 km/s with z + distance. An HJ sample the size of the EBLM sample would therefore
+typically show the HJ deficit, whereas the EBLMs give +0.5 km/s. This is exploratory and consistent with C-2.
+
+## 12. Reproduce
 ```
 python -m src.gamma_fit             # γ fits (needs the private CORALIE copies; outputs to data/private/)
 python -m src.gamma_fit --summary   # STOP D1 aggregates
 python -m src.gamma_crosscheck nss  # Gaia DR3 two-body orbits (ARI)
-python -m src.eblm_kinematics       # everything in this report (~4 min)
+python -m src.eblm_kinematics       # sections 1-10 (~4 min)
+python -m src.eblm_width            # section 11, exploratory (~12 min)
 python tests/run_tests.py           # 39 tests
 ```
 Seeds are fixed (config `seed`; one stream per label and chunk). Monte Carlo chunks are checkpointed in

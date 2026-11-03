@@ -1028,3 +1028,21 @@ any UVW, dispersion or Monte Carlo of the EBLMs.
 
 **D13. F (errors).** The fitted median σ_γ is 0.028 km/s, below the 1 km/s trigger, so no deconvolved value is
 reported.
+
+### After STOP D2: collaborator follow-ups (2026-11-02; exploratory, not pre-registered)
+**D14. Fig. 4 redrawn.**
+- Both panels (EBLM primaries; HJ hosts from Phase 1) now share one horizontal range, 30–58 km/s, with the same
+  0.1 km/s bins (`figures.fig_mc(shared_x=True)`).
+- The panel labels were shortened so the legend no longer overlaps the text block. The matching scheme is stated in
+  the report caption instead.
+
+**D15. Why the EBLM control distribution is wider** (`src/eblm_width.py`; EBLM_REPORT.md §11).
+- **Result:** sample size. 200 random 79-host HJ subsamples give a control SD of 2.86 km/s (16–84 %: 2.80–2.93), and
+  the per-star spreads of the matched pools agree (EBLM 25.0, HJ 25.1 km/s).
+- **Distance matching** adds only +0.03–0.10 km/s to the width.
+- **Design:**
+  - (a) uses 2,000 control samples per setup;
+  - (b) uses 200 subsamples × 1,000 iterations;
+  - fixed seeds;
+  - the D2 field (without the EBLM primaries) for the EBLMs, and the Phase 1 field for the HJ hosts.
+- **Runtime:** 12 min. Each subsample rebuilds its control sampler.

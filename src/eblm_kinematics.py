@@ -289,7 +289,7 @@ def make_figures(cfg, e=None, fld=None, hj=None):
     hjs = json.loads((config.out_dir(cfg) / "summary.json").read_text())["mc"]["hj_table1"]
     dh = np.load(config.out_dir(cfg) / "mc_hj_table1.npz")[f"disp_{st}"]
     figures.fig_mc({"eblm": (s, d), "hj_table1": (hjs, dh)}, FIG / "fig4_mc_eblm.png",
-                   {"eblm": "EBLM primaries (z + distance matched)", "hj_table1": "HJ hosts, HS19 Table 1 (Phase 1)"})
+                   {"eblm": "EBLM primaries", "hj_table1": "HJ hosts (HS19 Table 1)"}, shared_x=True)
 
 
 if __name__ == "__main__":

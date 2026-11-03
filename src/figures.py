@@ -101,13 +101,20 @@ def fig_uvw(field, host, path=None, label="HJ hosts", points=True):
     _save(fig, path)
 
 
-def fig_mc(results, path=None, labels=None):
-    """Fig. 4: control-sample dispersion histograms with host values and percentiles."""
+def fig_mc(results, path=None, labels=None, shared_x=False):
+    """Fig. 4: control-sample dispersion histograms with host values and percentiles.
+
+    shared_x=True puts every panel on one horizontal range (and the same 0.1 km/s bins)."""
     n = len(results)
     fig, axes = plt.subplots(n, 1, figsize=(6.5, 3.0 * n), squeeze=False)
+    if shared_x:
+        glo = min(min(d.min(), s["host_dispersion"]) for s, d in results.values()) - 0.5
+        ghi = max(max(d.max(), s["host_dispersion"]) for s, d in results.values()) + 0.5
     for ax, (key, (summary, disp)) in zip(axes[:, 0], results.items()):
         lo = min(disp.min(), summary["host_dispersion"]) - 0.5
         hi = max(disp.max(), summary["host_dispersion"]) + 0.5
+        if shared_x:
+            lo, hi = glo, ghi
         ax.hist(disp, bins=np.arange(np.floor(lo), np.ceil(hi) + 0.1, 0.1), color=HOST, lw=0)
         for q, ls in ((2, ":"), (16, "--"), (50, "-"), (84, "--"), (98, ":")):
             ax.axvline(np.percentile(disp, q), color=INK, ls=ls, lw=1.2)
@@ -121,6 +128,8 @@ def fig_mc(results, path=None, labels=None):
                 transform=ax.transAxes, ha="right", va="top", fontsize=9, color=INK)
         ax.set(xlabel="Sample velocity dispersion (mean residual speed) [km/s]", ylabel="Control samples")
         ax.set_ylim(0, ax.get_ylim()[1] * 1.35)          # headroom for legend and text
+        if shared_x:
+            ax.set_xlim(np.floor(lo), np.ceil(hi))
         ax.legend(frameon=False, loc="upper left", fontsize=9)
     fig.tight_layout()
     _save(fig, path)
