@@ -1211,3 +1211,54 @@ A null in σ_W is declared uninformative.
 
 **E17 (Q10). Hosts with close stellar companions or in clusters:** removing them is a sensitivity test only. The
 draft notes that EBLMs are binaries by definition, so a companion-removal rule for HJ hosts needs justification.
+
+### Draft revision 3 (user decisions, 2026-11-04; no WASP-only dispersion computed)
+**E18. Decision rule for the primary test, and δ_HS19.**
+- **δ_HS19 = −6.64 km/s:** the Phase 1 primary host dispersion (36.1825) minus its matched-field median
+  (42.8234), from `data/processed/phase1_dr2/summary.json` (`mc.hj_table1`). The frozen EBLM pre-registration
+  quotes it rounded to −6.6.
+- **Why revision 2 said −6.7:** it applied the ratio 0.845 to the WASP hosts' expected control median (43.10,
+  from E4), giving −6.68. That value depends on this test's own controls, so the fixed −6.64 is used instead.
+  Power changes by < 0.01.
+- **The rule:** six cases on the 95 % CI [L, U] relative to 0 and δ, exhaustive and mutually exclusive.
+  1. Supports HS19.
+  2. Larger cold offset than HS19's.
+  3. Real but smaller deficit.
+  4. Supports Hu et al.
+  5. Inconclusive.
+  6. Hotter than the field.
+- **σ_W:** the HS19-sized deficit stays ratio-based (no frozen σ_W result exists).
+
+**E19. Contrast matching.**
+- Each half keeps its frozen matching: z only for the WASP hosts, z + distance for the EBLMs. The draft states
+  this mismatch as a limitation.
+- New sensitivity test D2: the WASP hosts matched on z and distance (5 quantile bins of their own distances).
+
+**E20. Companion and cluster removal:** dropped from the sensitivity tests (supersedes E17), because Hu et al.'s
+list of these hosts is not published. Moves to Phase 2.
+
+**E21. "Without J1500-33"** is kept for the contrast. Correction to the description in the request: this test is
+G11, added by the user after STOP D1 and before any EBLM kinematics (D8). It is not in the frozen EBLM
+pre-registration file, and the draft says so.
+
+**E22. Hemisphere labels from the discovery papers** (`notes/wasp_hemisphere_labels.csv` and `.md`). Metadata and
+paper text only.
+- **Method:** the archive's `disc_refname` bibcode was resolved through the ADS link gateway to arXiv, and the
+  LaTeX source was read. For WASP-18 and WASP-24, which are not on arXiv, the publisher page was read.
+- **Result:**
+  - 59 WASP-South only;
+  - 19 SuperWASP-North only;
+  - 16 both;
+  - **4 not assigned:** WASP-35 and WASP-48, whose paper describes both instruments for its systems jointly, and
+    WASP-57 and WASP-127, whose camera is not stated.
+- **Outcome:** not every host can be assigned, so the WASP-South-only exploratory test is removed (E10). No
+  declination proxy is used.
+- **Caveats:**
+  - WASP-1/2 are labelled N by inference (2004 season, before WASP-South).
+  - WASP-18 is labelled S from the publisher page's acknowledgements only.
+  - For WASP-28 the archive's reference is a follow-up paper (Petrucci et al. 2015); the discovery paper
+    (Anderson et al., arXiv:1402.1482) was used.
+- Downloaded paper sources stayed in the session scratchpad. None is in the repository.
+
+**E23. Draft revision 3:** `prereg_drafts/DRAFT_PREREG_wasp_hj_vs_eblm_2026-11-04.txt` with E18–E22. Not
+frozen, no hash.
