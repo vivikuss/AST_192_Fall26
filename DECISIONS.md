@@ -1298,3 +1298,82 @@ alongside only if |bias| > 0.2 × the half-width, and it does not change the dec
   - The control distributions come from the power estimate (E4), which included field σ_W distributions matched to
     the WASP hosts and to the EBLMs.
 - **Next:** the analysis has not been run.
+
+### Running the frozen WASP-only analysis (2026-11-04)
+**E30. Implementation details the frozen text leaves open** (`src/wasp_kinematics.py`, recorded before the first
+run; none changes what the pre-registration specifies).
+- **Hash check:** SHA-256 of `PREREG_wasp_kinematics_2026-11-04.txt` recomputed and matched `fece9b66…ecc4` and the
+  `.sha256` file before the run. The script asserts it again.
+- **Samples:**
+  - **WASP hosts:** `hosts_hj_table1_final.csv` (Phase 1, 297) with the E3 facility labels (98). The name-based
+    variant (D1) has 100.
+  - **EBLMs:** the Stage D2 table, `data/private/eblm_d2/eblm_final_uvw.csv` (79).
+  - **Fields:**
+    - the Phase 1 field (`field_ms.csv.gz`, 376,791) for the WASP hosts;
+    - the D2 field (376,786, D9) for the EBLMs.
+- **B:**
+  - `pipeline.monte_carlo` with `match_vars: [z]` and 40,000 iterations (chunked streams as D19; label
+    `wasp_primary`).
+  - The interval comes from `eblm_kinematics.bootstrap`, which is the frozen EBLM implementation: a 40,000-resample
+    percentile interval, with bias reported and BCa only if |bias| > 0.2 × half-width.
+  - The case comes from section B's rule, coded in `case()` and unit-tested for all six cases and the closed ends.
+- **C:**
+  - Δ_EBLM uses the frozen EBLM primary Monte Carlo (label `eblm_primary`, z + distance, 40,000; cached chunks
+    reused). Its control median is checked to be 41.77.
+  - The joint bootstrap draws the WASP and EBLM resamples independently: 40,000 each, with each control median
+    fixed.
+- **D (5,000 + 5,000):**
+  - Only the half a test changes is rerun at 5,000. The unchanged half keeps its 40,000-sample reference median:
+    - D1 and D2 change the WASP half only;
+    - D6 changes the EBLM half only;
+    - D3–D5 rerun both halves.
+  - **D2:** `match_vars: [z, dist_pc]` with 5 quantile bins of the WASP hosts' own distances (config
+    `match_var_bins`), as for the EBLMs.
+  - **D3 and D4:** the EBLM subsets keep z + distance matching, with quintiles of their own distances.
+  - **D5:** v_tot uses the field's LSR-frame UVW (same solar motion as Hu et al.). The cut is applied to both fields.
+- **E:**
+  - Control σ_W uses the same ControlSampler matching as A (z for the WASP hosts, z + distance for the EBLMs), with
+    40,000 iterations (section A's number) on chunk streams as D19.
+  - Δ is the full-sample σ_W minus the control median. The percentile bootstrap uses 40,000 resamples, as for B.
+  - HS19-sized σ_W deficit: −(1 − 36.1825/42.8234) × the control median.
+- **Outputs:**
+  - `data/processed/wasp/results.json` (aggregates);
+  - `mc_wasp_primary.npz`;
+  - WASP Monte Carlo chunks in `data/processed/wasp/mc_checkpoints/`;
+  - EBLM chunks in `data/private/eblm_d2/mc_checkpoints/`.
+
+**E31. Results** (`python -m src.wasp_kinematics`, 2026-11-04, about 4 min, exit 0;
+`data/processed/wasp/results.json`).
+- **Deviations:** none. Every arm ran as specified, and no host was ever unmatched. The EBLM half reproduced the
+  frozen control median (41.77 km/s, Δ_EBLM +0.50).
+- **B, primary (98 WASP hosts, total dispersion):**
+  - σ_WASP = 37.23 km/s; matched-field median 43.04 km/s (SD 2.58).
+  - **Δ_W = −5.81 km/s, 95 % percentile CI [−9.69, −2.09].**
+  - Bootstrap bias −0.20, below 0.2 × half-width (0.76), so no BCa interval.
+  - HS19-style fraction: 285 of 40,000 controls as cold or colder (0.0071), a Gaussian-equivalent 2.25σ.
+  - **Case 1** (U < 0 and L ≤ −6.64 ≤ U): "Supports HS19: a deficit consistent with HS19's size." Cases 1 and 2
+    count against the survey-mixing explanation.
+- **C, secondary (contrast Δ_EBLM − Δ_W):**
+  - **+6.31 km/s, 95 % CI [+0.58, +12.02]** (40,000 joint resamples).
+  - The whole CI is > 0, which reads as "supports an HJ-specific deficit among WASP hosts".
+  - The power stated in advance was 0.42. The matching mismatch limitation in section C applies.
+- **D, sensitivity** (B: Δ and CI, with case; C: contrast and CI):
+
+  | Test | B | C |
+  |---|---|---|
+  | D1 by name (100) | −5.60 [−9.53, −1.82], case 1 | +6.09 [+0.25, +11.75] |
+  | D2 WASP z + distance | −6.68 [−10.57, −2.92], case 1 | +7.18 [+1.27, +12.84] |
+  | D3 d < 600 pc (97 / 71) | −6.23 [−9.98, −2.72], case 1 | +8.05 [+2.01, +13.54] |
+  | D4 colour 0.5–1.5 (95 / 76) | −6.04 [−10.09, −2.38], case 1 | +6.88 [+0.91, +12.51] |
+  | D5 halo cut (788 field stars removed) | −5.41 [−9.25, −1.69], case 1 | +6.28 [+0.55, +12.10] |
+  | D6 without J1500-33 (C only) | — | +5.59 [−0.11, +11.20] |
+
+  - Every B variant is case 1.
+  - All C variants but D6 have the whole CI > 0. D6's lower bound is −0.11, so that CI includes 0.
+- **E, EXPLORATORY σ_W** (a null is uninformative by pre-registration):
+  - **(i) WASP vs field:** σ_W 18.31 vs 18.95 km/s; Δ −0.64, CI [−4.95, +3.30]. The CI includes 0, and the
+    HS19-sized σ_W deficit would be −2.94. This null is uninformative (power ≈ 0.36).
+  - **(ii) Contrast in σ_W:** −2.42, CI [−7.32, +2.53]. It includes 0, so it is uninformative.
+  - **(iii) EBLMs:** σ_W 15.14 km/s (CI [12.21, 17.84]) vs matched field 18.19. Δ −3.06, CI [−5.99, −0.36]. The CI
+    excludes 0, so this is reported as an exploratory finding: in σ_W alone, the EBLM primaries look colder than
+    their field. That is not seen in their total dispersion (B of the frozen EBLM pre-registration).
