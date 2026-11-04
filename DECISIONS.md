@@ -1046,3 +1046,121 @@ reported.
   - fixed seeds;
   - the D2 field (without the EBLM primaries) for the EBLMs, and the Phase 1 field for the HJ hosts.
 - **Runtime:** 12 min. Each subsample rebuilds its control sampler.
+
+## Stage E: Hu et al. (2026) challenge to HS19 (2026-11-04)
+
+**E1. The paper.** Hu, Zhu, Huang & Zhang, "Are Hot Jupiters Tidally Disrupted During Stellar Main Sequence?",
+arXiv:2608.12790 (v1, 2026-08-13; resubmitted to AJ after minor revisions), https://arxiv.org/abs/2608.12790.
+Read from the arXiv HTML; no copy of the PDF is kept in this repo.
+- **Claim:** HS19's cold HJ-host result comes mostly from the heterogeneity (mixed surveys, different depths and
+  sky positions) and anisotropy of the HS19 sample, not from tidal destruction.
+- **Method differences from HS19:**
+  - Gaia DR3; extinction from GSP-Phot, else Bayestar19.
+  - The vertical dispersion σ_W = sqrt((1/N) Σ (W_i − W̄)²) (their eq. 2, the standard RMS with 1/N) as the age
+    indicator, instead of a total dispersion.
+  - Their Table 1 matching per host: angular separation ≤ 10°; d_HJ − 100 pc ≤ d_FS ≤ d_HJ + 50 pc;
+    G_HJ − 1 ≤ G_FS ≤ G_HJ + 0.1; |Δ(BP−RP)₀| ≤ 0.2. About 1,000 matches per host; one random match per host per
+    iteration, with replacement; 10,000 iterations.
+  - HS19-sample cuts: 0.5 ≤ (BP−RP)₀ ≤ 1.5 and, for subsamples, d < 600 pc. The stricter 0.8 ≤ (BP−RP)₀ ≤ 1.5 is used
+    for the ultra-hot-Jupiter sample to remove F stars that may be evolved. Field stars with v_tot > 180 km/s are
+    removed as halo stars. HJ hosts get only the astrometric cuts 1–3 of their list.
+- **Results:**
+  - Updated HS19 sample (282 hosts): σ_W 15.8 km/s, about 3σ below the matched field. With d < 600 pc, about 2σ.
+  - Ground-based transit hosts with d < 600 pc, without HATSouth: 16.7 vs 18.1 km/s, about 1σ.
+  - Per survey (d < 600 pc): WASP 102 hosts, σ_W 17.7 km/s, < 1σ from the field; HATNet 40 hosts, < 1σ;
+    HATSouth 29 hosts, about 2σ low. WASP-South and SuperWASP-North are not separated.
+  - TESS HJs (100 within 600 pc) and ultra-hot Jupiters (31, P < 2 d) match the field within 1σ.
+  - Numerical field medians are given only for some subsamples, and no total-dispersion numbers are given for
+    the subsamples.
+- **What it independently confirms of ours:**
+  - **HS19 eq. 1 is not a typo.** Hu et al. footnote 1: "we confirm that it is not due to typographical errors
+    (Hamer & Schlaufman, private comm.)". We found that eq. 1 as typeset (mean residual speed, root inside the sum)
+    reproduces HS19's Fig. 4 host value (36.18 vs 36.11 km/s; D14). Logged 2026-10-30 in the working session; first
+    committed 2026-11-02 in d7dd82c (the repository's first commit).
+  - **Cut 4 is missing a parenthesis.** Hu et al. footnote 7: "A parentheses is missing in Cut 4 in the appendix
+    of [HS19]". We found the same against Lindegren et al. (2018) eq. C.1 (D1). Logged 2026-10-28; first committed
+    2026-11-02 in d7dd82c.
+  - Git dates both findings to 2026-11-02 only because the repository was created then. The 2026-10-28 and 10-30
+    dates come from the working session's log.
+- **How it affects this project:**
+  - **Phase 1 is unaffected.** It reproduces HS19's method as published, and Hu et al. confirm that method.
+  - **The HJ vs EBLM contrast (C-2, +7.90 km/s [+2.07, +13.74]) is at risk.** It compares a single-survey sample
+    (EBLM IV, WASP-South/CORALIE) with the mixed-survey HS19 Table 1 hosts. Hu et al. find that WASP hosts alone
+    look field-like. If so, C-2 measures survey mix, not a planet-specific effect. The EBLM-vs-field result
+    (Δσ +0.50, CI [−4.23, +4.71]) is not affected.
+  - **The pre-registered H interpretation of D2 (case 1: "supports the planet-specific interpretation") needs
+    this caveat.** No frozen file is changed. A WASP-only test is drafted (E5).
+  - Our statistic is the total dispersion (eq. 1). σ_W has not been computed for any sample in this project.
+
+**E2. EBLM primaries vs Hu et al.'s cuts** (`python -m src.hu2026_checks eblm`; `notes/hu2026_eblm_cuts.md`).
+Positions, photometry and BJ18 distances only. The recomputed unevolved set is the pre-registered 79 (same
+source_ids, same distances and colours).
+- d < 600 pc: 71 of the 79.
+- 0.5 ≤ (BP−RP)₀ ≤ 1.5: 76.
+- 0.8 ≤ (BP−RP)₀ ≤ 1.5: **12**.
+- Both d < 600 pc and 0.5–1.5: 69.
+- Both d < 600 pc and 0.8–1.5: 12.
+- Evolved primaries (28 of the 107 after cuts 1–4) are counted in the note. Hu et al.'s main-sequence cut is the
+  same as ours (1 mag above the Pleiades MS), so they would remove them too.
+- Many of the 79 sit near the edges: 9 within 0.05 mag of 0.5, 17 within 0.05 of 0.8, 9 within 50 pc of 600 pc.
+  DR3 distances or GSP-Phot extinction would move some of them across.
+- The 0.8 cut removes the F stars, which are 68 % of the EBLMs, so an EBLM test with it has only 12 stars.
+
+**E3. WASP-discovered hosts in our HS19 sample** (`python -m src.hu2026_checks wasp`;
+`notes/hu2026_wasp_counts.md`). Counts only.
+- **Label:** NASA Exoplanet Archive `disc_facility` of the host's hot Jupiter(s), queried 2026-11-04
+  (`data/raw/exoarchive/pscomppars_disc_2026-11-04.csv`, public).
+- **Phase 1 primary (297 hosts):** 98 have a WASP facility, 97 of them within 600 pc, 94 with d < 600 pc and
+  0.5 ≤ (BP−RP)₀ ≤ 1.5. Hu et al. have 102 within 600 pc (DR3; RVs from Gaia DR3 where the archive has none).
+- **Hemisphere:** the archive rarely says which. Of the 98: 15 "WASP-South"/"SuperWASP-South", 1 "SuperWASP-North",
+  82 plain "SuperWASP". The 82 by declination: 16 at Dec > +15°, 24 at −15° to +15°, 42 at Dec < −15°.
+  Declination does not identify the discovering instrument near the equator, where both cameras observed.
+- **Name vs facility:** a name starting "WASP-" gives 100. The two extra are WASP-53 and WASP-81, whose archive
+  facility is "Multiple Facilities" (Triaud et al. 2017).
+- All 338 Table 1 hosts pass cuts 1–4; at that stage 105 have a WASP facility (103 within 600 pc).
+
+**E4. Power of a WASP-only test** (`python -m src.hu2026_checks power` and `contrast`; `notes/hu2026_power.md`).
+Field velocities only: no host or EBLM velocity is used, and no dispersion of a WASP subsample is computed.
+- **Method:**
+  - The control distribution X comes from field stars matched to the WASP hosts' z and colour (HS19-style), or
+    to their position, distance, G and colour (Hu et al. Table 1); 10,000 samples.
+  - "HS19-sized" means every host velocity scaled by 0.845 = 36.18/42.82 (Phase 1). The host statistic is then
+    distributed as 0.845 X, because both statistics scale linearly with the velocities.
+  - Assumption: σ_W shrinks by the same ratio as the total dispersion. That is −2.9 km/s on a ~19 km/s σ_W.
+  - Two-sided 5 % test against X.
+- **Results, 97 WASP hosts within 600 pc:**
+
+  | Arm | Control median | Control SD | Power, HS19-sized | Offset at 80 % power |
+  |---|---|---|---|---|
+  | (a) total, HS19 matching | 43.0 | 2.56 | 0.80 | 6.7 km/s |
+  | (b) σ_W, HS19 matching | 19.0 | 2.13 | 0.38 | 4.9 km/s |
+  | (c) σ_W, Hu matching | not usable with DR2 (below) | | | |
+
+  98 hosts (all distances) and 94 (d < 600 pc and 0.5–1.5) give the same to within 0.04 in power. A Dec < 0
+  subsample (70) gives 0.68 and 0.28.
+- **Arm (c) needs DR3.**
+  - Our field needs a DR2 RV, so it stops at G ≈ 13. The G window G_HJ − 1 ≤ G_FS ≤ G_HJ + 0.1 then admits
+    almost no field star fainter than the host.
+  - 21 of 97 hosts have no match, and the rest have a median of 9. Hu et al. report about 1,000 with DR3.
+  - The partial estimate (power 0.46, 76 hosts, drawn with replacement from ~10 stars) underestimates the
+    control SD, so it overstates the power.
+- **WASP vs EBLM contrast** (normal approximation; each sample's sampling SD taken as its field-control SD, the
+  EBLMs' from z + distance matching on the D2 field: total 41.76 ± 2.79, σ_W 18.19 ± 2.29 km/s):
+  - total: power 0.42 (smallest detectable difference at 80 % power, 10.6 km/s);
+  - σ_W: power 0.16 (8.8 km/s).
+- **Reading:**
+  - A WASP-vs-field test in the total dispersion has about 80 % power for an HS19-sized deficit; in σ_W it has
+    about 40 %.
+  - A null in σ_W, or in the contrast, would therefore not distinguish the two papers.
+  - The +7.9 km/s C-2 contrast is larger than the contrast's 80 %-power threshold for the total dispersion
+    (10.6 km/s) only within its CI. A WASP-only contrast of that size would be detected with about 55 % power.
+    This is a rough number from the normal approximation.
+
+**E5. Draft pre-registration** `docs/DRAFT_PREREG_wasp_hj_vs_eblm_2026-11-04.txt` (draft for user review; not
+frozen, no hash). It contains:
+- both papers' predictions;
+- arms (a)–(c) as specified by the user;
+- the expected precision from E4;
+- what counts as support for each paper and what a null means;
+- open judgment calls Q1–Q10, left to the user.
+- An identical copy is in `prereg_drafts/` (user request, 2026-11-04); the `docs/` file is kept.
