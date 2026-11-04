@@ -1164,3 +1164,50 @@ frozen, no hash). It contains:
 - what counts as support for each paper and what a null means;
 - open judgment calls Q1–Q10, left to the user.
 - An identical copy is in `prereg_drafts/` (user request, 2026-11-04); the `docs/` file is kept.
+
+### User decisions on the WASP-only draft (2026-11-04; no WASP-only dispersion computed)
+**E6. Where pre-registrations live (convention).**
+- Frozen pre-registrations are at the repository root, as `PREREG_<topic>_<date>.txt` with a `.sha256` (here
+  `PREREG_eblm_kinematics_2026-11-02.txt`; project 07 does the same).
+- Drafts live in `prereg_drafts/`. A draft moves to the root only when it is frozen and hashed.
+- The duplicate `docs/DRAFT_PREREG_wasp_hj_vs_eblm_2026-11-04.txt` was deleted after checking it was identical
+  to the `prereg_drafts/` copy (same sha256, `dd6f31ae…146e`). So E5's `docs/` path is superseded.
+- The older `docs/DRAFT_07_PREREG_amendment_rv_gamma_2026-10-30.txt` (project 07's amendment, frozen in 07) was
+  left where it is.
+
+**E7. Design principle.** The primary arm differs from the frozen HS19 pipeline in exactly one way: only
+WASP-discovered hosts are kept. This separates Hu et al.'s sample-heterogeneity argument from their metric
+argument. Every other change goes in a sensitivity or exploratory arm.
+
+**E8 (Q1). Gaia DR2**, as the frozen pipeline. Arm (c) (Hu et al.'s Table 1 matching) is removed: the DR2 RV field
+gives too few matches (E4). It moves to Phase 2 (DR3).
+
+**E9 (Q2). Membership:** the archive `disc_facility` (98 hosts) is primary. Sensitivity: add the hosts named WASP
+without a WASP facility label (WASP-53, WASP-81; 100 hosts).
+
+**E10 (Q3). Hemispheres:** the primary includes all WASP hosts, South and North. Exploratory: WASP-South only, with
+hemisphere labels from the discovery papers, only if every host can be assigned. No declination proxy is used.
+The labels have not been compiled yet.
+
+**E11 (Q4). Distance:** no cut in the primary. Sensitivity: d < 600 pc, applied to both the WASP-vs-field test and
+the WASP-vs-EBLM contrast.
+
+**E12 (Q5). Colour:** no new cut in the primary. Sensitivity: 0.5 ≤ (BP−RP)₀ ≤ 1.5 (95 WASP hosts, 76 EBLMs). The
+0.8–1.5 cut is not used (12 EBLMs).
+
+**E13 (Q6). Halo cut** (field stars with v_tot > 180 km/s): sensitivity only. The draft notes that it applies to
+field stars only and trims the field's velocity tail.
+
+**E14 (Q7). Moot**, because arm (c) is removed. All other settings match the frozen pipeline: 40,000 control
+samples, colour matching without reuse, seeds as D19.
+
+**E15 (Q8). Primary = arm (a):** WASP hosts vs matched field in the total dispersion (eq. 1), power ≈ 0.80
+(0.81 for 98 hosts). **Secondary:** the WASP-vs-EBLM contrast in the total dispersion, with power stated in
+advance as ≈ 0.42.
+
+**E16 (Q9). EBLM σ_W** is reported on its own with a 95 % CI, as exploratory. All σ_W results are exploratory,
+with power stated in advance: about 0.38 for WASP vs field (0.36 for 98 hosts) and about 0.16 for the contrast.
+A null in σ_W is declared uninformative.
+
+**E17 (Q10). Hosts with close stellar companions or in clusters:** removing them is a sensitivity test only. The
+draft notes that EBLMs are binaries by definition, so a companion-removal rule for HJ hosts needs justification.
