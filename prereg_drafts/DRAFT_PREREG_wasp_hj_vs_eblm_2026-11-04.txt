@@ -1,5 +1,6 @@
 DRAFT pre-registration: WASP-discovered HJ hosts vs matched field and vs EBLM IV primaries, project 08
-Status: DRAFT, revision 3 (2026-11-04). The user's decisions are written in (DECISIONS E6-E17, E18-E23).
+Status: DRAFT, revision 4 (2026-11-04). The user's decisions are written in (DECISIONS E6-E17, E18-E23,
+E24-E28).
 NOT frozen and no sha256. When approved it is frozen at the repository root as
 `PREREG_wasp_hj_vs_eblm_<date>.txt` with a `.sha256`, like `PREREG_eblm_kinematics_2026-11-02.txt` (E6).
 Evidence: DECISIONS.md Stage E; notes/hu2026_eblm_cuts.md, notes/hu2026_wasp_counts.md, notes/hu2026_power.md,
@@ -54,15 +55,20 @@ A. Pipeline. Identical to the frozen Phase 1 pipeline unless stated (DECISIONS D
    - WASP hosts: the Phase 1 primary sample (297) restricted to hosts whose hot Jupiter has a WASP
      facility in the NASA Exoplanet Archive `disc_facility` ("SuperWASP", "SuperWASP-South", "WASP-South",
      "SuperWASP-North"; pscomppars query of 2026-11-04, cached): **98 hosts**, South and North. No distance
-     cut and no new colour cut.
+     cut and no new colour cut. This and the other WASP-host counts in this draft (100, 97, 95) were
+     computed by us from the Phase 1 sample (E3, E24). Hu et al. count 102 WASP hosts within 600 pc; their
+     number differs because they use Gaia DR3 (distances and RVs) and their own selection (their updated
+     HS19 list, exclusions and cuts).
    - EBLM primaries (for the secondary result): the 79 of the frozen pre-registration
      (`PREREG_eblm_kinematics_2026-11-02.txt`), with its γ, field (D9) and z + distance matching, unchanged.
 
 B. PRIMARY RESULT: WASP hosts vs matched field, total dispersion.
    - Δ_W = σ_WASP − median(σ_control).
    - 95 % CI [L, U]: percentile interval over 40,000 bootstrap resamples of the WASP hosts, control median
-     fixed; bias reported, BCa alongside if |bias| > 0.2 × the half-width (as the frozen pre-registration B).
-     The percentile interval is the one the decision rule uses.
+     fixed; bias reported, BCa alongside if |bias| > 0.2 × the half-width. This is the interval type of the
+     frozen EBLM pre-registration (`PREREG_eblm_kinematics_2026-11-02.txt`, section B: "percentile interval
+     over 40,000 bootstrap resamples ... the percentile interval stays primary"). The decision rule uses the
+     percentile interval; a BCa interval, if reported, does not change the case.
    - Also reported: the HS19-style fraction of controls with σ_control ≤ σ_WASP (paired as D13b).
    - Expected precision (field only, E4): control SD 2.55 km/s for 98 hosts; power 0.81 for an HS19-sized
      deficit (two-sided 5 %); smallest deficit detected with 80 % power 6.6 km/s.
@@ -76,6 +82,9 @@ B. PRIMARY RESULT: WASP hosts vs matched field, total dispersion.
      | 4 | L ≤ 0 ≤ U and L > δ | Supports Hu et al.: no deficit, and an HS19-sized one is excluded. |
      | 5 | L ≤ δ and U ≥ 0 | Inconclusive: no claim. |
      | 6 | L > 0 | Hotter than the field: predicted by neither paper; reported, no claim. |
+
+     Cases 1 and 2 stay separate, but both count against the survey-mixing explanation: a single-survey
+     sample that is still as cold as, or colder than, the mixed HS19 sample is not explained by mixing surveys.
 
      The cases cover every interval and do not overlap: an interval either lies wholly above 0 (6), wholly
      below δ (2), or meets [δ, 0]; in the last case it contains both ends (5), only δ (1), only 0 (4) or
@@ -100,12 +109,15 @@ C. SECONDARY RESULT: WASP hosts vs EBLM primaries, total dispersion.
 
 D. Sensitivity (5,000 control samples and 5,000 bootstrap resamples each, as the frozen G tests; each
    changes one thing relative to B and C):
-   1. Membership by name: add hosts named WASP whose archive facility is not WASP (WASP-53, WASP-81; 100).
+   1. Membership by name: add hosts named WASP whose archive facility is not WASP (WASP-53, WASP-81; 100,
+      computed by us).
    2. WASP hosts matched on z and distance (5 quantile bins of the WASP hosts' own distances), as the EBLMs
-      are; B and C rerun with it.
+      are; B and C rerun with it. Each sample uses its own distance quintiles because each is matched to
+      its own field in the same way: the frozen EBLM primary bins the field by the EBLMs' distance
+      quintiles, so the WASP hosts' field is binned by the WASP hosts' quintiles.
    3. Distance cut d < 600 pc (BJ18), applied to the WASP hosts in B and to both the WASP hosts and the EBLMs
       in C (97 WASP hosts, 71 EBLMs).
-   4. Colour cut 0.5 ≤ (BP−RP)₀ ≤ 1.5, applied in the same way (95 WASP hosts; 76 EBLMs). The 0.8-1.5 cut is
+   4. Colour cut 0.5 ≤ (BP−RP)₀ ≤ 1.5, applied in the same way (95 WASP hosts, computed by us; 76 EBLMs). The 0.8-1.5 cut is
       not used: only 12 EBLMs survive it.
    5. Halo cut: field stars with v_tot = sqrt(U² + V² + W²) > 180 km/s removed (Hu et al.). It is applied to
       field stars only and trims the field's velocity tail, so it is expected to lower the control
@@ -117,8 +129,9 @@ D. Sensitivity (5,000 control samples and 5,000 bootstrap resamples each, as the
 E. EXPLORATORY: σ_W. All σ_W results are exploratory.
    - σ_W = sqrt((1/N) Σ (W_i − W̄)²) (Hu et al. eq. 2), with the matching of A (not Hu et al.'s matching).
    - (i) WASP hosts vs field: power ≈ 0.36 for an HS19-sized deficit (98 hosts; 0.38 for 97 within 600 pc).
-     For σ_W the HS19-sized deficit is defined by the ratio, 0.845 × median(control), because no frozen σ_W
-     result exists (≈ −2.9 km/s).
+     For σ_W the HS19-sized deficit is defined by the ratio, −(1 − 0.845) × median(σ_W control) (≈ −2.9 km/s).
+     This differs from the fixed −6.64 km/s used for the total dispersion because no frozen σ_W result exists
+     to take a fixed offset from.
    - (ii) WASP vs EBLM contrast in σ_W: power ≈ 0.15-0.16.
    - (iii) The EBLMs' σ_W on its own, with a 95 % bootstrap CI, and its offset from the matched field.
    - **A null in σ_W is declared uninformative in advance.** Only a CI that excludes 0 is reported as a

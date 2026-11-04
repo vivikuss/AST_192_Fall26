@@ -1262,3 +1262,21 @@ paper text only.
 
 **E23. Draft revision 3:** `prereg_drafts/DRAFT_PREREG_wasp_hj_vs_eblm_2026-11-04.txt` with E18–E22. Not
 frozen, no hash.
+
+### Draft revision 4 (user decisions, 2026-11-04; no WASP-only dispersion computed)
+**E24. Counts labelled as computed.** The WASP-host counts in the draft (98, 100, 97, 95) are marked as computed
+by us from the Phase 1 sample (E3). The draft notes that Hu et al.'s 102 WASP hosts within 600 pc differ because
+they use Gaia DR3 (distances and RVs) and their own selection: their updated HS19 list, exclusions and cuts.
+
+**E25. σ_W offset:** the ratio rule is kept, −(1 − 0.845) × median(σ_W control). The draft adds that it differs
+from the fixed −6.64 km/s for the total dispersion because no frozen σ_W result exists.
+
+**E26. Distance bins in sensitivity D2:** each sample uses its own distance quintiles. Each is then matched to its
+own field the same way: the frozen EBLM primary bins by the EBLMs' quintiles, so the WASP hosts are binned by
+theirs.
+
+**E27. Interval type:** the percentile bootstrap interval, the same as the frozen EBLM pre-registration
+(`PREREG_eblm_kinematics_2026-11-02.txt`, section B: "the percentile interval stays primary"). BCa is reported
+alongside only if |bias| > 0.2 × the half-width, and it does not change the decision case.
+
+**E28. Cases 1 and 2** stay separate. A line is added that both count against the survey-mixing explanation.
