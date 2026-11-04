@@ -1280,3 +1280,21 @@ theirs.
 alongside only if |bias| > 0.2 × the half-width, and it does not change the decision case.
 
 **E28. Cases 1 and 2** stay separate. A line is added that both count against the survey-mixing explanation.
+
+### Freeze (user, 2026-11-04)
+**E29. WASP-only pre-registration frozen** as `PREREG_wasp_kinematics_2026-11-04.txt`.
+- **Hash:** sha256 `fece9b6608624c8213d1fb5fa96a6223bc07f5328adf820bd133db4a3490ecc4`, recorded in
+  `PREREG_wasp_kinematics_2026-11-04.sha256`.
+- **Format:** the 07 and 08 convention.
+  - The revision 4 draft was moved from `prereg_drafts/` (`git mv`) and copied verbatim, except for its first five
+    lines. The title "DRAFT pre-registration" became "Pre-registered", and the four draft status lines were
+    replaced by a freeze header.
+  - A diff against the committed revision 4 confirms that the body is unchanged.
+- **File name:** the user's name is used. The draft's own text gives `PREREG_wasp_hj_vs_eblm_<date>.txt` (E6); that
+  line is inside the frozen body and is left as written.
+- **Nothing computed beforehand:** no dispersion (total or σ_W) of any WASP-only subsample, and no σ_W of any host
+  or EBLM sample, was computed before freezing.
+  - Stage E computed only counts and field-only control distributions.
+  - The control distributions come from the power estimate (E4), which included field σ_W distributions matched to
+    the WASP hosts and to the EBLMs.
+- **Next:** the analysis has not been run.

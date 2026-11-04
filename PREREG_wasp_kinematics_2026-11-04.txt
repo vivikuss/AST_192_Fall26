@@ -1,8 +1,10 @@
-DRAFT pre-registration: WASP-discovered HJ hosts vs matched field and vs EBLM IV primaries, project 08
-Status: DRAFT, revision 4 (2026-11-04). The user's decisions are written in (DECISIONS E6-E17, E18-E23,
-E24-E28).
-NOT frozen and no sha256. When approved it is frozen at the repository root as
-`PREREG_wasp_hj_vs_eblm_<date>.txt` with a `.sha256`, like `PREREG_eblm_kinematics_2026-11-02.txt` (E6).
+Pre-registered: WASP-discovered HJ hosts vs matched field and vs EBLM IV primaries, project 08
+Approved by the user on 2026-11-04 and frozen here, before any dispersion (total or σ_W) of any WASP-only
+subsample, and before any σ_W of any sample, was computed. Source: prereg_drafts/DRAFT_PREREG_wasp_hj_vs_eblm_
+2026-11-04.txt, revision 4 (DECISIONS E6-E28), moved here and copied verbatim below except for the first
+five lines: the title ("DRAFT pre-registration" -> "Pre-registered") and the four draft status lines
+(replaced by this header). Changes after this date are new dated amendments; this file is not edited.
+Hash: PREREG_wasp_kinematics_2026-11-04.sha256.
 Evidence: DECISIONS.md Stage E; notes/hu2026_eblm_cuts.md, notes/hu2026_wasp_counts.md, notes/hu2026_power.md,
 notes/wasp_hemisphere_labels.csv.
 
