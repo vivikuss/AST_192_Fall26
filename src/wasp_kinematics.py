@@ -139,7 +139,11 @@ def main():
     # samples (A)
     base = config.out_dir(cfg)
     fin = pd.read_csv(base / "hosts_hj_table1_final.csv")
-    lab = hu2026_checks.wasp_hosts(cfg)["final (MS with RV; Phase 1 primary)"][["hostname", "facility", "name_wasp"]]
+    # The frozen run (E31) used the hostname join, which misses 9 WASP hosts (DECISIONS E32). It is
+    # pinned here so the reported results stay reproducible; the corrected membership (107) is for
+    # the amendment's rerun, not this script.
+    lab = hu2026_checks.wasp_hosts(cfg, join="hostname_legacy")["final (MS with RV; Phase 1 primary)"][
+        ["hostname", "facility", "name_wasp"]]
     fin = fin.merge(lab, on="hostname", how="left", validate="one_to_one")
     w = fin[fin["facility"].notna()].reset_index(drop=True)
     w_name = fin[fin["facility"].notna() | fin["name_wasp"]].reset_index(drop=True)

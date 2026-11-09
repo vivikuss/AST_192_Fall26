@@ -118,32 +118,61 @@ def disc_table(cfg):
     return pd.read_csv(RAW_DISC)
 
 
-def wasp_hosts(cfg):
+def facility_label(f):
+    """Archive disc_facility string(s) of a host's hot Jupiter(s) -> WASP label (None = not WASP)."""
+    if "SuperWASP-North" in f:
+        return "SuperWASP-North"
+    if "SuperWASP-South" in f or "WASP-South" in f:
+        return "WASP-South"
+    if "WASP" in f:
+        return "SuperWASP (hemisphere not given)"
+    return None
+
+
+def facility_map(planets, disc, key):
+    """'; '-joined disc_facility of `planets`, grouped by `key`.
+
+    key = "source_id": the archive's Gaia DR2 id (pscomppars gaia_dr2_id) -> Int64 (DECISIONS E32).
+    key = "hostname": the archive host name (the original, buggy join; kept to reproduce E3/E4/E31).
+    """
+    p = planets.join(disc[["disc_facility"]], on="pl_name")
+    if key == "source_id":
+        p = p.assign(_k=pipeline.hosts._dr2_ids(p["gaia_dr2_id"])).dropna(subset=["_k"])
+    elif key == "hostname":
+        p = p.assign(_k=p["hostname"])
+    else:
+        raise ValueError(key)
+    return p.groupby("_k")["disc_facility"].agg(lambda s: "; ".join(sorted(set(s.dropna()))))
+
+
+def wasp_hosts(cfg, join="source_id"):
     """Phase 1 Table 1 hosts with a WASP label: 'facility' from the archive's disc_facility of the
-    host's hot Jupiter(s); 'name' if the host name starts with WASP-."""
+    host's hot Jupiter(s) (archive HJ selection, P2 in notes/cuts_and_choices.md); 'name_wasp' if the
+    host's name starts with WASP-.
+
+    join = "source_id" (default, DECISIONS E32): facilities matched on the Gaia DR2 source_id, and the
+    name test uses HS19's ArchiveName.
+    join = "hostname_legacy": the original join on `hostname`, which for Table 1 rows is HS19's
+    SimbadName (hosts.py table1_hosts), so hosts with a catalogue SimbadName (TYC, 2MASS, EPIC) got no
+    label. Reproduces the 98 hosts of E3/E4 and the frozen run E31.
+    """
     hj = pipeline.hosts.select_planets(pipeline.hosts.archive_table(cfg), cfg, "hj")
     disc = disc_table(cfg).set_index("pl_name")
-    hj = hj.join(disc[["disc_facility", "disc_locale"]], on="pl_name")
-    fac = hj.groupby("hostname")["disc_facility"].agg(lambda s: "; ".join(sorted(set(s.dropna()))))
-
-    def label(f):
-        if "SuperWASP-North" in f:
-            return "SuperWASP-North"
-        if "SuperWASP-South" in f or "WASP-South" in f:
-            return "WASP-South"
-        if "WASP" in f:
-            return "SuperWASP (hemisphere not given)"
-        return None
+    legacy = join == "hostname_legacy"
+    if not legacy and join != "source_id":
+        raise ValueError(join)
+    fac = facility_map(hj, disc, "hostname" if legacy else "source_id")
     stages = {}
-    cols = ["hostname", "dec", "dist_pc", "bp_rp0", "on_ms", "rv_used"]
+    cols = ["hostname", "archive_name_2019", "source_id", "dec", "dist_pc", "bp_rp0", "on_ms", "rv_used"]
     base = config.out_dir(cfg)
     stages["after cuts 1-4"] = pd.read_csv(base / "hosts_hj_table1_after_cuts.csv", usecols=cols)
     stages["main sequence"] = stages["after cuts 1-4"][stages["after cuts 1-4"]["on_ms"]].copy()
-    fin = pd.read_csv(base / "hosts_hj_table1_final.csv", usecols=cols + ["source_id", "ra", "z", "phot_g_mean_mag"])
+    fin = pd.read_csv(base / "hosts_hj_table1_final.csv", usecols=cols + ["ra", "z", "phot_g_mean_mag"])
     stages["final (MS with RV; Phase 1 primary)"] = fin
     for d in stages.values():
-        d["facility"] = d["hostname"].map(fac).fillna("").map(label)
-        d["name_wasp"] = d["hostname"].str.startswith("WASP-")
+        k = d["hostname"] if legacy else d["source_id"].astype("Int64")
+        d["facility"] = k.map(fac).fillna("").map(facility_label)
+        d["name_wasp"] = (d["hostname"] if legacy else d["archive_name_2019"]).astype(str).str.startswith("WASP-")
     return stages
 
 

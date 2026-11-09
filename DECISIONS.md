@@ -1377,3 +1377,73 @@ run; none changes what the pre-registration specifies).
   - **(iii) EBLMs:** σ_W 15.14 km/s (CI [12.21, 17.84]) vs matched field 18.19. Δ −3.06, CI [−5.99, −0.36]. The CI
     excludes 0, so this is reported as an exploratory finding: in σ_W alone, the EBLM primaries look colder than
     their field. That is not seen in their total dispersion (B of the frozen EBLM pre-registration).
+
+## WASP membership join fault (2026-11-09; metadata only, no velocity or dispersion computed)
+
+**E32. Audit of name-based joins and the fix of the WASP join.**
+- **Found:** while writing `notes/cuts_and_choices.md` (898b81a).
+  - `hu2026_checks.wasp_hosts` mapped the archive `disc_facility` onto the Table 1 hosts by `hostname`.
+  - For Table 1 rows, `hostname` is HS19's **SimbadName** (`hosts.table1_hosts`), but the facility table is keyed by
+    the **archive** host name.
+- **Audit of every join by host or star name in `src/`** (row counts from the Phase 1 tables; Table 1: 338 after
+  cuts 1–4, 297 final):
+
+  | Join | Key | SIMBAD-vs-archive risk | Rows affected |
+  |---|---|---|---|
+  | SIMBAD IDs → host list (`hosts.py:138`) | the queried name itself | none: the cache's `hostname` is the query string (337/337 Table 1 rows identical) | 0 |
+  | Table 1 → archive host columns (RV, `gaia_dr2_id`, ra/dec) (`hosts.py:194-195`) | HS19 ArchiveName vs today's archive `hostname` | yes, if the archive renamed a host | **1:** "CoRoTID 223977153" is now CoRoT-32, so it got no archive columns. Today's CoRoT-32 has no `st_radv` and no DR2 RV, so its outcome (no RV, not in the 297) is unchanged. All 297 final hosts have their archive row. |
+  | Long-period minus HJ hosts (`hosts.py:66-68`, variant only) | archive `hostname` on both sides | none | 0 |
+  | **WASP facility (`hu2026_checks.py`, old lines 127/145)** | SimbadName vs archive `hostname` | **yes** | **10 after cuts 1–4, 9 on the MS, 9 in the final 297** (WASP-153 fails the MS cut) |
+  | WASP name test `name_wasp` (old line 146) | SimbadName | yes | the same 9 |
+  | WASP labels → final table (`wasp_kinematics.py:143`) | `hostname`, both sides from the same CSV, `validate="one_to_one"` | none | 0 |
+  | Hemisphere labels (`notes/wasp_hemisphere_labels.csv`, E22; built outside `src/`) | archive name, from the 98-host list | the 9 are **missing** (not mislabelled) | 9; not used by any test (WASP-South-only dropped, E22) |
+  | DR3 RV fill (`hosts.py:200-238`), EBLM DR2→DR3 | `source_id` (`gaiadr3.dr2_neighbourhood`) | none | 0 |
+  | Table 1 ∩ archive list (`phase1.py:100-103`) | `source_id` | none (HATS-67's wrong star is by design, D6b) | 0 |
+  | EBLM IV tables, γ fits, `eblm_kinematics`, `eblm_compare`, `gamma_summary` (internal) | EBLM IV names, all parsed from the same paper; CORALIE files by coordinates (30″) | none | 0 |
+  | Published γ compilation (`gamma_summary.py:119-120`) | names assigned by the compilation | a false name match is possible; not SIMBAD vs archive | 1 known (WASP-30 ≠ J2353-10), already EXCLUDED (D6) |
+  | `pipeline.monte_carlo` host names | labels in the unmatched-host report only | none | 0 |
+
+- **Fix:**
+  - `wasp_hosts(cfg, join="source_id")` is now the default. Facilities are grouped by the archive's `gaia_dr2_id`
+    (`facility_map`) and matched to the host's Gaia DR2 `source_id`. The name test uses HS19's ArchiveName.
+  - Every one of the 297 final hosts has its source_id in `pscomppars.gaia_dr2_id`. For the 9, it equals the
+    archive id.
+  - `join="hostname_legacy"` reproduces the old labels (98 / 100). `wasp_kinematics.py` is pinned to it, so the
+    frozen run (E31) stays reproducible as executed.
+  - Tests: `tests/test_wasp_membership.py`.
+- **Corrected counts** (final 297):
+  - **107 WASP hosts** (98 + 9; none lost; no existing label changed). Facility labels: hemisphere not given 84,
+    South 22, North 1.
+  - Name variant 109.
+  - d < 600 pc: 106.
+  - 0.5 ≤ (BP−RP)₀ ≤ 1.5: 103 (WASP-172 has 0.46).
+  - After cuts 1–4: 115 (old 105). On the MS: 109 (old 100).
+- **Hosts added** (archive name / SimbadName / disc_facility / disc_year): WASP-70 A / TYC 5782-970-1 / SuperWASP /
+  2014; WASP-147 / TYC 6411-312-1 / SuperWASP-South / 2018; WASP-151 / EPIC 246441449 / SuperWASP-South / 2017;
+  WASP-156 / TYC 38-617-1 / SuperWASP / 2017; WASP-158 / TYC 5264-1048-1 / SuperWASP-South / 2018; WASP-161 /
+  TYC 5435-1109-1 / SuperWASP-South / 2018; WASP-168 / TYC 8103-143-1 / SuperWASP-South / 2018; WASP-172 /
+  2MASS J13174412-4714152 / SuperWASP-South / 2018; WASP-173 A / TYC 7518-468-1 / SuperWASP-South / 2018.
+  - Why: each has a WASP `disc_facility`, but its HS19 SimbadName is a catalogue designation.
+- **`disc_year ≤ 2019`:**
+  - Not in the frozen pre-registration text (section A names only `disc_facility` and the 2026-11-04 query), nor
+    in E3 or E30. It entered through the code: `wasp_hosts` reuses the Phase 1 archive HJ selection
+    (`hosts.select_planets`, which applies `hosts.disc_year_max`).
+  - It excludes **none** of the 9 (years 2014–2018). The corrected count is 107 with the year limit, without it, or
+    with every planet of the host.
+- **Not changed:**
+  - The frozen pre-registration and its results (E31).
+  - `notes/hu2026_wasp_counts.md` and `notes/hu2026_power.md` (made with the faulty list; cited by the frozen text).
+  - `notes/wasp_hemisphere_labels.csv`.
+  - Rerunning `python -m src.hu2026_checks wasp|power|contrast` now uses the corrected join and would overwrite
+    those two notes. This was not run.
+
+**E33. Draft amendment** `prereg_drafts/DRAFT_AMENDMENT_wasp_membership_2026-11-09.txt` (not frozen, no hash). It:
+- describes the fault;
+- discloses that all 98-host results have been seen;
+- changes only the join (107 hosts);
+- reruns every pre-registered test (B, C, D1–D6, E), reusing the membership-independent EBLM parts;
+- keeps the original results as reported.
+
+Open choices for the user: Q1 the disc_year statement (no effect); Q2 which run is the headline, and what to say if
+the cases differ; Q3 new Monte Carlo labels; Q4 ArchiveName for D1; Q5 recompute field-only power for 107; Q6 Stage E
+notes and hemisphere labels; Q7 scope. **Stopped here:** nothing in the amendment has been run.

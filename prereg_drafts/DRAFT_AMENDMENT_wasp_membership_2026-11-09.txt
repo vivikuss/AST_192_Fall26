@@ -1,0 +1,111 @@
+DRAFT amendment 1 to PREREG_wasp_kinematics_2026-11-04.txt (WASP membership join), project 08
+Status: DRAFT for user review, 2026-11-09. Not frozen, no hash. Nothing in this amendment has been run.
+Amends: PREREG_wasp_kinematics_2026-11-04.txt (sha256 fece9b6608624c8213d1fb5fa96a6223bc07f5328adf820bd133db4a3490ecc4).
+The frozen file is not edited. On approval this text is frozen at the repository root as
+PREREG_wasp_kinematics_amendment1_<date>.txt with a .sha256 (convention E6).
+Evidence: DECISIONS.md E32-E33; notes/cuts_and_choices.md (W2).
+
+1. What went wrong.
+   - Section A defines the WASP hosts as the Phase 1 primary sample (297) "restricted to hosts whose hot
+     Jupiter has a WASP facility in the NASA Exoplanet Archive disc_facility". It gives 98 hosts.
+   - The code (src/hu2026_checks.py wasp_hosts, as of commit 898b81a) attached the facility by host
+     name. For HS19 Table 1 rows, the name column holds HS19's SimbadName, but the facility table is keyed
+     by the archive's host name. A host whose SimbadName is a catalogue designation therefore got no
+     label, even though its hot Jupiter is a WASP discovery. The name-based variant (D1) had the same
+     fault.
+   - Nine hosts in the 297 were affected. Matched on the Gaia DR2 source_id instead, they are:
+
+     | Archive name | HS19 SimbadName | disc_facility | disc_year |
+     |---|---|---|---|
+     | WASP-70 A | TYC 5782-970-1 | SuperWASP | 2014 |
+     | WASP-147 | TYC 6411-312-1 | SuperWASP-South | 2018 |
+     | WASP-151 | EPIC 246441449 | SuperWASP-South | 2017 |
+     | WASP-156 | TYC 38-617-1 | SuperWASP | 2017 |
+     | WASP-158 | TYC 5264-1048-1 | SuperWASP-South | 2018 |
+     | WASP-161 | TYC 5435-1109-1 | SuperWASP-South | 2018 |
+     | WASP-168 | TYC 8103-143-1 | SuperWASP-South | 2018 |
+     | WASP-172 | 2MASS J13174412-4714152 | SuperWASP-South | 2018 |
+     | WASP-173 A | TYC 7518-468-1 | SuperWASP-South | 2018 |
+
+   - For all nine, the HS19 Table 1 source_id equals the archive's gaia_dr2_id. No host leaves the sample,
+     and no existing label changes.
+   - The fault was found on 2026-11-09, while documenting the pipeline's choices. That was after the
+     frozen analysis had been run.
+
+2. Disclosure: what has already been seen.
+   - All results of the frozen analysis with the 98-host membership (DECISIONS E31,
+     data/processed/wasp/results.json, 2026-11-04):
+     - B: Δ_W = −5.81 km/s, 95 % CI [−9.69, −2.09], case 1.
+     - C: +6.31 km/s, CI [+0.58, +12.02].
+     - D1-D6: every B variant case 1; all C variants have the whole CI > 0 except D6 ([−0.11, +11.20]).
+     - E: (i) −0.64 [−4.95, +3.30]; (ii) −2.42 [−7.32, +2.53]; (iii) EBLMs −3.06 [−5.99, −0.36].
+   - For the nine added hosts: Gaia DR2 metadata only (distance, (BP−RP)₀, declination), plus archive
+     facility and year. These were seen during the audit.
+   - Not computed: any velocity-based statistic of the nine hosts, or of the corrected 107-host sample.
+     Their UVW sit in the Phase 1 host table and enter the Phase 1 primary (297-host) result, which was
+     known before the original freeze.
+
+3. The only change.
+   - WASP membership is assigned by matching the host's Gaia DR2 source_id to the archive's gaia_dr2_id
+     (code: wasp_hosts(cfg, join="source_id")).
+   - The facility test, the planets considered (the archive hot-Jupiter selection used by the frozen run)
+     and everything else in sections A-E are unchanged. Corrected counts:
+
+     | Sample | Frozen run | Corrected |
+     |---|---|---|
+     | A / B: WASP hosts (disc_facility) | 98 | **107** |
+     | D1: plus a name starting "WASP-" (HS19 ArchiveName) | 100 | 109 (adds WASP-53, WASP-81, as before) |
+     | D3: d < 600 pc (WASP hosts / EBLMs) | 97 / 71 | 106 / 71 |
+     | D4: 0.5 ≤ (BP−RP)₀ ≤ 1.5 (WASP hosts / EBLMs) | 95 / 76 | 103 / 76 (WASP-172, (BP−RP)₀ = 0.46, falls outside) |
+     | Facility label: hemisphere not given / South / North | 82 / 15 / 1 | 84 / 22 / 1 |
+
+   - The EBLM half (79 EBLMs, D2 field, z + distance matching, control median 41.77 km/s) does not depend
+     on WASP membership and is reused unchanged.
+
+4. What is rerun. Every pre-registered test with the corrected membership: B; C; D1-D6; E(i)-(iii).
+   - D6 (C without J1500-33) and E(ii) contain the WASP half, so they are rerun.
+   - E(iii) (EBLMs alone) and the EBLM references of D3-D6 do not depend on membership. They are taken
+     from the frozen run, and the results file states that they are reused.
+   - Settings exactly as frozen: 40,000 control samples and 40,000 bootstrap resamples (5,000 + 5,000
+     for D); percentile interval, BCa only by the bias rule; δ_HS19 = −6.64 km/s; the six-case rule.
+   - Seeds follow D19 with new labels (open choice Q3).
+
+5. Reporting.
+   - The frozen-run results (98 hosts) stay as reported (E31). They are labelled "frozen run; membership
+     join fault (amendment 1)". They are not deleted, overwritten or re-labelled as wrong conclusions.
+   - The corrected results (107 hosts) are reported next to them as "amendment 1".
+   - Which of the two is the headline is open choice Q2.
+
+6. Open choices for the user (to settle before freezing).
+   Q1. disc_year ≤ 2019 in the membership definition.
+       - Neither the frozen text (section A) nor DECISIONS E3/E30 mention it. It entered through the
+         code: membership reused the Phase 1 archive hot-Jupiter selection (P < 10 d,
+         Mp sin i > 0.1 MJup, disc_year ≤ 2019).
+       - Effect: none. It excludes none of the nine (discovery years 2014-2018). The corrected count is
+         107 whether the year limit is kept, dropped, or every planet of the host is used.
+       - Proposal: state the selection explicitly in this amendment, with a note that it does not change
+         the membership.
+   Q2. Headline after the amendment.
+       - (a) Corrected 107-host result as the primary, frozen 98-host result kept as reported.
+         Recommended: 107 is what section A defines.
+       - (b) Frozen result stays primary; corrected one is a labelled correction.
+       - Also: what is said if the two runs fall in different decision cases. Proposal: report both cases
+         and make no claim beyond what both support.
+   Q3. Monte Carlo labels / seeds.
+       - New labels (e.g. `wasp_a1_primary`, `wasp_a1_D1` …) give new D19 streams. Recommended.
+       - Alternatively reuse the frozen labels. The control samples would still differ, because the host
+         list changes.
+   Q4. Name-based variant D1: HS19's ArchiveName as the name (109 hosts). Recommended, since the SimbadName
+       is not a WASP name for the nine.
+   Q5. Stated power.
+       - The frozen power (0.81 for 98 hosts; contrast 0.42) was computed with the faulty list.
+       - Options: (a) keep it, noting 107 hosts can only raise it slightly; (b) recompute the field-only
+         power for 107 (field velocities only, as E4) before the rerun.
+       - Recommended: (b), for consistency with the original procedure.
+   Q6. Stage E notes. notes/hu2026_wasp_counts.md and notes/hu2026_power.md were produced with the faulty
+       list and are cited by the frozen text.
+       - Proposal: leave them unchanged, and add a dated corrected-counts note.
+       - Also: wasp_hemisphere_labels.csv lacks the nine. No pre-registered test uses it, because the
+         WASP-South-only test was dropped. Leave as is unless the user wants them labelled.
+   Q7. Scope check. This amendment fixes only the join. Other choices listed in notes/cuts_and_choices.md
+       (Phase 1 host RVs, MS cut, etc.) are not reopened here.

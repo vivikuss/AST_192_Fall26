@@ -172,7 +172,7 @@ addresses.
 WASP primary result (logged): σ_WASP 37.23, control median 43.04, Δ_W −5.81 [−9.69, −2.09], case 1;
 contrast +6.31 [+0.58, +12.02] (`logs/wasp_kinematics.log`).
 
-> **⚠ Membership join (found while writing this note; not fixed; nothing recomputed).**
+> **⚠ Membership join (found while writing this note). Update 2026-11-09: fixed in code (source_id join, 107 hosts; DECISIONS E32); the frozen run stays pinned to the old join; amendment drafted (E33), not run.**
 > In W2 the facility is looked up by `hostname` (`src/hu2026_checks.py:145`). For Table 1 rows,
 > `hostname` is **HS19's SimbadName** (`src/hosts.py:193`), but the facility table is keyed by the
 > **archive** hostname (`src/hu2026_checks.py:127`). Of the 297 final hosts, 36 have a SimbadName
