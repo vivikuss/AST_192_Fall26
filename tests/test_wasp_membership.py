@@ -38,3 +38,28 @@ def test_facility_label():
     assert facility_label("SuperWASP-South; WASP-South") == "WASP-South"
     assert facility_label("SuperWASP") == "SuperWASP (hemisphere not given)"
     assert facility_label("HATNet") is None
+
+
+def test_protected_stage_e_outputs_cannot_be_overwritten():
+    import sys
+    from src import hu2026_checks as hc
+    before = {p: p.read_bytes() for p in hc.PROTECTED if p.exists()}
+    for p in hc.PROTECTED:
+        try:
+            hc._write(p, "x")
+        except RuntimeError:
+            pass
+        else:
+            raise AssertionError(f"{p} was writable")
+    argv = sys.argv
+    for cmd in ("wasp", "power", "contrast"):
+        sys.argv = ["hu2026_checks", cmd]
+        try:
+            hc.main()
+        except SystemExit:
+            pass
+        else:
+            raise AssertionError(cmd)
+        finally:
+            sys.argv = argv
+    assert all(p.read_bytes() == b for p, b in before.items())

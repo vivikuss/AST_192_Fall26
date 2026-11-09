@@ -6,6 +6,10 @@ plus field-star velocities for the power estimate.
     python -m src.hu2026_checks wasp     # task 3: WASP-discovered hosts in the HS19 sample
     python -m src.hu2026_checks power    # task 4: power of a WASP-only test (field velocities only)
     python -m src.hu2026_checks contrast # task 4: WASP vs EBLM power (after power; field velocities only)
+    python -m src.hu2026_checks power_a1 # amendment 1: field-only power for the corrected 107 WASP hosts
+
+wasp / power / contrast are disabled: their outputs (notes/hu2026_wasp_counts.md, notes/hu2026_power.md and
+the matching JSON) were made with the faulty host list and are protected (DECISIONS E32, E35).
 
 Aggregates -> data/processed/hu2026/*.json and notes/hu2026_*.md (counts only, no per-star rows).
 """
@@ -31,9 +35,23 @@ HS19_RATIO = 36.18 / 42.82         # Phase 1: HJ hosts / matched-field median (m
 N_ITER = 10000
 
 
+# Outputs made with the faulty WASP host list (hostname join, DECISIONS E32). They are cited by the
+# frozen WASP pre-registration and must not be overwritten (DECISIONS E35; amendment 1, Q6).
+PROTECTED = {NOTES / "hu2026_wasp_counts.md", NOTES / "hu2026_power.md",
+             OUT / "wasp_counts.json", OUT / "power.json"}
+
+
+def _write(path, text):
+    """Write an output file, refusing the protected Stage E outputs."""
+    if path in PROTECTED:
+        raise RuntimeError(f"{path.relative_to(ROOT)} was made with the faulty WASP host list (DECISIONS E32) and "
+                           "is protected (E35). Use `python -m src.hu2026_checks power_a1` for the corrected list.")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(text)
+
+
 def _save(name, obj):
-    OUT.mkdir(parents=True, exist_ok=True)
-    (OUT / f"{name}.json").write_text(json.dumps(obj, indent=1, default=float))
+    _write(OUT / f"{name}.json", json.dumps(obj, indent=1, default=float))
 
 
 def _flags(d):
@@ -102,7 +120,7 @@ def eblm(cfg):
            f"{extra['dist_pc_79']['p10']:.0f}-{extra['dist_pc_79']['p90']:.0f} pc, max {extra['dist_pc_79']['max']:.0f} pc.",
            ""]
     NOTES.mkdir(exist_ok=True)
-    (NOTES / "hu2026_eblm_cuts.md").write_text("\n".join(md))
+    _write(NOTES / "hu2026_eblm_cuts.md", "\n".join(md))
     print("\n".join(md))
 
 
@@ -212,7 +230,7 @@ def wasp(cfg):
                f"Dec < −15° {h['dec<-15']}.", ""]
     _save("wasp_counts", res)
     NOTES.mkdir(exist_ok=True)
-    (NOTES / "hu2026_wasp_counts.md").write_text("\n".join(md))
+    _write(NOTES / "hu2026_wasp_counts.md", "\n".join(md))
     print("\n".join(md))
     return stages
 
@@ -370,7 +388,7 @@ def _power_md(res):
         md += ["", f"EBLM control (79, z + distance): total median {k['eblm']['total_median']:.2f}, SD "
                f"{k['eblm']['total_sd']:.2f} km/s; σ_W median {k['eblm']['sigmaW_median']:.2f}, SD "
                f"{k['eblm']['sigmaW_sd']:.2f} km/s (field velocities only).", ""]
-    (NOTES / "hu2026_power.md").write_text("\n".join(md))
+    _write(NOTES / "hu2026_power.md", "\n".join(md))
     print("\n".join(md))
 
 
@@ -409,9 +427,107 @@ def contrast(cfg):
     _power_md(res)
 
 
+def power_amendment1(cfg):
+    """Field-only power for the corrected WASP membership (107 hosts; amendment 1, Q5; DECISIONS E35).
+
+    Same method as E4 / run_power arms (a) and (b) and contrast(), with new labels (new seed streams).
+    No host or EBLM velocity is used. Arm (c) (Hu et al. matching) was removed from the
+    pre-registration (E8) and is not computed. Also recomputes the 98-host legacy set with the
+    original E4 labels as a reproduction check. Writes power_amendment1.json and
+    notes/wasp_amendment1_power.md (new files; the protected Stage E outputs are not touched).
+    """
+    from scipy.stats import norm
+    fld = field_with_positions(cfg)
+    res = {"hs19_ratio": HS19_RATIO, "n_iter": N_ITER, "field_n": len(fld),
+           "method": "field velocities only; host statistic under H1 = ratio x control statistic"}
+    F = "final (MS with RV; Phase 1 primary)"
+    jobs = []
+    for join, tag in (("source_id", "a1"), ("hostname_legacy", "legacy")):
+        fin = wasp_hosts(cfg, join=join)[F]
+        f = _flags(fin)
+        w = fin["facility"].notna()
+        n = int(w.sum())
+        if tag == "a1":
+            jobs += [(f"corrected: WASP ({n}), all distances", fin[w.to_numpy()], f"a1_pow_hs19_all"),
+                     (f"corrected: WASP ({int((w & f['d600']).sum())}), d < 600 pc",
+                      fin[(w & f["d600"]).to_numpy()], "a1_pow_hs19_d600")]
+        else:                                    # E4 labels, to reproduce the frozen power numbers
+            jobs += [(f"check, legacy list: WASP ({n}), all distances", fin[w.to_numpy()],
+                      "hu_pow_hs19_WASP, all distances")]
+    for name, h, label in jobs:
+        h = h.reset_index(drop=True)
+        a = controls_hs19(h, fld, cfg, label)
+        res[name] = {"n_hosts": len(h), "label": label,
+                     "a_total_hs19_matching": summarize(a["total"]),
+                     "b_sigmaW_hs19_matching": summarize(a["sigma_W"]),
+                     "hs19_unmatched_host_iterations": a["unmatched_host_iterations"]}
+        print(name, json.dumps(res[name], default=float), flush=True)
+    # contrast: EBLM field-control widths (79, z + distance, D2 field), new label
+    e = pd.read_csv(ROOT / "data" / "processed" / "eblm" / "eblm4_sample.csv",
+                    usecols=["source_id", "bp_rp0", "z", "dist_pc"])
+    f2 = pd.read_csv(config.out_dir(cfg) / "field_ms.csv.gz")
+    ids = set(pd.read_csv(ROOT / "data" / "eblm" / "targets_eblm4.csv")["source_id"].dropna().astype(np.int64))
+    f2 = f2[~f2["source_id"].isin(ids)].reset_index(drop=True)
+    hh = e.copy()
+    hh["U"] = hh["V"] = hh["W"] = 0.0
+    s = matching.ControlSampler(hh, f2, cfg, match_vars=["z", "dist_pc"])
+    rng = np.random.default_rng(np.random.SeedSequence([cfg["seed"], sum(map(ord, "a1_contrast_eblm"))]))
+    tot, sw = np.empty(N_ITER), np.empty(N_ITER)
+    for i in range(N_ITER):
+        p = s.control(rng)
+        p = p[p >= 0]
+        tot[i], sw[i] = (x[()] for x in _stats(s.fU[p], s.fV[p], s.fW[p]))
+    eb = {"n": len(e), "label": "a1_contrast_eblm", "total_median": float(np.median(tot)),
+          "total_sd": float(np.std(tot, ddof=1)), "sigmaW_median": float(np.median(sw)),
+          "sigmaW_sd": float(np.std(sw, ddof=1))}
+    rows = []
+    for name in [k for k in res if isinstance(res[k], dict) and "n_hosts" in res[k]]:
+        for stat, key, sde in (("total (eq. 1)", "a_total_hs19_matching", eb["total_sd"]),
+                               ("sigma_W", "b_sigmaW_hs19_matching", eb["sigmaW_sd"])):
+            w = res[name][key]
+            sdd = float(np.hypot(w["sd_kms"], sde))
+            delta = (1 - HS19_RATIO) * w["median_kms"]
+            rows.append({"sample": name, "stat": stat, "sd_wasp": w["sd_kms"], "sd_eblm": sde, "sd_diff": sdd,
+                         "delta": delta, "power": float(norm.cdf(delta / sdd - 1.96) + norm.cdf(-delta / sdd - 1.96)),
+                         "mdd": (1.96 + 0.8416) * sdd})
+    res["contrast"] = {"eblm": eb, "rows": rows}
+    _save("power_amendment1", res)
+    md = ["# Field-only power for the corrected WASP membership (amendment 1, Q5)", "",
+          "Generated by `python -m src.hu2026_checks power_a1` (DECISIONS E35). Method as E4 (`notes/hu2026_power.md`):",
+          "field velocities only; under H1 the host statistic is distributed as 0.845 × the control statistic",
+          f"(Phase 1: 36.18 / 42.82 km/s); two-sided 5 %; {N_ITER:,} control samples per row; HS19-style z + colour",
+          "matching. The contrast uses the normal approximation with the EBLMs' field-control SD (79, z + distance,",
+          "D2 field). No host or EBLM velocity is used. The \"check\" row recomputes the faulty 98-host list with",
+          "the original E4 label and should reproduce the frozen numbers.", "",
+          "| Sample | N | Arm | Control median (km/s) | Control SD | HS19-sized offset (km/s) | Power | MDD 80 % (km/s) |",
+          "|---|---|---|---|---|---|---|---|"]
+    for name, r in res.items():
+        if isinstance(r, dict) and "n_hosts" in r:
+            for k, lab in (("a_total_hs19_matching", "total (eq. 1)"), ("b_sigmaW_hs19_matching", "σ_W")):
+                q = r[k]
+                md.append(f"| {name} | {r['n_hosts']} | {lab} | {q['median_kms']:.2f} | {q['sd_kms']:.2f} | "
+                          f"{q['offset_hs19_ratio_kms']:.2f} | {q['power_hs19_ratio']:.2f} | {q['mdd_80pct_kms']:.2f} |")
+    md += ["", "## Contrast (WASP hosts vs EBLM primaries)", "",
+           "| WASP sample | Statistic | SD WASP | SD EBLM | SD diff | Expected difference (km/s) | Power | MDD 80 % (km/s) |",
+           "|---|---|---|---|---|---|---|---|"]
+    md += [f"| {r['sample']} | {r['stat']} | {r['sd_wasp']:.2f} | {r['sd_eblm']:.2f} | {r['sd_diff']:.2f} | "
+           f"{r['delta']:.2f} | {r['power']:.2f} | {r['mdd']:.2f} |" for r in rows]
+    md += ["", f"EBLM control (79, z + distance; label `a1_contrast_eblm`): total median {eb['total_median']:.2f}, "
+           f"SD {eb['total_sd']:.2f} km/s; σ_W median {eb['sigmaW_median']:.2f}, SD {eb['sigmaW_sd']:.2f} km/s.", ""]
+    _write(NOTES / "wasp_amendment1_power.md", "\n".join(md))
+    print("\n".join(md))
+    return res
+
+
 def main():
     cfg = config.load()
-    what = sys.argv[1:] or ["eblm", "wasp", "power"]
+    what = sys.argv[1:] or ["eblm"]          # wasp/power/contrast are protected (E35)
+    if {"wasp", "power", "contrast"} & set(what):
+        raise SystemExit("hu2026_checks wasp/power/contrast write outputs made with the faulty WASP host list, which "
+                         "are protected (DECISIONS E32, E35). Use `power_a1` for the corrected list.")
+    if "power_a1" in what:
+        power_amendment1(cfg)
+        return
     stages = None
     if "eblm" in what:
         eblm(cfg)

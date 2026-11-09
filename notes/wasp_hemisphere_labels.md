@@ -1,3 +1,5 @@
+> **Header added 2026-11-09 (DECISIONS E35).** This file was made with the faulty WASP host list: the hostname join missed 9 WASP hosts (98 instead of 107; DECISIONS E32). It is kept unchanged as the record cited by the frozen pre-registration. See `prereg_drafts/DRAFT_AMENDMENT_wasp_membership_2026-11-09.txt` (amendment 1); the 9 added hosts have no label here.
+
 # Discovery-camera labels for the 98 WASP hosts (DECISIONS E22)
 
 `wasp_hemisphere_labels.csv` lists one row per host:

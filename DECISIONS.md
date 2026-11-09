@@ -1447,3 +1447,56 @@ run; none changes what the pre-registration specifies).
 Open choices for the user: Q1 the disc_year statement (no effect); Q2 which run is the headline, and what to say if
 the cases differ; Q3 new Monte Carlo labels; Q4 ArchiveName for D1; Q5 recompute field-only power for 107; Q6 Stage E
 notes and hemisphere labels; Q7 scope. **Stopped here:** nothing in the amendment has been run.
+
+### Amendment 1 finalized as a draft (user decisions, 2026-11-09; not frozen, nothing in the rerun run)
+**E34. User answers Q1–Q7, written into the draft as revision 2**
+(`prereg_drafts/DRAFT_AMENDMENT_wasp_membership_2026-11-09.txt`):
+- **Q1:** the planet selection behind membership is stated explicitly, including `disc_year ≤ 2019`. It excludes
+  none of the 107 hosts.
+- **Q2:** the 107-host run is the headline, and the 98-host run is reported alongside as the original. If the two
+  runs land in different decision cases, the 107 case is reported as the result, with a plain statement that the
+  conclusion depends on the 9 added hosts.
+- **Q3:** new Monte Carlo and bootstrap labels (`wasp_a1_*`), listed in the draft (section 5) with the D19 seed
+  scheme.
+  - The EBLM-half references are reused from the frozen run (`eblm_primary`, `eblm_wD3`–`wD6`, `wasp_E_E`,
+    `wasp_Eiii`).
+  - The EBLM bootstrap inside each contrast is redrawn under the new `_E` labels.
+  - No two labels in the project share a character-code sum (checked).
+- **Q4:** the name-based variant D1 uses HS19's ArchiveName: 109 hosts.
+- **Q5:** field-only power recomputed for 107 hosts (E35); the numbers are in draft section 7.
+- **Q6:** the Stage E notes and hemisphere labels are unchanged apart from a header, and `hu2026_checks` cannot
+  overwrite them (E35).
+- **Q7:** the amendment changes only the join and what follows from it (draft sections 3–9).
+- Results of the rerun will go to new files (`data/processed/wasp_amendment1/`).
+
+**E35. Field-only power for 107 hosts, and protection of the Stage E outputs.**
+- **New command** `python -m src.hu2026_checks power_a1` (`power_amendment1`). Field velocities only, the E4
+  method: HS19-style z + colour matching, 10,000 controls, ratio 0.845, two-sided 5 %; contrast by the normal
+  approximation.
+  - New labels: `a1_pow_hs19_all`, `a1_pow_hs19_d600`, `a1_contrast_eblm`.
+  - Outputs: `notes/wasp_amendment1_power.md`, `data/processed/hu2026/power_amendment1.json`,
+    `logs/wasp_amendment1_power.log`.
+  - Run 2026-11-09, exit 0.
+- **Reproduction check:** the faulty 98-host list with the original E4 label gives exactly the frozen numbers:
+  power 0.81 (control SD 2.55), σ_W 0.36, contrast 0.42.
+- **107 hosts:**
+
+  | Arm | Power | Detail |
+  |---|---|---|
+  | Total, WASP vs field | **0.85** | control median 43.11, SD 2.46; smallest offset at 80 % power 6.25 km/s |
+  | Contrast, total | **0.43** | 10.53 km/s |
+  | σ_W | **0.38** | median 19.07, SD 2.07 |
+  | σ_W contrast | **0.16** | – |
+
+  - d < 600 pc (106): 0.84 / 0.42 / 0.37 / 0.16.
+  - EBLM field-control SD under the new label: 2.85 (total), 2.32 (σ_W), against 2.79 / 2.29 in E4. This is Monte
+    Carlo noise.
+- **Protection:**
+  - `hu2026_checks._write` refuses `notes/hu2026_wasp_counts.md`, `notes/hu2026_power.md`,
+    `data/processed/hu2026/wasp_counts.json` and `power.json` (`PROTECTED`).
+  - The `wasp`, `power` and `contrast` commands exit with a message. The default command is now `eblm` only.
+  - Test: `test_protected_stage_e_outputs_cannot_be_overwritten`.
+- **Headers** (dated, pointing to amendment 1, saying the faulty list was used) were added to
+  `notes/hu2026_wasp_counts.md`, `notes/hu2026_power.md` and `notes/wasp_hemisphere_labels.md`. The `.csv` got a
+  leading `#` comment line; read it with `comment="#"`; still 98 rows. No other content changed.
+- **Stopped:** the amendment is not frozen, and none of its rerun has been run.
