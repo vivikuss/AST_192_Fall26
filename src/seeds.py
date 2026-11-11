@@ -77,7 +77,9 @@ for _k in ["wasp_a1_C"] + [f"wasp_a1_D{_i}C" for _i in range(1, 7)] + ["wasp_a1_
 # primary ported to DR3): control chunks 0-7 and bootstrap tail 99, as the frozen test B.
 DR3X_PREFIX = "dr3x_"
 DR3X = {"dr3x_A_val_hs19": ((),), "dr3x_A_val_tess": ((),), "dr3x_A_wasp": ((),),
-        "dr3x_B_wasp": CHUNKS + (99,)}
+        "dr3x_B_wasp": CHUNKS + (99,),
+        # Stage 2 comparison line (E56): frozen test B on DR2 data for exactly the 101 Method B survivors
+        "dr3x_B_dr2match": CHUNKS + (99,)}
 
 REGISTRY = _reg()
 REGISTRY.update(DR3X)

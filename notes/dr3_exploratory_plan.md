@@ -96,6 +96,7 @@ Stage 1.
 | `dr3x_A_val_tess` | () | Method A validation, TESS d < 600 |
 | `dr3x_A_wasp` | () | Method A, WASP (Stage 2) |
 | `dr3x_B_wasp` | chunks 0–7, 99 | Method B, WASP control samples and bootstrap (Stage 2) |
+| `dr3x_B_dr2match` | chunks 0–7, 99 | Stage 2 comparison line: frozen test B on DR2 data for the 101 Method B survivors (§3.6) |
 
 The derivation is unchanged (D19). The registry-wide tests pass: no shared stream, and no new code shared with
 any label.
@@ -188,6 +189,18 @@ any label.
 - **Download started 2026-11-11, detached,** sequential (one job at a time). It is resumable: rerun
   `python -m src.dr3x_field_b download` and finished leaves are kept.
 
+### 3.6 Exploratory comparison line: the same stars in DR2 (Stage 2; user request, E56)
+
+- **What:** the frozen DR2 primary method (test B) run **on DR2 data** for exactly the **101 hosts that survive
+  Method B** (E55). A DR2-vs-DR3 difference then compares the same stars, separating the change of data release
+  from the change of sample.
+- **Unchanged from frozen test B:** Gaia DR2, BJ18, STILISM, MS, z + colour matching, eq. 1, 40,000 control
+  samples, 40,000-resample percentile bootstrap, Phase 1 field.
+- **Hosts:** the 101 Method B survivors, identified by their DR2 source_ids (E48), with their frozen Phase 1
+  DR2 rows.
+- **Seed label:** `dr3x_B_dr2match`. **The output is labelled EXPLORATORY.**
+- **Not run in Stage 1.** It belongs to Stage 2.
+
 ## 4. Outputs
 
 - Results go under `data/processed/dr3_exploratory/` (gitignored).
@@ -213,3 +226,14 @@ any label.
 
 **Still open:** the Bayestar19 web service is down (E54). Method A extinction for hosts without GSP-Phot, and
 the validation, wait for it, or for a new instruction from the user.
+
+## 6. Follow-up instructions (2026-11-11, DECISIONS E56)
+
+- **Bayestar19:** wait.
+  - When the Method B field download finishes, retry the web query **once**.
+  - If it is still down: check the size of the full bayestar2019 file on Harvard Dataverse and the free disk
+    space, and **report before downloading anything**.
+  - **The validation and Stage 2 are not run while the 6 hosts are pending.**
+- **Comparison line:** §3.6 (`dr3x_B_dr2match`; Stage 2).
+- **Software environment:** future package installs go in a **separate virtual environment**, not the main
+  `ast192-hj` environment (after the numpy change of E54).

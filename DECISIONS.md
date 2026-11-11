@@ -2139,7 +2139,7 @@ pre-registered as confirmatory.**
 - **Already known before any computation:**
   - Hu et al. (2026) published WASP hosts with d < 600 pc: σ_W = 17.7 km/s vs field 18.4 km/s (102 hosts).
   - **Kayla's WASP DR3 output: the user has not seen her WASP DR3 numbers, tables or figures.** But her Slack
-    message of [YYYY-MM-DD] states that her host σ_W matches Hu et al. to ≤ 0.1 km/s in every subsample,
+    message of 2026-11-11 states that her host σ_W matches Hu et al. to ≤ 0.1 km/s in every subsample,
     which includes WASP d < 600 (Hu: 17.7 vs 18.4, 102 hosts).
   - The same message reported, for non-WASP samples:
     - HS19 full sample σ_W 15.8 vs field 18.8 (this sample contains WASP hosts);
@@ -2256,3 +2256,19 @@ exists and where it comes from.**
 - **Not run:** the Method A extinction for the 6 pending hosts, and the validation (HS19-all, TESS d<600).
   Both need Bayestar19, and its web service failed: STOP (E54).
 - **Field download** (Method B, pid 47363): still running at the time of this entry. It is left to finish.
+
+**E56. DR3 EXPLORATORY follow-up instructions** (user, 2026-11-11).
+1. **E52:** the date of Kayla's Slack message is **2026-11-11**. It replaces "[YYYY-MM-DD]" (the user gave the
+   date as "11/11/26").
+2. **Bayestar19: wait.**
+   - When the Method B field download finishes, the web query is retried **once**.
+   - If it is still down, the size of the full bayestar2019 file on Harvard Dataverse and the free disk space
+     are checked and reported **before any download**.
+   - **The validation and Stage 2 are not run while the 6 hosts are pending** (E55).
+3. **New exploratory comparison line (Stage 2, not run yet):** the frozen DR2 primary method (test B) on DR2
+   data for exactly the 101 hosts that survive Method B, so that DR2 vs DR3 compares the same stars.
+   - Seed label `dr3x_B_dr2match` (chunks 0–7, 99); it shares no code with any label.
+   - Output labelled EXPLORATORY. Plan §3.6.
+4. **Software environment:** future package installs go in a **separate virtual environment**, not the main
+   `ast192-hj` environment. This follows the E54 incident, in which installing `dustmaps` replaced numpy
+   1.26.4 (since reverted).
