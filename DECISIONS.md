@@ -2139,7 +2139,7 @@ pre-registered as confirmatory.**
 - **Already known before any computation:**
   - Hu et al. (2026) published WASP hosts with d < 600 pc: σ_W = 17.7 km/s vs field 18.4 km/s (102 hosts).
   - **Kayla's WASP DR3 output: the user has not seen her WASP DR3 numbers, tables or figures.** But her Slack
-    message of [date not given] states that her host σ_W matches Hu et al. to ≤ 0.1 km/s in every subsample,
+    message of [YYYY-MM-DD] states that her host σ_W matches Hu et al. to ≤ 0.1 km/s in every subsample,
     which includes WASP d < 600 (Hu: 17.7 vs 18.4, 102 hosts).
   - The same message reported, for non-WASP samples:
     - HS19 full sample σ_W 15.8 vs field 18.8 (this sample contains WASP hosts);
@@ -2183,3 +2183,76 @@ no Gaia query was made for any WASP host.**
     Output and log in `~/data/dr3x_field_b/` (outside every repository, owner-only).
 - **Decisions needed:** listed in the plan, §5. No host kinematics are computed until the user has reviewed
   them.
+
+**E54. DR3 EXPLORATORY run: the user's decisions on the Stage 1 questions** (2026-11-11). They supersede the
+open items of E53 and `notes/dr3_exploratory_plan.md` §5.
+1. **Bayestar19:** the full map is not downloaded.
+   - Hosts without GSP-Phot extinction only are queried through the dustmaps **web** query (version
+     bayestar2019, median mode, × 0.884).
+   - Positions with no map coverage get zero, as in Kayla's method.
+   - **If the web service fails: STOP, no silent fallback.**
+2. **Validation input:** only the name and DR3-ID columns of Kayla's `hosts_hs19.csv` and `hosts_tess.csv`
+   are read, no other column. **Hu et al. Tables 2/3 were not available locally.**
+3. **Exclusions:**
+   - Method A: Kayla's close-companion exclusions are applied for the **main** Method A result; Method A
+     without them is reported as a labelled extra line.
+   - Method B: no exclusions, as frozen.
+4. **5-parameter solutions:** Method B requires `astrometric_params_solved = 31` in field and hosts, and any
+   WASP host it removes is reported. Method A has no such requirement, as in Kayla's field.
+5. **Cut 2** (`mean_varpi_factor_al`) is dropped, because it has no DR3 equivalent.
+6. **Cut 8:** the raw `phot_bp_rp_excess_factor` with 0.015 (exact port). The Riello et al. (2021) corrected
+   excess is noted as a possible later variant and is not used.
+7. **No Katz et al. (2023) RV corrections** in either method. This is a known limitation.
+8. **Distances (Method B):** Bailer-Jones et al. (2021) `r_med_geo`.
+9. **Six-case rule (Method B):** the case is reported descriptively only, labelled "for comparison only".
+10. **Archive RVs citing Gaia DR3** are still rejected (D6), and the Gaia DR3 RV is then used directly.
+- Also: in E52, "[date not given]" was replaced by "[YYYY-MM-DD]" (the date of Kayla's Slack message, to be
+  filled in).
+
+**Implementation notes, 2026-11-11:**
+- **Environment change, reverted:**
+  - Installing `dustmaps` 1.0.14 with pip pulled in `healpy` 1.20.1, and pip **replaced numpy 1.26.4 with
+    2.2.6**. The project's environment had numpy 1.26.4, per earlier sessions; `fleck` requires numpy < 2.
+  - This was reverted within minutes: numpy 1.26.4 was reinstalled, with `healpy` 1.19.0 and `dustmaps`
+    1.0.14 resolved against it. `pip check` reports no broken requirements, and all 68 tests pass.
+  - No analysis ran under numpy 2.2.6. The field download (pid 47363) had started at 14:35 under 1.26.4, before
+    the change at 14:45.
+- **Bayestar19 web service failed:**
+  - `argonaut.skymaps.info` resolves (to `argonaut.rc.fas.harvard.edu`), but the dustmaps query timed out
+    connecting. Plain HTTP and HTTPS requests also got no answer (25 s each), while ESA answered normally.
+  - Tested with arbitrary sky positions only; no host position was sent.
+  - **Per decision 1: STOP for everything that needs Bayestar19.** The Method A extinction step for hosts
+    without GSP-Phot and the validation (HS19-all, TESS d<600) were **not run**. There is no fallback.
+
+**E55. DR3 EXPLORATORY Stage 1: host step counts for the 107 WASP hosts** (2026-11-11; `src/dr3x_hosts.py`;
+output `data/processed/dr3_exploratory/host_steps_wasp107.json`, headed "EXPLORATORY — not pre-registered").
+**No velocity, dispersion or other kinematic quantity was computed. RVs were used only for whether an RV
+exists and where it comes from.**
+- **Inputs:**
+  - Gaia DR3 rows of the 107 DR3 IDs (E48), queried at ARI and joined to BJ21 `gaiaedr3_complements.distances`:
+    107 of 107 returned.
+  - 101 of the 107 have a GSP-Phot extinction pair (`ag_gspphot`, `ebpminrp_gspphot`). The other 6 are exactly
+    the 6 PENDING hosts below.
+- **Method A, main result (with Kayla's close-companion exclusions):** 107 → **99**.
+  - Close companion: −4 (WASP-70 A, WASP-94 A, WASP-94 B, WASP-173 A).
+  - No DR3 row: −0.
+  - App. A cuts 1–3: −1 (WASP-11).
+  - No RV: −0.
+  - MS + 0.5 ≤ (BP−RP)₀ ≤ 1.5: −2 (WASP-90, WASP-172), of the hosts with GSP-Phot.
+  - d = 1000/parallax < 600 pc: −1 (WASP-142).
+  - **6 hosts are PENDING at the MS step:** WASP-32, WASP-66, WASP-68, WASP-80, WASP-93, WASP-107. They have
+    no GSP-Phot, so they need Bayestar19, whose web service failed (E54). They are neither kept nor removed,
+    so the final count is between 93 and 99.
+- **Method A, extra line (without exclusions):** 107 → **103**, with the same steps and the same 6 pending
+  (between 97 and 103).
+- **Method B:** 107 → **101**.
+  - No DR3 row: −0.
+  - **`astrometric_params_solved = 31`: −5** (WASP-29, WASP-34, WASP-120, WASP-94 A, WASP-100). These are
+    5 of the 6 hosts whose DR3 source_id differs from their DR2 one (E48); the sixth, WASP-140, passes.
+  - Host cuts 1, 3, 4: −1 (WASP-11).
+  - No RV (archive under D6, else Gaia DR3): −0.
+  - No BJ21 `r_med_geo`: −0.
+  - MS (STILISM along `r_med_geo`, no colour limit): −0.
+- **Not run:** the Method A extinction for the 6 pending hosts, and the validation (HS19-all, TESS d<600).
+  Both need Bayestar19, and its web service failed: STOP (E54).
+- **Field download** (Method B, pid 47363): still running at the time of this entry. It is left to finish.

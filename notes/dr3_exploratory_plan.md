@@ -14,10 +14,11 @@ Stage 1.
 | E52 exploratory declaration | committed (7f40c4b) before any other step |
 | Seed labels `dr3x_*` | registered. The collision tests pass, and no new label shares a code with any label |
 | Method A code (`src/dr3x_method_a.py`) | written; unit tests on synthetic data only |
-| **Method A run and validation** | **STOPPED: the Bayestar19 file is missing** (nothing found under `~`; the `dustmaps` package is not installed). Per the user's rule, no zero fallback; the Gaia host query was not run either |
-| Hu et al. published host tables (validation input) | **not available locally**: no `hu2026_table2.csv` / `hu2026_table3.csv` |
+| **Method A run and validation** | **STOPPED: the Bayestar19 web service failed** (2026-11-11, E54; the user ruled out downloading the full map). Method A host steps that need no map were run (E55); hosts without GSP-Phot are PENDING |
+| Hu et al. published host tables (validation input) | not available locally. Validation uses only the name and DR3-ID columns of Kayla's `hosts_hs19.csv` / `hosts_tess.csv` (E54) |
 | Method B field code (`src/dr3x_field_b.py`) | written |
 | **Method B field download** | **started 2026-11-11 at ARI** (detached, pid 47363; log `~/data/dr3x_field_b/download.log`). The server query fixes none of the open choices (§3.1) |
+| Host step counts, 107 WASP hosts (E55) | Method A main 99 (6 pending Bayestar19), without exclusions 103 (6 pending); Method B 101 (`astrometric_params_solved = 31` removes WASP-29, -34, -120, -94 A, -100) |
 | Host kinematics | none computed |
 
 ## 1. Method A: Hu et al. (2026) as implemented by Kayla
@@ -44,8 +45,14 @@ Stage 1.
   - **else zero only where the map has no value by design**: south of dec −30° (outside the map) or closer than
     its first distance bin (d < 63 pc).
   - Each host's `ext_source` records which case applied, and the zero cases are listed by name.
-  - **A missing Bayestar19 file raises an error and is never replaced by zero.** Her script, by contrast, warns
-    and uses zero (E50).
+  - **Bayestar19 source (E54):** the full map is not downloaded. Hosts without GSP-Phot only are queried through
+    the dustmaps web query (bayestar2019, median mode, × 0.884). Positions without coverage get zero, as in
+    Kayla's method. **If the web service fails, STOP** (it did on 2026-11-11). Her script, by contrast, warns
+    and uses zero when the map file is missing (E50).
+  - Differences from her file-based reader: the web service interpolates in distance itself. It may also
+    differ in whether it takes the median of the samples before or after interpolating, and in its handling
+    of distances outside the map's range. To match her rules, we set zero below DM 4 (d < 63 pc) and query at
+    the last bin beyond it. This is to be checked against the service when it is available.
   - Note: many WASP-South hosts lie south of dec −30°. Those without GSP-Phot get zero extinction under her
     rules. The paper does this too; it is reported, not hidden.
 - **Matching and statistics:**
@@ -59,9 +66,9 @@ Stage 1.
   - A1. *Membership:* our 107 (frozen amendment 1, DR2 source_id facility join; South and North), as the user
     specified. Hers is Hu Table 2 hosts whose earliest HJ has a WASP facility, ground-transit label,
     d < 600 pc.
-  - A2. *Exclusions:* her close-companion list is **not applied**, because the user's step list does not include
-    it. Four of our 107 are on it: **WASP-70 A, WASP-94 A, WASP-94 B, WASP-173 A**. None is on her cluster or
-    extreme-G lists. **Decision needed** (§5).
+  - A2. *Exclusions (E54):* her close-companion list **is applied for the main Method A result**, and Method A
+    without it is a labelled extra line. Four of our 107 are on it: **WASP-70 A, WASP-94 A, WASP-94 B,
+    WASP-173 A**. None is on her cluster or extreme-G lists. Method B: no exclusions.
   - A3. *NEA st_radv:* taken from her `nea_pscomppars.csv` (her snapshot, date not recorded), matched on the DR3
     ID. It is the first non-null value over the host's HJ rows sorted by (disc_year, pl_name), as her pandas
     `first` does. No limit or reference filter, as in her code.
@@ -70,13 +77,12 @@ Stage 1.
   - A5. *HEALPix:* no healpy or astropy-healpix in the environment. We use our own NESTED `ang2pix`
     (Górski et al. 2005 / chealpix algorithm), tested for equal-area pixels and the parent = child // 4
     hierarchy.
-  - A6. *Bayestar19 file:* proposed location `~/data/bayestar19/bayestar2019.h5` (outside every repository).
-    Source: the official Bayestar19 release (Green et al. 2019); the download size is to be confirmed against
-    free disk space (§5).
+  - A6. *Bayestar19:* web query only (E54), not a local file. `bayestar_ebv` (file reader) stays in the code
+    for tests only.
 - **Validation, before any WASP run:**
   - Reproduce Hu et al. **TESS d < 600 pc** (100 hosts, σ_W 18.1 vs field 17.5) and **HS19-all** (282 hosts,
     15.8 vs 18.7) from their published host tables. Not run (Bayestar19 missing).
-  - **Input needed:** Hu et al. Tables 2 and 3 (name + DR3 ID). Options:
+  - **Input (E54: option b chosen):** Hu et al. Tables 2 and 3 (name + DR3 ID) were not available locally. Options were:
     - (a) take them from the paper (arXiv:2608.12790 source or journal version);
     - (b) read only the name and DR3-ID columns of Kayla's `hosts_hs19.csv` / `hosts_tess.csv`, which her
       script pins to the published tables (E50).
@@ -188,20 +194,22 @@ any label.
 - Every results file is headed **"EXPLORATORY — not pre-registered"**: JSON has a `header` key, CSV a first
   comment line.
 
-## 5. Decisions needed from the user
+## 5. User decisions (2026-11-11, DECISIONS E54)
 
-1. **Bayestar19:** download it (to `~/data/bayestar19/`; ~12 GB free) and install nothing else, or point to an
-   existing copy?
-2. **Validation input:** Hu Tables 2/3 from the paper (a), or the name and DR3-ID columns of Kayla's host
-   files (b)?
-3. **A2:** apply her close-companion exclusions (WASP-70 A, WASP-94 A, WASP-94 B, WASP-173 A) in Method A?
-4. **B1:** require 5-parameter solutions (`astrometric_params_solved = 31`) in the field and the hosts?
-5. **B2:** drop cut 2 (no DR3 equivalent)?
-6. **B3:** cut 8 on the raw excess factor with 0.015 (exact port), or on the corrected C*?
-7. **B4:** apply the Katz et al. (2023) DR3 RV corrections, to field and hosts alike?
-8. **Distance:** BJ21 `r_med_geo` (proposed) or `r_med_photogeo`?
-9. **B5:** report the six cases descriptively only?
-10. **B6:** keep rejecting archive RVs that cite Gaia DR3?
-11. **Field download:** started at ARI (≈1.8 GB expected, 12.8 GB free, stops below 4 GB). Stop it with
-    `kill 47363` if you prefer to wait for the choices above. They are all applied locally, so the download
-    does not depend on them.
+1. Bayestar19: web query (dustmaps, bayestar2019, median, × 0.884) for hosts without GSP-Phot only; no
+   coverage → zero; **service failure → STOP**.
+2. Validation: name and DR3-ID columns only of Kayla's `hosts_hs19.csv` / `hosts_tess.csv`. Hu Tables 2/3 were
+   not available locally.
+3. Method A main result with her close-companion exclusions; without them as a labelled extra line. Method B:
+   no exclusions.
+4. Method B only: `astrometric_params_solved = 31` (field and hosts); WASP hosts removed by it are reported.
+5. Cut 2 dropped (no DR3 equivalent).
+6. Cut 8: raw excess factor with 0.015. The Riello et al. (2021) corrected excess is a possible later variant,
+   not used.
+7. No Katz et al. (2023) RV corrections (known limitation).
+8. Distances: BJ21 `r_med_geo`.
+9. Six cases: descriptive only, labelled "for comparison only".
+10. Archive RVs citing Gaia DR3 still rejected; the Gaia DR3 RV is then used directly.
+
+**Still open:** the Bayestar19 web service is down (E54). Method A extinction for hosts without GSP-Phot, and
+the validation, wait for it, or for a new instruction from the user.
