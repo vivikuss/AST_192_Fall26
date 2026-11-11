@@ -1,10 +1,11 @@
 DRAFT amendment 1 to PREREG_wasp_kinematics_2026-11-04.txt (WASP membership join), project 08
-Status: DRAFT, revision 2 (user decisions Q1-Q7 written in, 2026-11-09). Not frozen, no hash. Nothing in
-the rerun (section 4) has been run.
+Status: DRAFT, revision 3 (revision 2: user decisions Q1-Q7, 2026-11-09; revision 3: review items a-h,
+2026-11-10, DECISIONS E36). Not frozen, no hash. Nothing in the rerun (section 4) has been run.
 Amends: PREREG_wasp_kinematics_2026-11-04.txt (sha256 fece9b6608624c8213d1fb5fa96a6223bc07f5328adf820bd133db4a3490ecc4).
 The frozen file is not edited. On approval this text is frozen at the repository root as
 PREREG_wasp_kinematics_amendment1_<date>.txt with a .sha256 (convention E6).
-Evidence: DECISIONS.md E32-E35; notes/cuts_and_choices.md (W2); notes/wasp_amendment1_power.md.
+Evidence: DECISIONS.md E32-E36; notes/cuts_and_choices.md (W2); notes/wasp_amendment1_power.md;
+notes/amendment1_join_audit.md.
 
 1. What went wrong.
    - Section A defines the WASP hosts as the Phase 1 primary sample (297) "restricted to hosts whose hot
@@ -60,6 +61,23 @@ Evidence: DECISIONS.md E32-E35; notes/cuts_and_choices.md (W2); notes/wasp_amend
        it, or when every planet of the host is considered.
    - **Name-based variant D1 (Q4).** The name test uses HS19's ArchiveName ("WASP-" prefix), not the
      SimbadName: **109 hosts** (107 plus WASP-53 and WASP-81, whose facility is "Multiple Facilities").
+     - Why 109 and 107 differ (notes/amendment1_join_audit.md; metadata only). The name set has two hosts the
+       source_id set lacks; the source_id set has none that the name set lacks.
+
+       | Host | DR2 source_id, source_id route | DR2 source_id, name route | Separation | G | Parallax (mas) |
+       |---|---|---|---|---|---|
+       | WASP-53 | 5136559128264765184 | 5136559128264765184 | 0″ (same source) | 12.35 | 4.938 ± 0.034 |
+       | WASP-81 | 4244243354278985472 | 4244243354278985472 | 0″ (same source) | 12.33 | 2.482 ± 0.044 |
+
+     - Class: "other". Neither is a wrong-source match, a missing source_id or a duplicate. Both routes
+       reach the same Gaia DR2 star. The archive gives their hot Jupiters the disc_facility "Multiple
+       Facilities", so the facility test (A) excludes them and the name test (D1) includes them. The
+       difference comes from the definitions, not from the join, and the 107-host sample is unaffected.
+     - Over all 297 hosts, the pipeline source_id equals the archive gaia_dr2_id reached by ArchiveName for
+       296. The exception is HATS-67 (WASP by neither route; DECISIONS D6b). No source_id is duplicated.
+     - The 98 → 107 change (section 1) is a different comparison: the 9 hosts had no facility label under
+       the SimbadName key. For each of them, both routes give the same source_id (0″), with G 10.9-12.6 and
+       a parallax.
    - The facility test and everything else in sections A-E of the frozen text are unchanged. Corrected
      counts:
 
@@ -72,18 +90,44 @@ Evidence: DECISIONS.md E32-E35; notes/cuts_and_choices.md (W2); notes/wasp_amend
      | Facility label: hemisphere not given / South / North | 82 / 15 / 1 | 84 / 22 / 1 |
 
    - The EBLM half (79 EBLMs, D2 field, z + distance matching, control median 41.77 km/s) does not depend
-     on WASP membership and is reused unchanged.
+     on WASP membership and is reused unchanged. The EBLMs were matched to Gaia DR2 by position (EBLM IV
+     coordinates, 10″ cone). Their CORALIE RV files were matched by the coordinates in the file names (30″);
+     neither step uses names against an external catalogue or a WASP host source_id.
 
 4. What is rerun. Every pre-registered test with the corrected membership: B; C; D1-D6; E(i)-(iii).
    - D6 (C without J1500-33) and E(ii) contain the WASP half, so they are rerun.
    - E(iii) (EBLMs alone) and the EBLM references of C and D3-D6 do not depend on membership. They are
      taken from the frozen run, and the results file states that they are reused.
+   - **The matched field controls of the WASP half are regenerated for the corrected hosts (107; the D
+     subsets as in section 3) under the original procedure.** That means the Phase 1 field, HS19-style z +
+     colour matching (z + distance for D2), and the frozen D5 halo cut. They are not reused from the
+     98-host run.
    - Settings exactly as frozen: 40,000 control samples and 40,000 bootstrap resamples (5,000 + 5,000
      for D); percentile interval, BCa only by the bias rule; δ_HS19 = −6.64 km/s; the six-case rule.
+   - **Guard.** The code refuses to start any stream with a wasp_a1_* label unless all of the following
+     hold:
+     - exactly one PREREG_wasp_kinematics_amendment1_<date>.txt exists at the repository root;
+     - it matches its recorded SHA-256 (the .sha256 next to it);
+     - both files are committed and unmodified;
+     - it cites the frozen pre-registration's hash, and that file still matches its hash.
+     The check sits in src/seeds.label_code (test: tests/test_seeds.py).
+   - **Diagnostic (labelled DIAGNOSTIC, not a result; no decision rule or reading applies).** The
+     original 98-host list (D1: 100, D3: 97, D4: 95) is rerun once through every WASP-half computation of
+     this section (B, C, D1-D6, E(i), E(ii)) under the same wasp_a1_* labels as the 107-host run.
+     - Frozen run vs diagnostic: same hosts, new streams. This isolates the Monte Carlo stream change.
+     - Diagnostic vs 107-host run: same labels and streams, different hosts. This isolates the effect of
+       the join. Draws with the same seed still differ when the number of hosts changes (the bootstrap
+       resamples N hosts), so this isolation is approximate for the WASP half. It is exact for the EBLM
+       bootstrap inside each contrast (79 EBLMs, same `_E` labels).
+     - Results go to data/processed/wasp_amendment1/diagnostic_98/ and are reported in one table next to
+       the two runs.
    - Results go to new files (data/processed/wasp_amendment1/), so the frozen-run outputs are not
      overwritten.
 
 5. Monte Carlo labels and seed streams (Q3).
+   - **Seed derivation (one sentence):** every stream is numpy SeedSequence([20191021, code, tail]), where
+     code is the sum of the label's character codes and tail is the chunk index c (control samples) or 99
+     (bootstrap).
    - **Seed scheme (D19, unchanged):** master seed 20191021; code = sum of the label's character codes.
      - Control samples (chunk c of 5,000): SeedSequence([20191021, code, c]).
      - Bootstrap: SeedSequence([20191021, code, 99]).
@@ -107,8 +151,12 @@ Evidence: DECISIONS.md E32-E35; notes/cuts_and_choices.md (W2); notes/wasp_amend
      eblm_wD3, eblm_wD4, eblm_wD5, eblm_wD6, wasp_E_E, wasp_Eiii.
    - **The bootstrap of the EBLM half inside each contrast is redrawn** under the new `_E` labels above,
      because the contrast's joint resampling is part of the WASP rerun.
-   - No two labels in this project share a character-code sum (checked 2026-11-09), so no two tests share
-     a stream.
+   - Correction of revision 2: two pairs of earlier labels do share a character-code sum: eblm_G2 and
+     w_e_zd (632), and eblm_G5 and w_h_zd (635). Their streams still differ by tail: chunk 0 and bootstrap
+     99, against tail 11 for the exploratory width test (eblm_width). So no two labels share a stream.
+   - No wasp_a1_* label shares a code with any other label in the project. tests/test_seeds.py checks
+     both statements over the full label registry (src/seeds.py). It also checks that the generated
+     SeedSequence states are distinct for every label and tail in use.
 
 6. Reporting (Q2).
    - The 107-host run is the headline result of the WASP-only analysis.
@@ -129,14 +177,27 @@ Evidence: DECISIONS.md E32-E35; notes/cuts_and_choices.md (W2); notes/wasp_amend
 
      | Arm | 98 hosts (frozen) | 107 hosts (corrected) | Smallest offset at 80 % power, 107 |
      |---|---|---|---|
-     | B: total, WASP vs field | 0.81 (control SD 2.55) | **0.85** (control SD 2.46, median 43.11) | 6.25 km/s |
+     | B: total, WASP vs field | 0.81 (control SD 2.55) | **0.85** (control SD 2.46, median 43.11) | 6.25 km/s (= 80 % power) |
      | C: contrast, total | 0.42 | **0.43** (SD of difference 3.76) | 10.53 km/s |
      | E(i): σ_W, WASP vs field | 0.36 | **0.38** (control SD 2.07, median 19.07) | 4.80 km/s |
      | E(ii): contrast, σ_W | 0.15-0.16 | **0.16** | 8.70 km/s |
 
+   - **6.25 km/s** is the smallest offset with at least **80 % power** for B (107 hosts; two-sided 5 %;
+     field-only; HS19 ratio model; ratio grid step 0.001, about 0.04 km/s). The 98-host offset from the
+     frozen run (Δ_W = −5.81 km/s, section 2) is smaller in size than 6.25 km/s.
    - The D3 subset (106, d < 600 pc) gives 0.84 / 0.42 / 0.37 / 0.16.
-   - The EBLM field-control SD was recomputed under a new label (a1_contrast_eblm): 2.85 km/s total and
-     2.32 km/s σ_W, against 2.79 / 2.29 in E4. The difference is Monte Carlo noise from a different stream.
+   - **EBLM resampling behind the contrast rows (C, E(ii)).** The two columns use different Monte Carlo
+     draws of the EBLM field controls (10,000 each):
+     - frozen column: label hu_contrast_eblm (E4), SD 2.79 km/s total and 2.29 km/s σ_W;
+     - corrected column: label a1_contrast_eblm, SD 2.85 km/s and 2.32 km/s.
+     - The Monte Carlo SD of each of these SDs is about 0.020 km/s (total) and 0.016 km/s (σ_W). This is
+       the normal approximation s/√(2(N−1)) with N = 10,000. The draws themselves were not stored.
+     - The differences (0.055 and 0.032 km/s) are about 2.0 and 1.4 times the Monte Carlo SD of a
+       difference.
+     - Their effect on the contrast power is below 0.01. Under the same EBLM draws (a1_contrast_eblm), the
+       98-host list gives 0.42 (0.4165) and the 107-host list 0.43 (0.4281).
+     - The frozen column's contrast value (0.42) is E4's d < 600 pc row (97 hosts); E4 has no
+       all-distance contrast row.
    - **Reading:** as in the frozen text, a null in σ_W, or in the contrast, is uninformative.
 
 8. Stage E notes and hemisphere labels (Q6).
@@ -146,6 +207,17 @@ Evidence: DECISIONS.md E32-E35; notes/cuts_and_choices.md (W2); notes/wasp_amend
      - notes/hu2026_power.md
      - notes/wasp_hemisphere_labels.md
      - notes/wasp_hemisphere_labels.csv (as a leading "#" comment line; read with comment="#")
+   - **Hash record.** No manifest or frozen file records a hash of these four files. The frozen text cites
+     them by path only. Their content at the freeze is in git commit 694eb97, and they were last changed
+     before the freeze in e59b0fa (notes) and 90740e1 (labels). The only later change is the header line
+     (4c922a9). SHA-256 at the freeze, before the header:
+     - hu2026_wasp_counts.md f51385641e407d9731f560b79ff1fdbfb2748af9d30272055c589121c6d397ea
+     - hu2026_power.md 53efd72fe667bdf5fca82af30ca5baed58b498316f7a116a65ae83fe4f109c65
+     - wasp_hemisphere_labels.md 2ac253d94ecdbeb0954aff7d7cabccf9a85cbcf2cc320651b1647ff9d82da5f3
+     - wasp_hemisphere_labels.csv 21ac76e7d50ee8f3a2d98419cd68655298d3dd84a671682f864d7b0ac8f3f04a
+   - No code in the project reads wasp_hemisphere_labels.csv (src/, tests/, notebooks/ or the other AST 192
+     repositories). A test (tests/test_wasp_membership.py) requires any future reader to pass comment="#". Without
+     it, pandas silently returns 99 rows and 1 column.
    - The nine added hosts have no hemisphere label. No pre-registered test uses the labels (the
      WASP-South-only test was dropped).
    - src/hu2026_checks.py refuses to overwrite those outputs. The `wasp`, `power` and `contrast` commands

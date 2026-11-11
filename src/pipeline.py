@@ -11,7 +11,7 @@ import time
 import numpy as np
 import pandas as pd
 
-from . import config, cuts, extinction, field, hosts, kinematics, main_sequence, matching
+from . import config, cuts, extinction, field, hosts, kinematics, main_sequence, matching, seeds
 from .config import ROOT
 from .gaia_tap import log
 
@@ -142,7 +142,7 @@ def _run_chunked(sampler, host, fld, cfg, label, n_iter, statistic, ckpt_dir=Non
     """
     mc = cfg["monte_carlo"]
     every = mc["checkpoint_every"]
-    lab = sum(map(ord, label))
+    lab = seeds.label_code(label)
     d = None
     if ckpt_dir is not None:
         key = hashlib.sha1(json.dumps([cfg["seed"], cfg["monte_carlo"], cfg["main_sequence"], label,

@@ -16,7 +16,7 @@ import json
 import numpy as np
 import pandas as pd
 
-from . import config, kinematics, matching
+from . import config, kinematics, matching, seeds
 from .config import ROOT
 
 OUT = ROOT / "data" / "processed" / "eblm" / "d2"
@@ -32,7 +32,7 @@ def _sampler(h, fld, cfg, match_vars):
 def pool_spread(h, fld, cfg, match_vars, label):
     """(a): residual speeds of the picked control stars about the pooled mean velocity."""
     s = _sampler(h, fld, cfg, match_vars)
-    rng = np.random.default_rng(np.random.SeedSequence([cfg["seed"], sum(map(ord, label)), 11]))
+    rng = np.random.default_rng(np.random.SeedSequence([cfg["seed"], seeds.label_code(label), 11]))
     st = cfg["monte_carlo"]["statistic"]
     picks, disp = [], []
     for _ in range(N_POOL_ITER):
@@ -56,7 +56,7 @@ def pool_spread(h, fld, cfg, match_vars, label):
 
 def subsample_widths(hj, fld, cfg, match_vars, label, n=79):
     """(b): control SD (and median) for N_SUB random n-host subsamples of the HJ hosts."""
-    rng = np.random.default_rng(np.random.SeedSequence([cfg["seed"], sum(map(ord, label)), 12]))
+    rng = np.random.default_rng(np.random.SeedSequence([cfg["seed"], seeds.label_code(label), 12]))
     st = cfg["monte_carlo"]["statistic"]
     sds, meds, hdisp = [], [], []
     for k in range(N_SUB):

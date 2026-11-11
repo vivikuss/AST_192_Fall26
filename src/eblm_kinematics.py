@@ -15,7 +15,7 @@ import numpy as np
 import pandas as pd
 from scipy import stats
 
-from . import config, figures, kinematics, main_sequence, matching, pipeline
+from . import config, figures, kinematics, main_sequence, matching, pipeline, seeds
 from .config import ROOT
 from .gaia_tap import log
 
@@ -76,7 +76,7 @@ def bootstrap(e, ref, cfg, n, label, stat):
     """B: percentile CI of sigma(EBLM resample) - ref; bias; BCa when |bias| > 0.2 half-width."""
     U, V, W = (e[c].to_numpy(float) for c in "UVW")
     N = len(e)
-    rng = np.random.default_rng(np.random.SeedSequence([cfg["seed"], sum(map(ord, label)), 99]))
+    rng = np.random.default_rng(np.random.SeedSequence([cfg["seed"], seeds.label_code(label), 99]))
     d = np.concatenate([_disp_boot(U, V, W, rng.integers(0, N, (min(5000, n - s), N)), stat)
                         for s in range(0, n, 5000)]) - ref
     est = float(kinematics.dispersion(U, V, W, stat) - ref)
@@ -137,7 +137,7 @@ def c2(e, hj, cfg, n_iter, label, tol=0.05, stat=None):
     flat = np.concatenate(cands) if nc.sum() else np.array([], int)
     EU, EV, EW = (e[c].to_numpy(float) for c in "UVW")
     HU, HV, HW = (hj[c].to_numpy(float) for c in "UVW")
-    rng = np.random.default_rng(np.random.SeedSequence([cfg["seed"], sum(map(ord, label)), 2]))
+    rng = np.random.default_rng(np.random.SeedSequence([cfg["seed"], seeds.label_code(label), 2]))
     out = np.empty(n_iter)
     n_drop = np.empty(n_iter, int)
     for k in range(n_iter):
@@ -177,7 +177,7 @@ def evolved_fraction(E, H, cfg, bw, n_boot, label):
         return fe, fh, int((~me).sum()), int((keep == 0)[np.unique(ebin[ie])].sum())
 
     fe, fh, n_e_dropped, n_bins_dropped = one(np.arange(len(E)), np.arange(len(H)))
-    rng = np.random.default_rng(np.random.SeedSequence([cfg["seed"], sum(map(ord, label)), 3]))
+    rng = np.random.default_rng(np.random.SeedSequence([cfg["seed"], seeds.label_code(label), 3]))
     bd = np.array([np.subtract(*one(rng.integers(0, len(E), len(E)), rng.integers(0, len(H), len(H)))[:2])
                    for _ in range(n_boot)])
     return {"bin_width": bw, "n_eblm": len(E), "n_hj_in_colour_range": len(H),

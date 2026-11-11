@@ -1500,3 +1500,80 @@ notes and hemisphere labels; Q7 scope. **Stopped here:** nothing in the amendmen
   `notes/hu2026_wasp_counts.md`, `notes/hu2026_power.md` and `notes/wasp_hemisphere_labels.md`. The `.csv` got a
   leading `#` comment line; read it with `comment="#"`; still 98 rows. No other content changed.
 - **Stopped:** the amendment is not frozen, and none of its rerun has been run.
+
+### Amendment 1 review items a–h (2026-11-10; draft revision 3; not frozen, nothing in the rerun run)
+**E36. Review items written into `prereg_drafts/DRAFT_AMENDMENT_wasp_membership_2026-11-09.txt`.** No host or EBLM
+velocity, RV, or dispersion was computed. Step 0 checks passed: 4c922a9 present, both frozen pre-registrations match
+their `.sha256`, 49/49 tests. The DR3 filing (user's step 1) was **not done**: the request gave no path to the files.
+- **(a) 109 vs 107** (`python -m src.amendment1_join_audit` → `notes/amendment1_join_audit.md`; reads only names, ids,
+  positions, G, parallax).
+  - Name set (D1, ArchiveName) minus source_id set: WASP-53 and WASP-81. Both routes give the same DR2 source_id
+    (5136559128264765184, 4244243354278985472), so the separation is 0″. G 12.35 and 12.33; parallaxes 4.938 and
+    2.482 mas. Their archive facility is "Multiple Facilities".
+  - Reverse: none.
+  - *Judgment:* classified "other" (a definitional difference, not wrong-source, missing id or duplicate). The
+    107-host headline sample is therefore not affected, so the work did not stop.
+  - Also reported: 98 → 107 (the 9 have the same id by both routes, 0″); 296/297 ids agree, the exception being
+    HATS-67 (D6b, not WASP); no duplicated source_id.
+- **(b) Seeds.**
+  - New `src/seeds.py` holds a registry of every label in the project with its stream tails (96 labels: 72 earlier,
+    24 `wasp_a1_*`), `stream_entropy`, and `label_code`.
+  - Every `sum(map(ord, label))` in `src/` is now `seeds.label_code(label)`. It returns the same integer, so no
+    stored result changes (tested).
+  - *Finding:* the revision-2 statement "no two labels share a character-code sum" (E34) was **wrong**: eblm_G2 and
+    w_e_zd share 632, and eblm_G5 and w_h_zd share 635. Their streams still differ (tails 0/99 vs 11), so no stream
+    was shared, and nothing reported changes.
+  - *Judgment:* the labels were not renamed, because that would change reported (exploratory) results. The pairs are
+    listed in `seeds.KNOWN_CODE_SHARES`, and the draft's statement is corrected.
+  - numpy note: SeedSequence ignores trailing zeros, so [seed, code] = [seed, code, 0]. The test compares normalized
+    entropy and generated states.
+  - Tests (`tests/test_seeds.py`):
+    - no two labels give the same stream;
+    - `wasp_a1_*` codes are unique project-wide;
+    - the draft's `wasp_a1_*` list equals the registry;
+    - checkpointed labels on disk are registered.
+  - The draft gives the derivation in one sentence (section 5).
+- **(c) EBLM resampling.**
+  - *Judgment, interpretation:* "the Monte Carlo SD of the EBLM resampling" is read as the Monte Carlo precision of the
+    EBLM field-control SDs that differ between the two power columns (2.79/2.29 vs 2.85/2.32).
+  - The draft states them with the normal-approximation Monte Carlo SD s/√(2(N−1)): 0.020 and 0.016 km/s. The
+    draws were not stored, so nothing was recomputed.
+  - The differences are 2.0σ and 1.4σ. *Judgment:* "is Monte Carlo noise" is softened to these numbers.
+  - The same-draw comparison (98 → 0.42, 107 → 0.43) is added, plus the fact that E4's frozen contrast row is the
+    d < 600 pc set (97).
+  - **Diagnostic pre-registered, not run:** the 98-host list (D1 100, D3 97, D4 95) through every WASP-half
+    computation under the **same** `wasp_a1_*` labels. *Judgment:* the same labels, not new ones, so that "diagnostic
+    vs 107" isolates the join (exactly for the EBLM `_E` bootstrap, approximately for the WASP half). Labelled
+    DIAGNOSTIC; no decision rule applies. Output dir `data/processed/wasp_amendment1/diagnostic_98/`.
+- **(d) Power.** 6.25 km/s = smallest offset with ≥ 80 % power (two-sided 5 %, field-only, ratio grid 0.001). The
+  draft notes that |−5.81| is smaller. *Judgment:* power at −5.81 was not computed (not requested; post-hoc).
+- **(e) Hashes and the CSV readers.**
+  - No manifest or frozen file records a hash of the Stage E notes or the hemisphere CSV. They are searched by full
+    hash and 8-character prefix, in the working tree and all of git history. The frozen text cites them by path.
+  - *Judgment:* their SHA-256 at the freeze commit 694eb97 (before the 4c922a9 headers) is written into draft
+    section 8, so the cited content is pinned.
+  - No code reads the CSV (`src/`, `tests/`, `notebooks/` (empty), and repos 01–07). The only readers were ad hoc.
+  - Test `test_hemisphere_csv_readers_use_comment_hash` makes any future `read_csv` of it pass `comment=`. Without
+    it, pandas silently returns 99 × 1.
+- **(f) Crossmatches.**
+  - EBLM IV → Gaia DR2 is matched by position (10″ cone, `src/eblm.py`).
+  - CORALIE files → EBLM IV systems are matched by file-name coordinates (30″, `gamma_fit.rv_files`).
+  - γ → targets are matched by EBLM IV name, internal to one paper.
+  - No source_id or cross-catalogue name join is involved.
+  - The draft did not say explicitly that the matched field is regenerated. Section 4 now states that the WASP-half
+    field controls are regenerated for the corrected hosts under the original procedure.
+- **(g) Guard.**
+  - No `wasp_a1_*` rerun command exists yet. *Judgment:* the guard sits in `seeds.label_code`, so **any** code path
+    that starts a `wasp_a1_*` stream refuses, including future commands (`pipeline._run_chunked`,
+    `wasp_kinematics.boot_draws`/`mc_sigma_w`, `eblm_kinematics.bootstrap`).
+  - It requires exactly one `PREREG_wasp_kinematics_amendment1_*.txt` at the root, matching its `.sha256`, both
+    committed and clean. The file must cite the frozen pre-registration's hash, and that file must still match.
+  - *Judgment:* the git-committed condition is included so that the hash can't be produced together with an
+    uncommitted edit.
+  - Tests use a temporary git repo; the entry points refuse today.
+- **(h) Privacy scan.**
+  - Checked against 791 extended-sample Gaia ids, 1,025 name-like strings from 07's private extended-sample files,
+    and 13,178 RV tokens from 390 CORALIE `.rdb` files. A positive control on the private files detects them.
+  - Result: the draft, the new notes, src and tests have **0** matches.
+  - `data/processed/wasp_amendment1/` does not exist (nothing has been run).
+  - The scanner lives in the session scratchpad, not in the repo.

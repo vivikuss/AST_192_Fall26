@@ -14,7 +14,7 @@ import json
 import numpy as np
 import pandas as pd
 
-from . import config, eblm_kinematics as ek, hu2026_checks, kinematics, matching, pipeline
+from . import config, eblm_kinematics as ek, hu2026_checks, kinematics, matching, pipeline, seeds
 from .config import ROOT
 from .gaia_tap import log
 
@@ -41,7 +41,7 @@ def boot_draws(d, cfg, n, label, fn):
     """Bootstrap statistics of a sample; same stream scheme as eblm_kinematics.bootstrap."""
     U, V, W = (d[c].to_numpy(float) for c in "UVW")
     N = len(d)
-    rng = np.random.default_rng(np.random.SeedSequence([cfg["seed"], sum(map(ord, label)), 99]))
+    rng = np.random.default_rng(np.random.SeedSequence([cfg["seed"], seeds.label_code(label), 99]))
     return np.concatenate([fn(*(x[rng.integers(0, N, (min(5000, n - s), N))] for x in (U, V, W)))
                            for s in range(0, n, 5000)])
 
@@ -81,9 +81,9 @@ def mc_total(h, fld, cfg, label, n_iter, match_vars):
 
 def mc_sigma_w(h, fld, cfg, label, n_iter, match_vars):
     """Control sigma_W with the same matching (ControlSampler; chunk streams as D19; D13b pairing)."""
+    lab = seeds.label_code(label)               # first: wasp_a1_* labels need the frozen amendment (E36)
     c = config.variant(cfg, **{"monte_carlo.match_vars": list(match_vars)})
     s = matching.ControlSampler(h, fld, c)
-    lab = sum(map(ord, label))
     every = cfg["monte_carlo"]["checkpoint_every"]
     ctrl, host = np.empty(n_iter), np.empty(n_iter)
     hW = h["W"].to_numpy(float)

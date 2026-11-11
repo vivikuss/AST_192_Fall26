@@ -12,7 +12,7 @@ import numpy as np
 import pandas as pd
 from scipy import stats
 
-from . import config, kinematics, matching, pipeline, targets
+from . import config, kinematics, matching, pipeline, seeds, targets
 from .config import ROOT
 
 OUT = ROOT / "data" / "processed" / "eblm"
@@ -89,7 +89,7 @@ def control_width(e, fld, cfg, match_vars, n_iter=5000, seed_label="eblm_precisi
     h = e.copy()
     h["U"] = h["V"] = h["W"] = 0.0                              # placeholders; only controls are used
     s = matching.ControlSampler(h, fld, cfg, match_vars=match_vars)
-    rng = np.random.default_rng(np.random.SeedSequence([cfg["seed"], sum(map(ord, seed_label))]))
+    rng = np.random.default_rng(np.random.SeedSequence([cfg["seed"], seeds.label_code(seed_label)]))
     st = cfg["monte_carlo"]["statistic"]
     d = np.array([kinematics.dispersion(s.fU[p[p >= 0]], s.fV[p[p >= 0]], s.fW[p[p >= 0]], st)
                   for p in (s.control(rng) for _ in range(n_iter))])

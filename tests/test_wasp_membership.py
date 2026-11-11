@@ -63,3 +63,17 @@ def test_protected_stage_e_outputs_cannot_be_overwritten():
         finally:
             sys.argv = argv
     assert all(p.read_bytes() == b for p, b in before.items())
+
+
+def test_hemisphere_csv_readers_use_comment_hash():
+    """notes/wasp_hemisphere_labels.csv has a leading '#' header (E35). Read without comment='#', pandas
+    silently returns 99 rows x 1 column. Every reader in the repository must pass comment='#' (E36)."""
+    import re
+    from src.config import ROOT
+    path = ROOT / "notes" / "wasp_hemisphere_labels.csv"
+    assert pd.read_csv(path, comment="#").shape[0] == 98
+    for f in list((ROOT / "src").rglob("*.py")) + list((ROOT / "tests").rglob("*.py")) + \
+            list((ROOT / "notebooks").rglob("*.ipynb")):
+        txt = f.read_text()
+        for m in re.finditer(r"read_csv\([^)]*wasp_hemisphere_labels[^)]*\)", txt):
+            assert "comment=" in m.group(0), (f, m.group(0))

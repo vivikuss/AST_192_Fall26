@@ -20,7 +20,7 @@ import numpy as np
 import pandas as pd
 import requests
 
-from . import config, cuts, field, kinematics, main_sequence, matching, pipeline, targets
+from . import config, cuts, field, kinematics, main_sequence, matching, pipeline, seeds, targets
 from .config import ROOT
 
 OUT = ROOT / "data" / "processed" / "hu2026"
@@ -256,7 +256,7 @@ def controls_hs19(h, fld, cfg, label):
     hh = h.copy()
     hh["U"] = hh["V"] = hh["W"] = 0.0                         # placeholders; host velocities are not used
     s = matching.ControlSampler(hh, fld, cfg, match_vars=["z"])
-    rng = np.random.default_rng(np.random.SeedSequence([cfg["seed"], sum(map(ord, label))]))
+    rng = np.random.default_rng(np.random.SeedSequence([cfg["seed"], seeds.label_code(label)]))
     tot, sw, nun = np.empty(N_ITER), np.empty(N_ITER), 0
     for i in range(N_ITER):
         p = s.control(rng)
@@ -282,7 +282,7 @@ def controls_hu(h, fld, label, seed):
         cand.append(idx)
         ncand.append(len(idx))
     ok = np.array(ncand) > 0
-    rng = np.random.default_rng(np.random.SeedSequence([seed, sum(map(ord, label))]))
+    rng = np.random.default_rng(np.random.SeedSequence([seed, seeds.label_code(label)]))
     pick = np.column_stack([c[rng.integers(0, len(c), N_ITER)] for c, o in zip(cand, ok) if o])
     U, V, W = (fld[c].to_numpy(float)[pick] for c in "UVW")
     tot, sw = _stats(U, V, W)
@@ -404,7 +404,7 @@ def contrast(cfg):
     hh = e.copy()
     hh["U"] = hh["V"] = hh["W"] = 0.0
     s = matching.ControlSampler(hh, fld, cfg, match_vars=["z", "dist_pc"])
-    rng = np.random.default_rng(np.random.SeedSequence([cfg["seed"], sum(map(ord, "hu_contrast_eblm"))]))
+    rng = np.random.default_rng(np.random.SeedSequence([cfg["seed"], seeds.label_code("hu_contrast_eblm")]))
     tot, sw = np.empty(N_ITER), np.empty(N_ITER)
     for i in range(N_ITER):
         p = s.control(rng)
@@ -471,7 +471,7 @@ def power_amendment1(cfg):
     hh = e.copy()
     hh["U"] = hh["V"] = hh["W"] = 0.0
     s = matching.ControlSampler(hh, f2, cfg, match_vars=["z", "dist_pc"])
-    rng = np.random.default_rng(np.random.SeedSequence([cfg["seed"], sum(map(ord, "a1_contrast_eblm"))]))
+    rng = np.random.default_rng(np.random.SeedSequence([cfg["seed"], seeds.label_code("a1_contrast_eblm")]))
     tot, sw = np.empty(N_ITER), np.empty(N_ITER)
     for i in range(N_ITER):
         p = s.control(rng)
