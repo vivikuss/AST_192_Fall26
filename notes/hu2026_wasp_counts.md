@@ -1,4 +1,4 @@
-> **Header added 2026-11-09 (DECISIONS E35).** This file was made with the faulty WASP host list: the hostname join missed 9 WASP hosts (98 instead of 107; DECISIONS E32). It is kept unchanged as the record cited by the frozen pre-registration. See `prereg_drafts/DRAFT_AMENDMENT_wasp_membership_2026-11-09.txt` (amendment 1).
+> **Header added 2026-11-09 (DECISIONS E35).** This file was made with the faulty WASP host list: the hostname join missed 9 WASP hosts (98 instead of 107; DECISIONS E32). It is kept unchanged as the record cited by the frozen pre-registration. See `PREREG_wasp_kinematics_amendment1_2026-11-10.txt` (amendment 1).
 
 # WASP-discovered hot-Jupiter hosts in our HS19 Table 1 sample
 

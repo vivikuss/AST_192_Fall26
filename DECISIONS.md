@@ -1769,3 +1769,12 @@ passed; commit 648e393; log `logs/wasp_amendment1.log`; table in `notes/wasp_ame
   - there is one cache folder per label, and no EBLM cache file is newer than the freeze;
   - the EBLM term of each contrast (EBLM dispersion − reference = contrast + Δ_W) is identical to the last digit
     in the frozen, headline and diagnostic runs, for C, D1–D6 C and E(ii).
+
+**E43. Housekeeping: Stage E headers now point to the frozen amendment** (user, 2026-11-10; resolves the stale paths
+noted in E39).
+- In the header line of `notes/hu2026_wasp_counts.md`, `notes/hu2026_power.md`, `notes/wasp_hemisphere_labels.md`
+  and `notes/wasp_hemisphere_labels.csv`, only the path changed:
+  `prereg_drafts/DRAFT_AMENDMENT_wasp_membership_2026-11-09.txt` → `PREREG_wasp_kinematics_amendment1_2026-11-10.txt`.
+- The pre-header SHA-256 values in amendment section 8 still verify, with the header removed (2 lines for the
+  `.md` files, 1 for the `.csv`).
+- Tests 58/58; all three frozen files match their hashes.
