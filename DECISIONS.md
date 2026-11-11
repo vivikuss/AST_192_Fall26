@@ -1747,3 +1747,25 @@ passed; commit 648e393; log `logs/wasp_amendment1.log`; table in `notes/wasp_ame
 - **Reuse checks:** the EBLM references were reused from cached frozen chunks. No new EBLM checkpoint directory
   appeared, and eblm_primary = 41.7745 was asserted.
 - **Unchanged:** the frozen outputs in `data/processed/wasp/`.
+
+**E42. Checks before the Slack correction (user request, 2026-11-10; nothing recomputed).**
+- **Copied function: passed.** `wasp_amendment1.vs_field` was compared with the frozen `wasp_kinematics.mc_total` +
+  `vs_field`. The calls are the same, in the same order. The only differences:
+  - `mc_total` is inlined;
+  - `CKPT` points to `data/processed/wasp_amendment1/mc_checkpoints`;
+  - `case` and `CASES` are referenced as `wk.case` / `wk.CASES`;
+  - the unused raw `res` is not returned.
+- **Since 20cc253, `wasp_kinematics.py` itself changed only in two places:** the seed code (`seeds.label_code`,
+  same integer, 8d663b0), and the pin of `main()` to the legacy join (c521506), which the rerun does not call.
+- **EBLM references: passed.**
+  - `eblm_primary` = 41.7745 (8 cached chunks, 2026-11-02 21:03:20–21:03:54). It matches the written record:
+    E30/E31 41.77, the frozen `results.json` 41.77448979222274, and EBLM_REPORT 41.77.
+  - The `wasp_E_E` σ_W reference, 18.1950 from the frozen `results.json`, matches E31's 18.19.
+  - The 20cc253 commit message contains no EBLM reference values.
+- **D3–D6 references have no committed record:** `eblm_wD3` 41.6571, `eblm_wD4` 41.9615, `eblm_wD5` 41.3987,
+  `eblm_wD6` 41.8675. They were verified in three ways:
+  - the cache file times (2026-11-04 13:56:44, 13:56:57, 13:57:10, 13:57:14) match the frozen run's log
+    (`logs/wasp_kinematics.log`, lines 16, 18, 20, 21);
+  - there is one cache folder per label, and no EBLM cache file is newer than the freeze;
+  - the EBLM term of each contrast (EBLM dispersion − reference = contrast + Δ_W) is identical to the last digit
+    in the frozen, headline and diagnostic runs, for C, D1–D6 C and E(ii).
