@@ -2131,3 +2131,20 @@ request; information only). **MATCH.**
   - It does not cover the contents of the CSV itself.
   - Planet-host removal happens after the cached file is read, so it is not in the key. This is consistent with
     E47: hosts are not removed in the file.
+
+## Phase 2: DR3 WASP analysis, EXPLORATORY (2026-11-11)
+**E52. The DR3 WASP analysis is run as EXPLORATORY, not pre-registered** (user decision, 2026-11-11). Decided
+before any WASP DR3 kinematics were computed. **Results are preliminary; this analysis cannot later be
+pre-registered as confirmatory.**
+- **Already known before any computation:**
+  - Hu et al. (2026) published WASP hosts with d < 600 pc: σ_W = 17.7 km/s vs field 18.4 km/s (102 hosts).
+  - **Kayla's WASP DR3 output: the user has not seen her WASP DR3 numbers, tables or figures.** But her Slack
+    message of [date not given] states that her host σ_W matches Hu et al. to ≤ 0.1 km/s in every subsample,
+    which includes WASP d < 600 (Hu: 17.7 vs 18.4, 102 hosts).
+  - The same message reported, for non-WASP samples:
+    - HS19 full sample σ_W 15.8 vs field 18.8 (this sample contains WASP hosts);
+    - TESS HJs 18.1 vs 17.7;
+    - CLS warm/cold Jupiters 19.9 vs 17.6.
+  - The agent has not seen any WASP DR3 output of Kayla's. It read only the column names and row counts of her
+    host files (E45). Her folder contains no results file.
+- No WASP host velocity, dispersion or result has been computed in this project from DR3.
