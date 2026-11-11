@@ -2148,3 +2148,38 @@ pre-registered as confirmatory.**
   - The agent has not seen any WASP DR3 output of Kayla's. It read only the column names and row counts of her
     host files (E45). Her folder contains no results file.
 - No WASP host velocity, dispersion or result has been computed in this project from DR3.
+
+**E53. DR3 EXPLORATORY run, Stage 1 (2026-11-11): plan, code, seeds; Method A stopped (Bayestar19 missing);
+Method B field download started.** EXPLORATORY: not pre-registered (E52). Full plan, with every choice and
+adaptation: `notes/dr3_exploratory_plan.md`. **No WASP host velocity, dispersion or result was computed, and
+no Gaia query was made for any WASP host.**
+- **Seeds:** `dr3x_A_val_hs19`, `dr3x_A_val_tess`, `dr3x_A_wasp` (no tail); `dr3x_B_wasp` (chunks 0–7, 99).
+  The registry tests pass, and no new label shares a code with any label.
+- **Method A** (`src/dr3x_method_a.py`):
+  - Our own implementation of Kayla's `hu2026_replication.py` (sha256 `6f7bd10a…`, E50), written from reading
+    it as text. Her script was not imported, run or copied.
+  - A missing Bayestar19 file raises an error (no zero fallback). The WASP run refuses without `--stage2`.
+  - Unit-tested on synthetic data only: the HEALPix NESTED hierarchy and equal-area pixels, the Bayestar19
+    rules on a fake map, inclusive pool bounds, the statistics, the one-sided σ.
+  - **STOPPED: no Bayestar19 file** anywhere under `~`, and `dustmaps` is not installed. Per the user's rule,
+    neither the host query nor the validation was run.
+  - Hu et al. Tables 2/3 (the validation input) are also not available locally.
+  - Four of the 107 are on her close-companion list (WASP-70 A, WASP-94 A, WASP-94 B, WASP-173 A). This is not
+    applied; it is a pending decision.
+- **Method B** (`src/dr3x_field_b.py`):
+  - Cut port: cuts 1, 3, 5–7, 9, 10 port exactly. Cut 4 ports exactly for 5-parameter solutions only. Cut 8 is
+    exact on the raw factor with 0.015.
+  - Cut 2 (`mean_varpi_factor_al`) has no DR3 column. The 5-parameter restriction, the corrected C* and the
+    Katz RV corrections are open. Distances: BJ21 `r_med_geo` is proposed.
+  - Server-side query: RV required; cuts 1, 3, 5, 6, 7, 9, 10; cut 8 with the looser 0.0015. Everything else
+    is applied locally, and all its inputs are downloaded. So no pending choice is fixed by the download.
+  - **Service:**
+    - ESA aborts anonymous async jobs after 60 s. A smoke test on 1/196,608 of the source_id range timed out,
+      split three times, then got HTTP 429 (rate limit). No further ESA attempts were made.
+    - ARI Heidelberg (as A6) answered the same slice in 17 s: 50 rows, all with a BJ21 distance, 3 with
+      6-parameter solutions, 180 B/row gzipped. Extrapolation: about 10M rows, about 1.8 GB (an order of
+      magnitude only).
+  - **Download started** 2026-11-11, detached (pid 47363). Sequential, resumable, stops below 4 GB free.
+    Output and log in `~/data/dr3x_field_b/` (outside every repository, owner-only).
+- **Decisions needed:** listed in the plan, §5. No host kinematics are computed until the user has reviewed
+  them.

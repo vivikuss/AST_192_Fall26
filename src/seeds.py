@@ -72,7 +72,15 @@ for _i in range(1, 6):
 for _k in ["wasp_a1_C"] + [f"wasp_a1_D{_i}C" for _i in range(1, 7)] + ["wasp_a1_Eii"]:
     AMENDMENT1[_k + "_W"] = AMENDMENT1[_k + "_E"] = (99,)
 
+# Phase 2 DR3 EXPLORATORY run (DECISIONS E52, E53; not pre-registered). Method A (Hu et al. as implemented by
+# Kayla): one stream of 10,000 draws per sample, shared by sigma_W, sigma_tot and eq. 1. Method B (frozen DR2
+# primary ported to DR3): control chunks 0-7 and bootstrap tail 99, as the frozen test B.
+DR3X_PREFIX = "dr3x_"
+DR3X = {"dr3x_A_val_hs19": ((),), "dr3x_A_val_tess": ((),), "dr3x_A_wasp": ((),),
+        "dr3x_B_wasp": CHUNKS + (99,)}
+
 REGISTRY = _reg()
+REGISTRY.update(DR3X)
 # Streams seeded without a label (entropy as numpy normalizes it; E38). Listed so the registry is complete.
 UNLABELLED = {"eblm_compare.main: SeedSequence([seed, 7])": (MASTER, 7),
               "eblm_compare.astrometric_error: default_rng(seed=1)": (1,)}
