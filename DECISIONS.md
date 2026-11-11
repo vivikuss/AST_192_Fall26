@@ -1935,3 +1935,59 @@ only: no decision is taken here**, nothing was checked against the files, and no
   (125 bytes, two lines of text). It holds the two shell commands meant to create it (a `pbpaste` redirect and a `wc -l`
   check), not the checksum list. The clipboard apparently held the commands rather than the list. The comparison
   is still pending and the copy is still **unverified**.
+
+**E48. Gaia DR2 → DR3 crossmatch of the 107 WASP hosts** (2026-11-11; Phase 2 groundwork, user-requested).
+The user authorized this crossmatch, so the "no joining hosts to DR3" limit noted in E45–E47 no longer applies to
+it. The ban on velocities stays: **no velocity, RV or kinematic quantity was read or computed for any host.**
+Script: `src/dr3_crossmatch.py`. Output (gitignored): `data/processed/dr3_crossmatch/`.
+- **Membership:** the frozen amendment 1 sample (source_id join, E36/E39).
+  - It is rebuilt with column-restricted reads, not with `wasp_amendment1.samples()`, which loads the whole final
+    host table including `radial_velocity`, `rv`, `U`, `V`, `W`.
+  - Columns read: `hosts_hj_table1_final.csv` → archive_name_2019, hostname, source_id, ra, dec,
+    phot_g_mean_mag; the 2026-10-28 archive snapshot → every column except velocity-like ones (a regex guard
+    also refuses any velocity-like column in every table the script loads).
+  - Facility label: as in E32/E36 (`hu2026_checks.facility_map` on the DR2 source_id).
+  - **Check:** 297 hosts → 107 (22 WASP-South, 1 SuperWASP-North, 84 hemisphere not given). The D1 set
+    (WASP name or facility) has 109, and 109 − 107 = WASP-53 and WASP-81, as recorded in E36.
+- **Privacy:** before querying the Gaia archive, the IDs sent were checked against the private files, per the
+  privacy rule. Only the 107 DR2 source_ids were sent.
+- **Route 1 (primary):** host DR2 source_id → every row of Kayla's `nea_pscomppars.csv` with that `gaia_dr2_id`
+  → its `gaia_dr3_id`. Columns read: pl_name, hostname, gaia_dr2_id, gaia_dr3_id only (not st_radv or sy_dist).
+- **Route 2 (check):** `gaiadr3.dr2_neighbourhood` for all 107 DR2 source_ids, **keeping every candidate**, joined
+  to `gaiadr3.gaia_source` for the candidate's ra, dec and phot_g_mean_mag only.
+  - A synchronous TAP call (pyvo) got HTTP 503, so the query ran as an async job through `src/gaia_tap.py`.
+  - The ADQL and raw answer are cached in `data/raw/gaia/dr3_crossmatch_wasp107_neighbourhood.*` and
+    `data/processed/dr3_crossmatch/neighbourhood_raw.csv` / `neighbourhood_query.json`.
+- **Agreement rule:** the routes agree if the NEA DR3 id equals the closest neighbourhood candidate (by
+  angular_distance). Otherwise the host is flagged as "NEA id is a candidate but not the closest", "NEA id not
+  among candidates", "no neighbourhood candidate", "NEA route gives no single DR3 id", or "no DR3 match".
+- **Results:**
+  - **Route 1:** all 107 hosts have exactly one NEA DR3 id. 102 hosts have one NEA planet row, 4 have two and 1
+    has three; the rows of each host agree.
+  - **Route 2:** every host has **exactly one** neighbourhood candidate (107 rows), and every
+    proper_motion_propagation flag is true.
+  - **The routes agree for all 107 hosts.** No host has more than one candidate, and no host lacks a DR3 match.
+  - Angular distance (mas): min 0.024, median 0.173, max 0.467 (WASP-11).
+  - magnitude_difference: −0.013 to +0.009 mag, |median| 0.006.
+  - **DR3 id ≠ DR2 id for 6 hosts** (all matched by both routes). Their DR3 source_ids are recorded only in the
+    local table `wasp107_dr2_dr3_summary.csv` (SHA-256 below):
+
+    | Host | DR2 source_id | ang. dist. (mas) | Δmag |
+    |---|---|---|---|
+    | WASP-29 | 6534414719318224512 | 0.179 | +0.002 |
+    | WASP-34 | 3537110833333561728 | 0.133 | +0.001 |
+    | WASP-120 | 4837286842167819776 | 0.208 | −0.000 |
+    | WASP-94 A | 6780546169633475456 | 0.175 | +0.005 |
+    | WASP-100 | 4675352109658261376 | 0.248 | +0.001 |
+    | WASP-140 | 5094154336330994688 | 0.155 | +0.005 |
+
+  - The other 101 keep their DR2 source_id in DR3.
+- **Files** (SHA-256):
+  - `wasp107_dr2_dr3_candidates.csv` (one row per host × candidate) `b32f383b128a33a81c8cac6951a5e7caf43e9e66b7a16de8f3d15c77a860d363`;
+  - `wasp107_dr2_dr3_summary.csv` (one row per host) `9298bacfd22cb0fdb0522e3b1d98c8d61bc5c8b187d69f66ec246623d37b12df`;
+  - `neighbourhood_raw.csv` `c1d9d6339c41167fb800dec548e04731ac7285994d13d2c6cc7e1f61657567ce`.
+- **Noted, not judged:**
+  - Kayla's NEA file has no recorded download date. The membership's facility labels come from our 2026-10-28
+    archive snapshot.
+  - WASP-94 A has a known stellar companion (WASP-94 B), but the neighbourhood table lists only one candidate
+    for its DR2 id.
