@@ -49,6 +49,8 @@ def audit(cfg):
     dup = a["source_id"].duplicated(keep=False) | (a["name_dr2"].notna() & a["name_dr2"].duplicated(keep=False))
     a["class"] = np.select([a["source_id"].isna() | a["name_dr2"].isna(), dup, a["source_id"] != a["name_dr2"]],
                            ["missing source_id", "duplicate", "wrong-source match"], "other")
+    excl = (a["class"] == "other") & a["name_archive"] & ~a["fac_sid"]
+    a.loc[excl, "class"] = "WASP-discovered; excluded by the frozen facility rule (archive: " + a.loc[excl, "name_fac"] + ")"
     return a
 
 

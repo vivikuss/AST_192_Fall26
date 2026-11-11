@@ -1,10 +1,11 @@
 DRAFT amendment 1 to PREREG_wasp_kinematics_2026-11-04.txt (WASP membership join), project 08
-Status: DRAFT, revision 3 (revision 2: user decisions Q1-Q7, 2026-11-09; revision 3: review items a-h,
-2026-11-10, DECISIONS E36). Not frozen, no hash. Nothing in the rerun (section 4) has been run.
+Status: DRAFT, revision 4. Revision 2: user decisions Q1-Q7, 2026-11-09. Revision 3: review items a-h,
+2026-11-10, DECISIONS E36. Revision 4: user decisions on those items, 2026-11-10, E37. Not frozen, no hash.
+Nothing in the rerun (section 4) has been run.
 Amends: PREREG_wasp_kinematics_2026-11-04.txt (sha256 fece9b6608624c8213d1fb5fa96a6223bc07f5328adf820bd133db4a3490ecc4).
 The frozen file is not edited. On approval this text is frozen at the repository root as
 PREREG_wasp_kinematics_amendment1_<date>.txt with a .sha256 (convention E6).
-Evidence: DECISIONS.md E32-E36; notes/cuts_and_choices.md (W2); notes/wasp_amendment1_power.md;
+Evidence: DECISIONS.md E32-E37; notes/cuts_and_choices.md (W2); notes/wasp_amendment1_power.md;
 notes/amendment1_join_audit.md.
 
 1. What went wrong.
@@ -69,10 +70,18 @@ notes/amendment1_join_audit.md.
        | WASP-53 | 5136559128264765184 | 5136559128264765184 | 0″ (same source) | 12.35 | 4.938 ± 0.034 |
        | WASP-81 | 4244243354278985472 | 4244243354278985472 | 0″ (same source) | 12.33 | 2.482 ± 0.044 |
 
-     - Class: "other". Neither is a wrong-source match, a missing source_id or a duplicate. Both routes
-       reach the same Gaia DR2 star. The archive gives their hot Jupiters the disc_facility "Multiple
-       Facilities", so the facility test (A) excludes them and the name test (D1) includes them. The
-       difference comes from the definitions, not from the join, and the 107-host sample is unaffected.
+     - **WASP-53 and WASP-81 are WASP-discovered hosts that the frozen facility rule excludes.** The archive
+       lists the disc_facility of their hot Jupiters as "Multiple Facilities", not a WASP facility. They are
+       not wrong-source matches, missing source_ids or duplicates: both routes reach the same Gaia DR2
+       star. The facility rule (section A) is not changed. The two hosts stay out of A/B and enter only the
+       name-based variant D1, as frozen.
+     - Other survey names. Within the 297, every host with a WASP facility has a "WASP-" ArchiveName. One
+       has another survey's catalogue ID as its HS19 SimbadName: WASP-151 = EPIC 246441449 (K2), one of the
+       9 added hosts. In the whole 2026-10-28 archive snapshot, no planet with a WASP disc_facility sits
+       under a non-"WASP-" host name.
+       The archive has three more WASP-named hot-Jupiter hosts with a non-WASP facility: WASP-85 A (K2),
+       WASP-87 (Anglo-Australian Telescope) and WASP-167 (Multiple Observatories). None is in HS19 Table 1,
+       so none can enter the sample.
      - Over all 297 hosts, the pipeline source_id equals the archive gaia_dr2_id reached by ArchiveName for
        296. The exception is HATS-67 (WASP by neither route; DECISIONS D6b). No source_id is duplicated.
      - The 98 → 107 change (section 1) is a different comparison: the 9 hosts had no facility label under
@@ -93,6 +102,15 @@ notes/amendment1_join_audit.md.
      on WASP membership and is reused unchanged. The EBLMs were matched to Gaia DR2 by position (EBLM IV
      coordinates, 10″ cone). Their CORALIE RV files were matched by the coordinates in the file names (30″);
      neither step uses names against an external catalogue or a WASP host source_id.
+     - Crossmatch audit (DECISIONS E37). 41 of the 118 cones held more than one DR2 source (31 of them
+       among the 79). The match is the nearest source after propagating Gaia to J2000, with checks on
+       separation (< 3″), G − V and the brightness of the next source.
+     - In every multi-source cone, the match is at most 1.84″ away and the next source at least 1.31″.
+       Every next source within 5″ is at least 3.2 mag fainter than the match. The only next source less
+       than 3 mag fainter is J0040+01's: 8.0″ away, 1.5 mag fainter, with the match at 0.08″. It is the one
+       "confused" flag, inspected and kept in C11.
+     - No two EBLM IV systems lie within 30″ of each other (closest pair 1,397″). Each CORALIE file matches
+       exactly one system, and no DR2 source_id is used twice.
 
 4. What is rerun. Every pre-registered test with the corrected membership: B; C; D1-D6; E(i)-(iii).
    - D6 (C without J1500-33) and E(ii) contain the WASP half, so they are rerun.
@@ -109,9 +127,12 @@ notes/amendment1_join_audit.md.
      - exactly one PREREG_wasp_kinematics_amendment1_<date>.txt exists at the repository root;
      - it matches its recorded SHA-256 (the .sha256 next to it);
      - both files are committed and unmodified;
-     - it cites the frozen pre-registration's hash, and that file still matches its hash.
+     - it cites the frozen pre-registration's hash, and that file still matches its hash;
+     - after `git fetch origin victoria-barriola-08`, the freeze commit (the last commit that touched
+       either file) is an ancestor of origin/victoria-barriola-08. If the fetch fails, it refuses.
      The check sits in src/seeds.label_code (test: tests/test_seeds.py).
-   - **Diagnostic (labelled DIAGNOSTIC, not a result; no decision rule or reading applies).** The
+   - **Diagnostic (labelled DIAGNOSTIC, not a result; no decision rule or reading applies; this is the
+     comparison that isolates the join).** The
      original 98-host list (D1: 100, D3: 97, D4: 95) is rerun once through every WASP-half computation of
      this section (B, C, D1-D6, E(i), E(ii)) under the same wasp_a1_* labels as the 107-host run.
      - Frozen run vs diagnostic: same hosts, new streams. This isolates the Monte Carlo stream change.

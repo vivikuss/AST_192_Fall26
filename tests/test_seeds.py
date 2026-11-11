@@ -79,10 +79,16 @@ def _refused(root):
 def test_wasp_a1_streams_refuse_without_a_valid_frozen_amendment():
     assert _refused(ROOT) == (not list(ROOT.glob(seeds.A1_GLOB)))   # today: not frozen -> refused
     with tempfile.TemporaryDirectory() as d:
-        root = pathlib.Path(d)
-        _git(root, "init", "-q")
+        remote = pathlib.Path(d) / "remote.git"
+        root = pathlib.Path(d) / "work"
+        _git(d, "init", "-q", "--bare", str(remote))
+        _git(d, "init", "-q", str(root))
+        _git(root, "remote", "add", seeds.REMOTE, str(remote))
         name = next(iter(seeds.FROZEN_PREREG_SHA256))
         shutil.copy(ROOT / name, root / name)
+        _git(root, "add", name)
+        _git(root, "commit", "-qm", "init")
+        _git(root, "branch", "-M", "main")
         assert _refused(root)                                             # no amendment
         txt = root / "PREREG_wasp_kinematics_amendment1_2026-12-01.txt"
         txt.write_text("Amends ... sha256 " + seeds.FROZEN_PREREG_SHA256[name] + "\n")
@@ -94,6 +100,22 @@ def test_wasp_a1_streams_refuse_without_a_valid_frozen_amendment():
         assert _refused(root)                                             # right hash, not committed
         _git(root, "add", ".")
         _git(root, "commit", "-qm", "freeze")
+        assert _refused(root)                                             # committed, remote branch missing
+        _git(root, "commit", "-q", "--allow-empty", "-m", "later")
+        _git(root, "push", "-q", seeds.REMOTE, "main~1:refs/heads/other")
+        assert _refused(root)                                             # pushed elsewhere; branch missing
+        _git(root, "push", "-q", seeds.REMOTE, "main~2:refs/heads/" + seeds.REMOTE_BRANCH)
+        assert _refused(root)                                             # branch exists, freeze not on it
+        try:
+            seeds.require_frozen_amendment(root)
+        except RuntimeError as e:
+            assert "not an ancestor" in str(e), e
+        _git(root, "push", "-q", seeds.REMOTE, "main~1:refs/heads/" + seeds.REMOTE_BRANCH)
+        assert not _refused(root)                                         # freeze commit on remote branch
+        assert seeds.label_code("wasp_a1_primary", root=root) == sum(map(ord, "wasp_a1_primary"))
+        _git(root, "remote", "set-url", seeds.REMOTE, str(pathlib.Path(d) / "missing.git"))
+        assert _refused(root)                                             # fetch fails -> refused
+        _git(root, "remote", "set-url", seeds.REMOTE, str(remote))
         assert not _refused(root)                                         # valid: allowed
         assert seeds.label_code("wasp_a1_primary", root=root) == sum(map(ord, "wasp_a1_primary"))
         txt.write_text(txt.read_text() + "edited after freeze\n")

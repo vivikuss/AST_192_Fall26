@@ -1577,3 +1577,57 @@ their `.sha256`, 49/49 tests. The DR3 filing (user's step 1) was **not done**: t
   - Result: the draft, the new notes, src and tests have **0** matches.
   - `data/processed/wasp_amendment1/` does not exist (nothing has been run).
   - The scanner lives in the session scratchpad, not in the repo.
+
+### Amendment 1, user decisions on E36 and further read-only items (2026-11-10; draft revision 4; not frozen)
+**E37. User decisions and results.** No velocity, RV, or dispersion was computed. Nothing was frozen, pushed, or rerun.
+- **DR3 filing deferred (user).** The collaborator's DR3 files are on the Tufts HPC, and the user is handling them
+  separately. Step 1 of the 2026-11-10 request was not done in this repository: nothing was filed, hashed, joined or
+  read.
+- **User decisions on E36:**
+  - (c) The normal-approximation Monte Carlo SD is accepted; no exact recomputation. The 98-host diagnostic under the
+    `wasp_a1_*` labels is the actual join comparison (the draft now says so).
+  - The code-sum pairs eblm_G2/w_e_zd and eblm_G5/w_h_zd stay unchanged, with the correction documented (E36).
+  - The committed-in-git requirement of the guard is kept.
+  - The diagnostic covers all WASP-half tests.
+- **Guard extended.**
+  - `seeds.require_frozen_amendment` now runs `git fetch origin victoria-barriola-08`. It then requires that the
+    freeze commit is an ancestor of `origin/victoria-barriola-08`.
+  - It refuses if the fetch fails.
+  - *Judgment:* "freeze commit" = the last commit that touched the frozen `.txt` or its `.sha256`. The guard already
+    requires both to be clean in HEAD, so this is the commit holding the content in use.
+  - *Consequence:* the rerun can only run after the user has pushed the freeze commit to that branch.
+  - Tests use a temporary bare remote and cover four cases: branch missing; branch present without the freeze
+    commit ("not an ancestor"); freeze commit pushed (allowed); fetch failure (refused). No network is used.
+- **(a) WASP-53 and WASP-81.**
+  - The draft now calls them WASP-discovered hosts excluded by the frozen facility rule (archive: "Multiple
+    Facilities"). It no longer calls them "other". The membership rule is unchanged.
+  - `notes/amendment1_join_audit.md` uses the same wording.
+- **(a) Other survey names** (archive snapshot 2026-10-28, `disc_facility` 2026-11-04; metadata only):
+  - Within the 297, all 107 hosts with a WASP facility have a "WASP-" ArchiveName.
+  - One has another survey's catalogue ID as its HS19 SimbadName: WASP-151 = EPIC 246441449. It is one of the 9
+    added in E32.
+  - No SIMBAD main identifier of the 107 is another survey's name.
+  - In the whole archive, no planet with a WASP facility has a non-"WASP-" host name.
+  - Three WASP-named hot-Jupiter hosts in the archive have a non-WASP facility: WASP-85 A (K2), WASP-87 (AAT) and
+    WASP-167 (Multiple Observatories). None is in HS19 Table 1, so they cannot enter the sample.
+- **(b) EBLM crossmatch audit** (`data/processed/eblm/eblm4_dr2_match.csv`, `gamma_fit.rv_files` file names only).
+  - **Cones:** 41 of the 118 10″ cones held more than one DR2 source (31 among the 79). The match is the nearest
+    source after propagating Gaia to J2000 with the DR2 proper motion (C11).
+  - **Distances:** every match is ≤ 1.84″ away, and every next source ≥ 1.31″. Every next source within 5″ is
+    ≥ 3.2 mag fainter.
+  - **J0040+01:** its next source is the only one < 3 mag fainter (8.0″ away, ΔG = 1.5; match at 0.08″). It is the
+    "confused" flag already inspected and kept in C11.
+  - **Separations:** no two EBLM IV systems are within 30″ (closest pair 1,397″). Every CORALIE file matches exactly
+    one system (at most two files per system: the CORALIE07 and CORALIE14 copies under one coordinate stem). No DR2
+    source_id is used twice.
+  - *Judgment:* nothing is ambiguous, so the work did not stop.
+- **(c) Privacy.**
+  - The full diff `origin/victoria-barriola-08..HEAD` (20cc253..8d663b0, local remote-tracking ref, not fetched) has
+    0 extended-sample ids, 0 extended-sample name strings, 0 CORALIE RV values, and no `data/` or private paths.
+  - **Five untracked logs** (`eblm4_dr3_nss`, `eblm_d2`, `eblm_width`, `hu2026_power`, `wasp_kinematics`): 0 ids, 0
+    names.
+    - One numeric match, `0.326` in `hu2026_power.log`, is a power value that coincides with an RV value. It is not
+      CORALIE data.
+    - Read by eye: aggregates only (counts, Δ, CIs, control widths). The one system name is EBLM IV's public
+      J1500-33.
+    - The five are added to `.gitignore` by name and stay local.

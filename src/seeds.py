@@ -11,7 +11,8 @@ REGISTRY lists every label the project uses, with its tails. tests/test_seeds.py
 two labels produce the same stream, and that the amendment-1 labels share no code with any label.
 
 Labels starting with "wasp_a1_" belong to the rerun of amendment 1. `label_code` refuses them unless
-the frozen amendment exists at the repository root and matches its recorded SHA-256 (E36, item g).
+the frozen amendment exists at the repository root, matches its recorded SHA-256, is committed, and its
+freeze commit is an ancestor of origin/victoria-barriola-08 after a git fetch (E36 item g, E37).
 """
 import hashlib
 import subprocess
@@ -24,6 +25,7 @@ A1_PREFIX = "wasp_a1_"
 FROZEN_PREREG_SHA256 = {"PREREG_wasp_kinematics_2026-11-04.txt":
                         "fece9b6608624c8213d1fb5fa96a6223bc07f5328adf820bd133db4a3490ecc4"}
 A1_GLOB = "PREREG_wasp_kinematics_amendment1_*.txt"
+REMOTE, REMOTE_BRANCH = "origin", "victoria-barriola-08"   # the freeze must be on this branch (E37)
 
 _POWER_SETS = ["WASP, all distances", "WASP, d < 600 pc", "WASP, d < 600 pc, 0.5-1.5",
                "WASP, d < 600 pc, Dec < 0 (proxy for a South-only sample)"]
@@ -102,9 +104,28 @@ def _git_clean_and_tracked(root, paths):
     return None
 
 
-def require_frozen_amendment(root=ROOT):
-    """Raise unless exactly one frozen amendment 1 exists, matches its committed .sha256, and cites the
-    frozen WASP pre-registration's hash. Returns the amendment path."""
+def _freeze_commit_on_remote(root, paths, remote=REMOTE, branch=REMOTE_BRANCH):
+    """git fetch <remote> <branch>, then require the last commit touching `paths` to be an ancestor of
+    <remote>/<branch>. Returns an error string or None."""
+    rel = [str(p.relative_to(root)) for p in paths]
+    c = subprocess.run(["git", "-C", str(root), "log", "-n", "1", "--format=%H", "--", *rel],
+                       capture_output=True, text=True).stdout.strip()
+    if not c:
+        return "no freeze commit found"
+    f = subprocess.run(["git", "-C", str(root), "fetch", "--quiet", remote, branch], capture_output=True, text=True)
+    if f.returncode != 0:
+        return f"git fetch {remote} {branch} failed ({f.stderr.strip()[:200]})"
+    a = subprocess.run(["git", "-C", str(root), "merge-base", "--is-ancestor", c,
+                        f"refs/remotes/{remote}/{branch}"], capture_output=True)
+    if a.returncode != 0:
+        return f"the freeze commit {c[:7]} is not an ancestor of {remote}/{branch}"
+    return None
+
+
+def require_frozen_amendment(root=ROOT, remote=REMOTE, branch=REMOTE_BRANCH):
+    """Raise unless exactly one frozen amendment 1 exists, matches its committed .sha256, cites the
+    frozen WASP pre-registration's hash, and its freeze commit is on <remote>/<branch> after a fetch.
+    Returns the amendment path."""
     found = sorted(root.glob(A1_GLOB))
     if len(found) != 1:
         raise RuntimeError(f"amendment 1 is not frozen: expected one {A1_GLOB} at the repository root, "
@@ -125,6 +146,9 @@ def require_frozen_amendment(root=ROOT):
     err = _git_clean_and_tracked(root, [txt, side])
     if err:
         raise RuntimeError(f"{err}; the rerun refuses to run until the frozen amendment is committed.")
+    err = _freeze_commit_on_remote(root, [txt, side], remote, branch)
+    if err:
+        raise RuntimeError(f"{err}; the rerun refuses to run until the freeze commit is on {remote}/{branch}.")
     return txt
 
 

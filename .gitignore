@@ -8,3 +8,9 @@ logs/*.tmp
 # CORALIE-derived per-system tables (data-owner permission pending): never commit
 data/private/
 .DS_Store
+# untracked run logs, aggregates only (checked 2026-11-10, DECISIONS E37); kept local
+logs/eblm4_dr3_nss.log
+logs/eblm_d2.log
+logs/eblm_width.log
+logs/hu2026_power.log
+logs/wasp_kinematics.log

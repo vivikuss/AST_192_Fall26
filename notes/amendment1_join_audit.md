@@ -11,8 +11,8 @@ ArchiveName. Separation = HS19 DR2 position vs archive (pscomppars) position of 
 
 | ArchiveName | SimbadName | source_id (pipeline) | archive id (name route) | same id | sep (″) | G | parallax (mas) | archive disc_facility | class |
 |---|---|---|---|---|---|---|---|---|---|
-| WASP-53 | WASP-53 | 5136559128264765184 | 5136559128264765184 | True | 0.00 | 12.35 | 4.938 ± 0.034 | Multiple Facilities | other |
-| WASP-81 | WASP-81 | 4244243354278985472 | 4244243354278985472 | True | 0.00 | 12.33 | 2.482 ± 0.044 | Multiple Facilities | other |
+| WASP-53 | WASP-53 | 5136559128264765184 | 5136559128264765184 | True | 0.00 | 12.35 | 4.938 ± 0.034 | Multiple Facilities | WASP-discovered; excluded by the frozen facility rule (archive: Multiple Facilities) |
+| WASP-81 | WASP-81 | 4244243354278985472 | 4244243354278985472 | True | 0.00 | 12.33 | 2.482 ± 0.044 | Multiple Facilities | WASP-discovered; excluded by the frozen facility rule (archive: Multiple Facilities) |
 
 **in `fac_sid` only: 0**
 
@@ -22,8 +22,8 @@ ArchiveName. Separation = HS19 DR2 position vs archive (pscomppars) position of 
 
 | ArchiveName | SimbadName | source_id (pipeline) | archive id (name route) | same id | sep (″) | G | parallax (mas) | archive disc_facility | class |
 |---|---|---|---|---|---|---|---|---|---|
-| WASP-53 | WASP-53 | 5136559128264765184 | 5136559128264765184 | True | 0.00 | 12.35 | 4.938 ± 0.034 | Multiple Facilities | other |
-| WASP-81 | WASP-81 | 4244243354278985472 | 4244243354278985472 | True | 0.00 | 12.33 | 2.482 ± 0.044 | Multiple Facilities | other |
+| WASP-53 | WASP-53 | 5136559128264765184 | 5136559128264765184 | True | 0.00 | 12.35 | 4.938 ± 0.034 | Multiple Facilities | WASP-discovered; excluded by the frozen facility rule (archive: Multiple Facilities) |
+| WASP-81 | WASP-81 | 4244243354278985472 | 4244243354278985472 | True | 0.00 | 12.33 | 2.482 ± 0.044 | Multiple Facilities | WASP-discovered; excluded by the frozen facility rule (archive: Multiple Facilities) |
 
 **in `fac_sid` only: 0**
 
@@ -51,8 +51,8 @@ ArchiveName. Separation = HS19 DR2 position vs archive (pscomppars) position of 
 
 | ArchiveName | SimbadName | source_id (pipeline) | archive id (name route) | same id | sep (″) | G | parallax (mas) | archive disc_facility | class |
 |---|---|---|---|---|---|---|---|---|---|
-| WASP-53 | WASP-53 | 5136559128264765184 | 5136559128264765184 | True | 0.00 | 12.35 | 4.938 ± 0.034 | Multiple Facilities | other |
-| WASP-81 | WASP-81 | 4244243354278985472 | 4244243354278985472 | True | 0.00 | 12.33 | 2.482 ± 0.044 | Multiple Facilities | other |
+| WASP-53 | WASP-53 | 5136559128264765184 | 5136559128264765184 | True | 0.00 | 12.35 | 4.938 ± 0.034 | Multiple Facilities | WASP-discovered; excluded by the frozen facility rule (archive: Multiple Facilities) |
+| WASP-81 | WASP-81 | 4244243354278985472 | 4244243354278985472 | True | 0.00 | 12.33 | 2.482 ± 0.044 | Multiple Facilities | WASP-discovered; excluded by the frozen facility rule (archive: Multiple Facilities) |
 
 **in `fac_sid` only: 9**
 
