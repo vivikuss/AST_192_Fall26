@@ -1867,3 +1867,36 @@ crossmatched, and no velocity, dispersion or other kinematic quantity was comput
   obtained.
 - **Not done:** no code was run on these files beyond checksums, header lines, row counts, reading `source_id`
   for the duplicate and range checks, and ADQL parsing. No inventory script or data file was added to git.
+
+**E46. Kayla's DR3 files: moved, permissions restricted, open questions for Phase 2** (user decisions on E45,
+2026-11-10). Still no analysis.
+- **New location:** `~/data/hu2026_dr3_Kayla/`, moved from `AST_192_Fall26/hu2026/` (supersedes the location in E45).
+  - All 271 SHA-256 values recomputed after the move are identical to `~/dr3_Kayla_sha256_local.txt`.
+  - **No git repository sees it.** Neither the folder nor `~` is inside a repo. `git status --ignored` in
+    `AST_192_Fall26` and in `08_HS19_Kinematics` lists no `hu2026` path; 08's own ignored
+    `logs/hu2026_power.log` is unrelated.
+  - The parent repo's `.gitignore` was not touched.
+- **Permissions:** `chmod -R go-rwx`, so the directory is 700 and all files 600 (owner only).
+- **Checksum comparison with the cluster: still pending.** The user reported copying the cluster list to
+  `~/dr3_Kayla_sha256_cluster.txt`, but no such file exists (checked 2026-11-10, also searched `~` to depth 3), so
+  nothing was compared.
+  - When it arrives, the agreed rule applies: compare by file name and hash, ignoring the `hu2026/` prefix and
+    the cluster's CLAUDE.md line (added on the cluster on 2026-11-10, not part of Kayla's data).
+  - The copy stays **unverified** until then.
+- **`field_main_sequence_uvw.csv.key`:** left in place, not copied or displayed. The user will ask Kayla.
+- **Open questions for the Phase 2 (DR3) pre-registration; no decision yet:**
+  1. *Excess-factor cut:* Kayla's field query uses 1.0 + 0.0015·bp_rp² (HS19's printed coefficient). Our Phase 1
+     primary uses Lindegren's 0.015 (D2).
+  2. *RUWE:* her query adds ruwe < 1.4, which is not in HS19 or our Phase 1 cuts.
+  3. *Excess noise:* her query has no astrometric_excess_noise_sig cut (our cut 6).
+  4. *Which cuts can be reapplied:* the field chunks keep only 11 columns (source_id, ra, dec, parallax, pmra,
+     pmdec, radial_velocity, phot_g_mean_mag, bp_rp, ag_gspphot, ebpminrp_gspphot).
+     - Changing or adding any quality cut therefore needs a new query: parallax_over_error,
+       visibility_periods_used, UWE, gof, RUWE, excess factor, flux errors, rv_nb_transits, excess noise.
+     - Only the parallax, magnitude and colour cuts could be recomputed from these files.
+     - The host files add parallax_over_error, visibility_periods_used, astrometric_chi2_al and
+       astrometric_n_good_obs_al (UWE), but no gof, RUWE, excess factor, flux errors, rv_nb_transits or excess
+       noise.
+  5. *DR2→DR3 crossmatch:* `dr2_to_dr3.csv` holds a single-star test query (`gaiadr3.dr2_neighbourhood` for one
+     DR2 source_id, 1 row). **No documented crossmatch of the hosts exists** in the files. How the `dr2`/`dr3`
+     columns of the host files were filled is unknown.
