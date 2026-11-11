@@ -1675,3 +1675,26 @@ No velocity, RV, or dispersion was computed.
   - Section 4 now reads "the EBLM reference of every contrast (table below)".
   - The `seeds.UNLABELLED` addition is kept (user).
   - Revision 5 is approved by the user for freezing.
+
+### Freeze of amendment 1 (user, 2026-11-10)
+**E39. Amendment 1 frozen** as `PREREG_wasp_kinematics_amendment1_2026-11-10.txt`.
+- **Hash:** sha256 `533a6437d3bd32348a71bf7436647113ffe761c5164c59076053cde456be4e21`, recorded in
+  `PREREG_wasp_kinematics_amendment1_2026-11-10.sha256`.
+- **Format (E6, as in E29):** revision 5 (commit bc69542) was moved from `prereg_drafts/` with `git mv`.
+  - Only its first five lines changed. The title "DRAFT amendment 1" became "Amendment 1", and the status lines
+    became "FROZEN 2026-11-10", listing revisions 2–5 and the hash file.
+  - A diff against bc69542 shows only these lines and the rename.
+- **Verification:** both earlier frozen pre-registrations still match their hashes. The frozen amendment cites the
+  WASP pre-registration's hash.
+- **Frozen as written:**
+  - Section 2 contains the placeholder `[YYYY-MM-DD]` for the Slack date, as the user set it.
+  - Section 2 of the frozen file is not edited. The actual date, if recorded, goes in DECISIONS.md or a later
+    amendment.
+- **Test:** `test_amendment1_label_list_matches_the_draft` now reads the frozen file (the draft path no longer
+  exists).
+- **Stale paths, not changed:** the headers of the four Stage E files (E35) still point to the old draft path
+  `prereg_drafts/DRAFT_AMENDMENT_wasp_membership_2026-11-09.txt`. They were left as written, because the amendment
+  describes them as unchanged apart from that header.
+- **Not run:** the rerun. The guard requires the freeze commit to be on `origin/victoria-barriola-08`, so the user
+  must push first.
+- **Test adjusted:** `test_wasp_a1_streams_refuse_without_a_valid_frozen_amendment` checked the real repository with "frozen ⇒ allowed". It now checks the real repository only before a freeze, so tests never fetch from GitHub; the temporary-repository cases are unchanged.

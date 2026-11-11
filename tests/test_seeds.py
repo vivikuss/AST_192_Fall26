@@ -48,7 +48,7 @@ def test_amendment1_labels_share_no_code_with_any_label():
 
 
 def test_amendment1_label_list_matches_the_draft():
-    txt = (ROOT / "prereg_drafts" / "DRAFT_AMENDMENT_wasp_membership_2026-11-09.txt").read_text()
+    txt = (ROOT / "PREREG_wasp_kinematics_amendment1_2026-11-10.txt").read_text()   # frozen (E39)
     import re
     in_draft = set(re.findall(r"\bwasp_a1_[A-Za-z0-9_]+", txt))
     assert in_draft == set(seeds.AMENDMENT1), in_draft ^ set(seeds.AMENDMENT1)
@@ -80,7 +80,8 @@ def _refused(root):
 
 
 def test_wasp_a1_streams_refuse_without_a_valid_frozen_amendment():
-    assert _refused(ROOT) == (not list(ROOT.glob(seeds.A1_GLOB)))   # today: not frozen -> refused
+    if not list(ROOT.glob(seeds.A1_GLOB)):                           # before the freeze: refused
+        assert _refused(ROOT)                                        # (after it, ROOT would need a fetch; E39)
     with tempfile.TemporaryDirectory() as d:
         remote = pathlib.Path(d) / "remote.git"
         root = pathlib.Path(d) / "work"

@@ -1,8 +1,8 @@
-DRAFT amendment 1 to PREREG_wasp_kinematics_2026-11-04.txt (WASP membership join), project 08
-Status: DRAFT, revision 5. Revision 2: user decisions Q1-Q7, 2026-11-09. Revision 3: review items a-h,
-2026-11-10, DECISIONS E36. Revision 4: user decisions on those items, 2026-11-10, E37. Revision 5: wording
-and precision edits, 2026-11-10, E38. Not frozen, no hash.
-Nothing in the rerun (section 4) has been run.
+Amendment 1 to PREREG_wasp_kinematics_2026-11-04.txt (WASP membership join), project 08
+Status: FROZEN 2026-11-10 (approved by the user). Revisions: 2, user decisions Q1-Q7, 2026-11-09, DECISIONS
+E34; 3, review items a-h, 2026-11-10, E36; 4, user decisions on those items, 2026-11-10, E37; 5, wording and
+precision edits, 2026-11-10, E38. Frozen from revision 5 (commit bc69542). Hash:
+PREREG_wasp_kinematics_amendment1_2026-11-10.sha256. Nothing in the rerun (section 4) has been run.
 Amends: PREREG_wasp_kinematics_2026-11-04.txt (sha256 fece9b6608624c8213d1fb5fa96a6223bc07f5328adf820bd133db4a3490ecc4).
 The frozen file is not edited. On approval this text is frozen at the repository root as
 PREREG_wasp_kinematics_amendment1_<date>.txt with a .sha256 (convention E6).
