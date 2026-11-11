@@ -2094,8 +2094,10 @@ request; information only). **MATCH.**
 - **Method:**
   - `cache_key()` and the inputs `get_field()` passes to it were copied verbatim from the source text of
     `hu2026_replication.py` (sha256 `6f7bd10a…`, E50) into a separate script
-    (scratchpad `dr3/cache_key_check.py`, sha256 `4bed043a816ba3db3b448cb4907df6098d23c9ea4918f2bb66c53edb6f18fe0e`;
-    not committed, since it contains Kayla's code).
+    (`~/data/hu2026_dr3_Kayla/checks/cache_key_check.py`, owner-only (dir 700, file 600), sha256
+    `4bed043a816ba3db3b448cb4907df6098d23c9ea4918f2bb66c53edb6f18fe0e`; not committed, since it contains
+    Kayla's code). It was written in the session scratchpad and moved there on 2026-11-11, with the SHA-256
+    checked before and after the move.
     - What was copied: `field_queries()` with `field_edges()` and `field_query()`, `FIELD_CUTS_ADQL`, `_U`,
       `GAIA_COLUMNS`, `N_FIELD_CHUNKS`, `FIELD_MAX_DIST_PC`, and the constants in the call: `EXTINCTION_MAP`,
       `LOS_STEP_PC`, `BAYESTAR_MODE`, `R_G`/`R_BP`/`R_RP`, `BAYESTAR19_TO_EBV`, `ZAMS_COEFFS`, `MS_DELTA_MAG`,
