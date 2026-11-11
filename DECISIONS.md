@@ -2308,3 +2308,18 @@ exists and where it comes from.**
   - All 75 tests pass.
 - **Restart:** under `caffeinate -i`, so the Mac cannot idle-sleep during the download. The finished ranges
   00–14 are kept.
+
+**E58. Download restarted; Bayestar19 web query retried once: still down** (2026-11-11).
+- **Field download:** restarted at about 17:52 under `caffeinate -i` (python pid 52003) with the E57 code.
+  - **All 15 finished ranges (00–14) passed `verify`.** Their row counts equal those logged when they were
+    written; for example, range 14 has 738,961 rows. They are kept.
+  - Range 15 onward is running.
+  - Log: `~/data/dr3x_field_b/download.log`.
+- **Bayestar19 web query, one retry** (user instruction: independent of the download, one arbitrary sky
+  position):
+  - Query at 17:52 for (l, b) = (90°, 10°), d = 500 pc, `BayestarWebQuery(version="bayestar2019")`, median mode.
+    No host position was sent.
+  - **It failed again:** ConnectTimeout to `argonaut.skymaps.info:80` after 75 s, as on the first attempt (E54).
+  - Nothing else was run. The validation and Stage 2 stay on hold while the 6 hosts are pending (E55, E56).
+  - The check of the full map's size and the free disk space is still due when the download finishes (E56
+    item 2).
