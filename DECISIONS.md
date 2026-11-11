@@ -2088,3 +2088,44 @@ any match, instead of as a manual step.
     - its RNG.
   - These are open questions for the Phase 2 pre-registration, alongside E46 and E47. No effect size was
     computed.
+
+**E51. Kayla's DR3 field file: its cache key reproduces from `hu2026_replication.py`** (2026-11-11; user
+request; information only). **MATCH.**
+- **Method:**
+  - `cache_key()` and the inputs `get_field()` passes to it were copied verbatim from the source text of
+    `hu2026_replication.py` (sha256 `6f7bd10a…`, E50) into a separate script
+    (scratchpad `dr3/cache_key_check.py`, sha256 `4bed043a816ba3db3b448cb4907df6098d23c9ea4918f2bb66c53edb6f18fe0e`;
+    not committed, since it contains Kayla's code).
+    - What was copied: `field_queries()` with `field_edges()` and `field_query()`, `FIELD_CUTS_ADQL`, `_U`,
+      `GAIA_COLUMNS`, `N_FIELD_CHUNKS`, `FIELD_MAX_DIST_PC`, and the constants in the call: `EXTINCTION_MAP`,
+      `LOS_STEP_PC`, `BAYESTAR_MODE`, `R_G`/`R_BP`/`R_RP`, `BAYESTAR19_TO_EBV`, `ZAMS_COEFFS`, `MS_DELTA_MAG`,
+      `COLOR_RANGE`, `SUN_UVW`, `HALO_VTOT`.
+  - **Kayla's script was not imported or executed.** It was read as text only.
+  - Before computing, the check script asserts four things:
+    - each of its 10 copied blocks, and the `get_field()` call, occurs exactly once verbatim in the source;
+    - each constant is assigned exactly once at module level;
+    - there is no `global` statement;
+    - the run uses Python 3.10.21 (`-I`).
+- **Result:**
+  - The recomputed SHA-1 `40c665fcd587794f4cac4e60e5cc14154436a602` **equals** the content of
+    `field_main_sequence_uvw.csv.key`.
+  - The `.key` file is unchanged since E45 (its SHA-256 equals the entry in `~/dr3_Kayla_sha256_local.txt`).
+  - Both it and `field_main_sequence_uvw.csv` are dated 2026-11-04 14:18:32.
+- **What the match confirms:** `field_main_sequence_uvw.csv` was written by a version of the code whose
+  `get_field()` key inputs equal these. That covers:
+  - the field query text of the 48 top-level source_id ranges: RV required, parallax > 0.4 mas, App. A cuts
+    1–9 with excess coefficient 0.0015;
+  - Bayestar19 (median) as the extinction fallback, × 0.884;
+  - the CV18 coefficients;
+  - the HS19 ZAMS with the 1 mag cut, and 0.5 ≤ (BP−RP)₀ ≤ 1.5;
+  - solar motion (11.1, 12.24, 7.25);
+  - the halo cut at 180 km/s.
+
+  It **agrees with Kayla's answers in E47**.
+- **What it does not confirm:**
+  - The key hashes settings, not data or code. It does not cover the contents or version of
+    `bayestar2019.h5`, nor the code of `add_photometry` / `add_kinematics` / `fetch_field_range`.
+  - It does not cover the split sub-range queries. They share the WHERE clause (E45), but are not in the key.
+  - It does not cover the contents of the CSV itself.
+  - Planet-host removal happens after the cached file is read, so it is not in the key. This is consistent with
+    E47: hosts are not removed in the file.
