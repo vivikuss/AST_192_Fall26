@@ -2272,3 +2272,39 @@ exists and where it comes from.**
 4. **Software environment:** future package installs go in a **separate virtual environment**, not the main
    `ast192-hj` environment. This follows the E54 incident, in which installing `dustmaps` replaced numpy
    1.26.4 (since reverted).
+
+**E57. Method B field downloader: retries, a completeness check, and `caffeinate`** (user instructions,
+2026-11-11). EXPLORATORY run (E52).
+- **Why:** the download stopped twice after 15 of 48 ranges (00–14 complete, 686 MB).
+  - 15:44: a DNS failure (`gaia.ari.uni-heidelberg.de` did not resolve).
+  - 15:50, two minutes after a manual restart: ARI closed the connection without a response.
+  - The downloader split ranges on ARI time limits but had no retry for network errors, so one dropped request
+    ended the run.
+- **Retries** (`with_retries`, as Kayla's `with_retries` does, E50, but with increasing waits):
+  - What is retried: dropped connections, DNS failures, timeouts, and HTTP 429/5xx. The error's chain of
+    causes is checked, because pyvo wraps some network errors.
+  - Schedule: up to **10 tries per range**, waiting **1, 2, 4, 8, 16, 30, 30, 30, 30 min** between them.
+  - **Every retry is logged** (range, try number, error type, wait). After the 10th failure the run stops.
+  - **Errors that indicate a bad query are not retried and stop the run:** a rejected submission, a job that
+    ends in ERROR for a reason other than time, or `DALQueryError`.
+  - Time limits and the row cap still split the range, as before.
+- **Completeness check** (`verify`): a range counts as complete only if all of the following hold.
+  - The whole gzip stream reads; a truncated stream fails.
+  - The data rows are below the row limit (10,000,000).
+  - The last line ends with a newline and parses to the header's number of fields.
+  - The written row count equals the job's.
+
+  Files are written to `.tmp`, verified, then renamed. A `.ok` marker records the verified size, so unchanged
+  files are not re-read on every restart. **A range that fails the check, or an interrupted `.tmp`, is deleted
+  and rerun from scratch.** The finished ranges 00–14 are verified on the next run.
+- **Tests** (`tests/test_dr3x_field_b.py`, offline, with a fake ARI job):
+  - A simulated DNS failure (socket.gaierror inside requests.ConnectionError) and a dropped connection
+    (RemoteDisconnected), each raw and wrapped by pyvo, are retried with waits of 1, 2 and 4 min and logged.
+  - 10 failures stop the run after 9 waits.
+  - A bad query (`BadQuery`, `DALQueryError`) is not retried.
+  - Truncated, newline-less and wrong-field files, and the row limit, all fail `verify`.
+  - A broken leftover and an interrupted `.tmp` are rerun; a verified range is not.
+  - Splitting still works.
+  - All 75 tests pass.
+- **Restart:** under `caffeinate -i`, so the Mac cannot idle-sleep during the download. The finished ranges
+  00–14 are kept.
