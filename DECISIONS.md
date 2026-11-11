@@ -1778,3 +1778,20 @@ noted in E39).
 - The pre-header SHA-256 values in amendment section 8 still verify, with the header removed (2 lines for the
   `.md` files, 1 for the `.csv`).
 - Tests 58/58; all three frozen files match their hashes.
+
+**E44. Figure for the Slack correction** (presentation only; no new statistics). `python -m src.fig_wasp_amendment1` →
+`notes/figures/fig_wasp_amendment1_forest.png`.
+- **Inputs:** values are read from `data/processed/wasp_amendment1/results.json` (107) and the frozen
+  `data/processed/wasp/results.json` (98). Nothing is retyped. The script asserts that both runs cite the same
+  frozen pre-registration hash and δ_HS19 = −6.64.
+- **Panels:**
+  - left: B, D1–D5 B and E(i) σ_W, with lines at 0 and δ_HS19 (dashed);
+  - right: C, D1–D6 C and E(ii) σ_W, with a line at 0.
+- **Markers:** 107-host values as filled blue markers, frozen 98-host values as open gray markers, each with its 95 %
+  percentile interval. The diagnostic is not shown.
+- *Judgment:* the σ_W rows are labelled "(exploratory)" in gray italics and set off by a dotted line. Each row
+  label gives N (107 run vs 98 run); contrasts give N_WASP/N_EBLM.
+- *Judgment:* the style follows the project palette (`src/figures.py`). The reference-line labels sit above the
+  panels so that the lines don't cross them (checked by viewing the PNG).
+- **Privacy scan:** the script and the PNG have 0 matches. The PNG metadata holds only Matplotlib's Software tag
+  and the dpi. The figure shows only aggregates already in E31/E41.
