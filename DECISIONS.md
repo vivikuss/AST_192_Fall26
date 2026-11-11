@@ -1795,3 +1795,75 @@ noted in E39).
   panels so that the lines don't cross them (checked by viewing the PNG).
 - **Privacy scan:** the script and the PNG have 0 matches. The PNG metadata holds only Matplotlib's Software tag
   and the dpi. The figure shows only aggregates already in E31/E41.
+
+## DR3 data from a collaborator (filed 2026-11-10; no analysis)
+**E45. Provenance and inventory of Kayla's Gaia DR3 files.** Filing only. No WASP host was selected, nothing was
+crossmatched, and no velocity, dispersion or other kinematic quantity was computed or summarized.
+- **Sender:** Kayla. Originally received **2026-11-06 on the Tufts cluster**.
+- **This copy:**
+  - Location: `/Users/victoriabarriola/Documents/Astro2026/AST_192_Fall26/hu2026/`.
+  - Contents: 271 files, 3.6 GB. File times run from 2026-11-04 10:15 to 14:18 (they predate the 2026-11-06
+    receipt, so they are presumably the original creation times).
+  - **No code is included**, and no CLAUDE.md or other text file: only `.csv`, `.adql` and one `.key`. All files
+    were treated as data.
+- **Location / git:**
+  - The folder is outside the 08 repository.
+  - **It is visible to the parent repository `AST_192_Fall26`** (remote github.com/vivikuss/AST_192_Fall26), where
+    it shows as untracked (`?? hu2026/`), not ignored. Nothing is tracked.
+  - Nothing was changed there; the fix is the user's decision.
+  - Permissions: directory 755, files 644 (readable by other local accounts).
+- **Checksums:**
+  - SHA-256 of every file (`find . -type f`, sorted by path) is saved in `~/dr3_Kayla_sha256_local.txt` (271
+    lines). That list's own SHA-256 is `09414836e5b01ef6083dd44762a3d39023f84da450e0ca6a36628d9abb895f16`.
+  - `~/dr3_Kayla_sha256_cluster.txt` does not exist. **This copy is unverified** against the cluster original.
+- **Inventory** (headers and counts only; row counts from newlines agree with a CSV parse):
+
+  | Files | Rows | Columns |
+  |---|---|---|
+  | 101 `gaia_dr3_field_*.csv` (leaves) | 15,683,031 total (6,075–655,555 per leaf) | source_id, ra, dec, parallax, pmra, pmdec, radial_velocity, phot_g_mean_mag, bp_rp, ag_gspphot, ebpminrp_gspphot |
+  | `field_main_sequence_uvw.csv` (1.39 GB) | 8,512,817 | source_id, ra, dec, d, phot_g_mean_mag, color0, ext_source, U, V, W |
+  | `gaia_dr3_hosts_00/01/02.csv` | 500 / 500 / 122 | the field columns + parallax_over_error, visibility_periods_used, astrometric_chi2_al, astrometric_n_good_obs_al |
+  | `hosts_hs19.csv`, `hosts_tess.csv`, `hosts_wcj.csv` | 282, 105, 315 | 39: archive planet columns, dr2, dr3, label, survey, Gaia columns, rv, d, A_G, E_BPRP, ext_source, color0, mg0, zams_offset, U, V, W, v_tot |
+  | `hosts_uhj.csv` | 34 | the same 39 + `origin` (40) |
+  | `nea_pscomppars.csv` | 6,451 | pl_name, hostname, pl_orbper, pl_bmassj, discoverymethod, disc_facility, disc_locale, disc_year, st_radv, sy_dist, gaia_dr2_id, gaia_dr3_id |
+  | `sample_differences.csv` | 41 | hostname, dr3, label, status, sample, our_cut |
+  | `dr2_to_dr3.csv` | 1 | dr2_source_id, dr3_source_id, angular_distance, magnitude_difference |
+
+- **`field_main_sequence_uvw.csv.key`:**
+  - 40 bytes: 40 lowercase hex characters with no newline, the length of a SHA-1 digest.
+  - It is **not** the SHA-1 or BLAKE2b-160 of `field_main_sequence_uvw.csv`, nor the SHA-1 of any other file in
+    the folder.
+  - Its purpose is unknown, so it is treated as possibly sensitive. Its contents were not copied anywhere.
+- **Field query split tree** (from the `.adql` text):
+  - Shape: 154 queries, 48 top-level ranges `00`–`47` of equal width 2^57 in source_id. The ranges are contiguous
+    from 0 to 6,917,529,027,641,081,856 = 12·4^12·2^35, the upper bound of Gaia source_ids.
+  - Splits:
+    - 53 split nodes, each with both halves `a`/`b`; the halves tile the parent range exactly, with no gap or
+      overlap;
+    - leaves at depths 0–7;
+    - every leaf has a `.csv`, no split node has one, and there are no orphans.
+  - All 154 queries share one WHERE clause apart from the source_id range.
+  - **Truncation:** no leaf's row count equals a common Gaia archive limit (2,000 … 5,000,000), and none is a
+    multiple of 1,000. Unsplit leaves hold up to 655,555 rows while other ranges were split down to 6,075, so the
+    splits look like timeouts rather than row caps. This is an inference; the split nodes have no output to
+    check.
+  - Every row lies inside its query's source_id range. **No source_id appears in more than one leaf**, nor twice
+    within a leaf.
+- **Field cuts in the ADQL** (`gaiadr3.gaia_source`):
+  - `radial_velocity IS NOT NULL`;
+  - parallax > 0.4 mas; parallax_over_error > 10; visibility_periods_used > 8;
+  - the HS19/Lindegren UWE cut: √(χ²/(n−5)) < 1.2·exp(−0.2(G−19.5)) for G < 19.5, otherwise < 1.2;
+  - astrometric_gof_al < 3; ruwe < 1.4; rv_nb_transits > 5;
+  - 1.0 + **0.0015**·bp_rp² < phot_bp_rp_excess_factor < 1.3 + 0.06·bp_rp²;
+  - BP and RP flux_over_error > 10.
+  - *Noted, not judged:* the excess-factor coefficient is HS19's printed 0.0015. Our Phase 1 primary uses
+    Lindegren's 0.015 (D2), with 0.0015 only as a variant. The ADQL also has a RUWE cut and no
+    astrometric_excess_noise_sig cut (our cut 6).
+- **Host queries:** `gaiadr3.gaia_source` with an IN-list of source_ids only (no quality cuts):
+  - 500 / 500 / 122 IDs, 1,122 unique, with no overlap between files;
+  - every ID returned exactly once.
+- **`dr2_to_dr3.csv`:** one query of `gaiadr3.dr2_neighbourhood` for a single DR2 source_id, returning 1 row.
+  Nothing in the folder records how the other DR2→DR3 IDs (the `dr2`/`dr3` columns of the host files) were
+  obtained.
+- **Not done:** no code was run on these files beyond checksums, header lines, row counts, reading `source_id`
+  for the duplicate and range checks, and ADQL parsing. No inventory script or data file was added to git.
