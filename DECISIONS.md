@@ -1900,3 +1900,38 @@ crossmatched, and no velocity, dispersion or other kinematic quantity was comput
   5. *DR2→DR3 crossmatch:* `dr2_to_dr3.csv` holds a single-star test query (`gaiadr3.dr2_neighbourhood` for one
      DR2 source_id, 1 row). **No documented crossmatch of the hosts exists** in the files. How the `dr2`/`dr3`
      columns of the host files were filled is unknown.
+
+**E47. Kayla's answers about her DR3 and DR2 files** (received via the user, logged 2026-11-11). **Information
+only: no decision is taken here**, nothing was checked against the files, and no analysis was run.
+- **`field_main_sequence_uvw.csv.key`:** a SHA-1 cache fingerprint of the build settings, not data. **Resolved**;
+  the file stays in place. This answers the "purpose unknown" in E45 and E46. Its contents were still not
+  displayed or copied.
+- **Her DR3 field (`field_main_sequence_uvw.csv`):**
+  - Quality cuts: Hu et al. (2026) Appendix A cuts 1–9, plus parallax > 0.4 mas.
+  - The excess-factor lower bound 1.0 + **0.0015**·bp_rp² is hard-coded in cut 7. The files have **no
+    excess-factor column**, so that cut cannot be redone from them (consistent with E46 question 4).
+  - Distances: 1/parallax.
+  - Extinction: GSP-Phot; otherwise Bayestar19 × 0.884; otherwise zero. Coefficients R_G, R_BP, R_RP = 2.740,
+    3.374, 2.035.
+  - Main sequence: less than 1 mag above the Pleiades ZAMS, and 0.5 ≤ (BP−RP)₀ ≤ 1.5.
+  - Solar motion (U, V, W)☉ = (11.1, 12.24, 7.25) km/s.
+  - Halo cut: v_tot > 180 km/s.
+  - **Planet hosts are NOT removed** from the field file.
+- **Her DR2 pipeline:** HS19 cuts 1–10, Bailer-Jones distances, STILISM extinction, no colour limit, colour
+  matching within 0.025 mag. Her DR3 pipeline matches colour within 0.2 mag.
+- **Host IDs:**
+  - DR3 IDs: taken from the Hu et al. tables and matched to the NASA Exoplanet Archive by name.
+  - HS19 DR2 IDs: from SIMBAD.
+  - The `gaiadr3.dr2_neighbourhood` fallback (`dr2_to_dr3.csv`, E45/E46 question 5) was used only for nu Oct A
+    (parallax 126 mas, bright binary).
+  - TOI-5261: her ID differs from the NASA Exoplanet Archive's (no further detail given).
+- **Her two pipelines differ in several factors at once:** cuts, distances, extinction, colour limit and
+  colour-matching width. This is an **open question for the Phase 2 pre-registration**, alongside E46 questions
+  1–5.
+- **Not checked:** whether the ADQL WHERE clause recorded in E45 matches Hu Appendix A cuts 1–9; whether the one
+  row of `dr2_to_dr3.csv` is nu Oct A; the TOI-5261 discrepancy. Checking any of these would mean selecting or
+  joining hosts in DR3, which is not authorized.
+- **Cluster checksum list (status, unrelated to Kayla's answers):** `~/dr3_Kayla_sha256_cluster.txt` now exists
+  (125 bytes, two lines of text). It holds the two shell commands meant to create it (a `pbpaste` redirect and a `wc -l`
+  check), not the checksum list. The clipboard apparently held the commands rather than the list. The comparison
+  is still pending and the copy is still **unverified**.
