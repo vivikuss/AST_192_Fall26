@@ -73,6 +73,9 @@ for _k in ["wasp_a1_C"] + [f"wasp_a1_D{_i}C" for _i in range(1, 7)] + ["wasp_a1_
     AMENDMENT1[_k + "_W"] = AMENDMENT1[_k + "_E"] = (99,)
 
 REGISTRY = _reg()
+# Streams seeded without a label (entropy as numpy normalizes it; E38). Listed so the registry is complete.
+UNLABELLED = {"eblm_compare.main: SeedSequence([seed, 7])": (MASTER, 7),
+              "eblm_compare.astrometric_error: default_rng(seed=1)": (1,)}
 # Two pairs of existing labels share a code (found 2026-11-10, E36). Their streams differ by tail
 # (chunk 0 / bootstrap 99 vs eblm_width 11), so no stream is shared. Kept as is: changing them would
 # change results already reported.

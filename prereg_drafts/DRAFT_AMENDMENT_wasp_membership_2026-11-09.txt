@@ -1,11 +1,12 @@
 DRAFT amendment 1 to PREREG_wasp_kinematics_2026-11-04.txt (WASP membership join), project 08
-Status: DRAFT, revision 4. Revision 2: user decisions Q1-Q7, 2026-11-09. Revision 3: review items a-h,
-2026-11-10, DECISIONS E36. Revision 4: user decisions on those items, 2026-11-10, E37. Not frozen, no hash.
+Status: DRAFT, revision 5. Revision 2: user decisions Q1-Q7, 2026-11-09. Revision 3: review items a-h,
+2026-11-10, DECISIONS E36. Revision 4: user decisions on those items, 2026-11-10, E37. Revision 5: wording
+and precision edits, 2026-11-10, E38. Not frozen, no hash.
 Nothing in the rerun (section 4) has been run.
 Amends: PREREG_wasp_kinematics_2026-11-04.txt (sha256 fece9b6608624c8213d1fb5fa96a6223bc07f5328adf820bd133db4a3490ecc4).
 The frozen file is not edited. On approval this text is frozen at the repository root as
 PREREG_wasp_kinematics_amendment1_<date>.txt with a .sha256 (convention E6).
-Evidence: DECISIONS.md E32-E37; notes/cuts_and_choices.md (W2); notes/wasp_amendment1_power.md;
+Evidence: DECISIONS.md E32-E38; notes/cuts_and_choices.md (W2); notes/wasp_amendment1_power.md;
 notes/amendment1_join_audit.md.
 
 1. What went wrong.
@@ -42,6 +43,10 @@ notes/amendment1_join_audit.md.
      - C: +6.31 km/s, CI [+0.58, +12.02].
      - D1-D6: every B variant case 1; all C variants have the whole CI > 0 except D6 ([−0.11, +11.20]).
      - E: (i) −0.64 [−4.95, +3.30]; (ii) −2.42 [−7.32, +2.53]; (iii) EBLMs −3.06 [−5.99, −0.36].
+   - These 98-host results were made public before this amendment:
+     - pushed to origin/victoria-barriola-08 on 2026-11-04, in commit 20cc253 (DECISIONS E31 and the
+       commit message; results.json itself is gitignored);
+     - posted to the group Slack on [YYYY-MM-DD].
    - For the nine added hosts: Gaia DR2 metadata only (distance, (BP−RP)₀, declination), plus archive
      facility and year. These were seen during the audit.
    - The field-only power for the corrected membership (section 7), computed on 2026-11-09 from field
@@ -54,9 +59,14 @@ notes/amendment1_join_audit.md.
    - **Join.** WASP membership is assigned by matching the host's Gaia DR2 source_id to the archive's
      gaia_dr2_id (code: wasp_hosts(cfg, join="source_id")).
    - **Planets considered (Q1).** The facility is taken from the host's planets in the archive's
-     hot-Jupiter selection: pscomppars snapshot 2026-10-28, P < 10 d, pl_bmassj > 0.1 MJup with a measured
-     mass provenance (upper limits kept), **and disc_year ≤ 2019**. Facilities come from the 2026-11-04
-     disc_facility query.
+     hot-Jupiter selection, all on pscomppars snapshot 2026-10-28:
+     - pl_orbper < 10 d (non-null);
+     - pl_bmassj > 0.1 MJup;
+     - pl_bmassprov is one of "Mass", "Msini" or "Msin(i)/sin(i)". Any other value, including
+       "M-R relationship", is excluded;
+     - pl_bmassjlim is not used, so masses flagged as limits are kept;
+     - **disc_year ≤ 2019**.
+     Facilities come from the 2026-11-04 disc_facility query.
      - The frozen run used this selection, but the frozen text did not state it. It is stated here.
      - The year limit excludes **none** of the 107 hosts. The count is 107 with the year limit, without
        it, or when every planet of the host is considered.
@@ -112,16 +122,32 @@ notes/amendment1_join_audit.md.
      - No two EBLM IV systems lie within 30″ of each other (closest pair 1,397″). Each CORALIE file matches
        exactly one system, and no DR2 source_id is used twice.
 
-4. What is rerun. Every pre-registered test with the corrected membership: B; C; D1-D6; E(i)-(iii).
+4. What is rerun. With the corrected membership, B; C; D1-D6; E(i)-(ii) are rerun. E(iii) (EBLMs alone) is
+   reported from the frozen run.
    - D6 (C without J1500-33) and E(ii) contain the WASP half, so they are rerun.
-   - E(iii) (EBLMs alone) and the EBLM references of C and D3-D6 do not depend on membership. They are
-     taken from the frozen run, and the results file states that they are reused.
+   - E(iii) (EBLMs alone) and the EBLM reference of every contrast (table below) do not depend on
+     membership. They are taken from the frozen run, and the results file states that they are reused.
+   - **References of each contrast (C and its variants), as in the frozen run (E30).** The WASP reference
+     is regenerated in this rerun. The EBLM reference is a control median taken from the frozen run.
+
+     | Contrast | WASP reference (control median) | EBLM reference (control median) |
+     |---|---|---|
+     | C | B (107, z, 40,000; wasp_a1_primary) | eblm_primary (79, D2 field, z + distance, 40,000; 41.77 km/s) |
+     | D1 C | D1 (109, z, 5,000; wasp_a1_D1) | eblm_primary (79, 40,000) |
+     | D2 C | D2 (107, z + distance, 5,000; wasp_a1_D2) | eblm_primary (79, 40,000) |
+     | D3 C | D3 (106, z, 5,000; wasp_a1_D3) | eblm_wD3 (71 EBLMs with d < 600 pc, 5,000) |
+     | D4 C | D4 (103, z, 5,000; wasp_a1_D4) | eblm_wD4 (76 EBLMs with 0.5 ≤ (BP−RP)₀ ≤ 1.5, 5,000) |
+     | D5 C | D5 (107, halo-cut field, 5,000; wasp_a1_D5) | eblm_wD5 (79, halo-cut D2 field, 5,000) |
+     | D6 C | B (107, 40,000; wasp_a1_primary) | eblm_wD6 (78, without J1500-33, 5,000) |
+     | E(ii) | E(i) σ_W (107, z, 40,000; wasp_a1_E_W) | wasp_E_E σ_W (79, D2 field, z + distance, 40,000) |
+
    - **The matched field controls of the WASP half are regenerated for the corrected hosts (107; the D
      subsets as in section 3) under the original procedure.** That means the Phase 1 field, HS19-style z +
      colour matching (z + distance for D2), and the frozen D5 halo cut. They are not reused from the
      98-host run.
-   - Settings exactly as frozen: 40,000 control samples and 40,000 bootstrap resamples (5,000 + 5,000
-     for D); percentile interval, BCa only by the bias rule; δ_HS19 = −6.64 km/s; the six-case rule.
+   - Settings exactly as frozen: 40,000 control samples and 40,000 bootstrap resamples for B, C and E;
+     5,000 control samples and 5,000 bootstrap resamples for each D test; percentile interval, BCa only by
+     the bias rule; δ_HS19 = −6.64 km/s; the six-case rule.
    - **Guard.** The code refuses to start any stream with a wasp_a1_* label unless all of the following
      hold:
      - exactly one PREREG_wasp_kinematics_amendment1_<date>.txt exists at the repository root;
@@ -146,9 +172,11 @@ notes/amendment1_join_audit.md.
      overwritten.
 
 5. Monte Carlo labels and seed streams (Q3).
-   - **Seed derivation (one sentence):** every stream is numpy SeedSequence([20191021, code, tail]), where
-     code is the sum of the label's character codes and tail is the chunk index c (control samples) or 99
-     (bootstrap).
+   - **Seed derivation (one sentence):** every labelled stream is numpy SeedSequence([20191021, code,
+     tail]). Here code is the sum of the label's character codes. The tail is the chunk index c (control
+     samples), 99 (bootstrap), or a test-specific tail: 2 and 3 in eblm_kinematics, 11 and 12 in eblm_width,
+     none in hu2026_checks and eblm_compare. src/seeds.py is the complete registry of labels, tails, and the
+     two unlabelled seeds in eblm_compare.
    - **Seed scheme (D19, unchanged):** master seed 20191021; code = sum of the label's character codes.
      - Control samples (chunk c of 5,000): SeedSequence([20191021, code, c]).
      - Bootstrap: SeedSequence([20191021, code, 99]).
@@ -193,13 +221,15 @@ notes/amendment1_join_audit.md.
    - Method as E4: field velocities only, HS19-style z + colour matching, 10,000 control samples; two-sided
      5 %, HS19-sized deficit = ratio 0.845. The contrast uses the normal approximation with the EBLMs'
      field-control SD.
-   - **Check:** the faulty 98-host list, recomputed with the original E4 label, reproduces the frozen
-     numbers (0.81, 0.36, contrast 0.42).
+   - **Check:** the faulty 98-host list (all distances), recomputed with the original E4 label
+     ("hu_pow_hs19_WASP, all distances"), reproduces the frozen E4 power exactly: 0.81 (0.8135) for B
+     and 0.36 (0.3558) for σ_W. The control summaries are identical. The E4 contrast row (d < 600 pc, 97
+     hosts, 0.4212) was not recomputed with the E4 label, so the check does not cover it.
 
      | Arm | 98 hosts (frozen) | 107 hosts (corrected) | Smallest offset at 80 % power, 107 |
      |---|---|---|---|
      | B: total, WASP vs field | 0.81 (control SD 2.55) | **0.85** (control SD 2.46, median 43.11) | 6.25 km/s (= 80 % power) |
-     | C: contrast, total | 0.42 | **0.43** (SD of difference 3.76) | 10.53 km/s |
+     | C: contrast, total | 0.42 (E4's d < 600 pc row, 97 hosts; E4 has no all-distance row) | **0.43** (SD of difference 3.76) | 10.53 km/s |
      | E(i): σ_W, WASP vs field | 0.36 | **0.38** (control SD 2.07, median 19.07) | 4.80 km/s |
      | E(ii): contrast, σ_W | 0.15-0.16 | **0.16** | 8.70 km/s |
 
@@ -236,11 +266,13 @@ notes/amendment1_join_audit.md.
      - hu2026_power.md 53efd72fe667bdf5fca82af30ca5baed58b498316f7a116a65ae83fe4f109c65
      - wasp_hemisphere_labels.md 2ac253d94ecdbeb0954aff7d7cabccf9a85cbcf2cc320651b1647ff9d82da5f3
      - wasp_hemisphere_labels.csv 21ac76e7d50ee8f3a2d98419cd68655298d3dd84a671682f864d7b0ac8f3f04a
-   - No code in the project reads wasp_hemisphere_labels.csv (src/, tests/, notebooks/ or the other AST 192
-     repositories). A test (tests/test_wasp_membership.py) requires any future reader to pass comment="#". Without
+   - No code reads wasp_hemisphere_labels.csv in this project (src/, tests/, notebooks/) or in the
+     repositories cloned on this machine (AST_192_Fall26 01-07). A test (tests/test_wasp_membership.py) requires any future reader to pass comment="#". Without
      it, pandas silently returns 99 rows and 1 column.
-   - The nine added hosts have no hemisphere label. No pre-registered test uses the labels (the
-     WASP-South-only test was dropped).
+   - The nine added hosts are absent from wasp_hemisphere_labels.csv (98 rows, built from the faulty list),
+     so they have no discovery-paper hemisphere label. The hemisphere counts in section 3 (84 / 22 / 1) come
+     from the archive disc_facility (facility_label), not from that file. No pre-registered test uses the
+     labels (the WASP-South-only test was dropped).
    - src/hu2026_checks.py refuses to overwrite those outputs. The `wasp`, `power` and `contrast` commands
      are disabled, and the corrected power has its own command and files (`power_a1`).
 

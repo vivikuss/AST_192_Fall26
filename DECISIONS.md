@@ -1631,3 +1631,47 @@ their `.sha256`, 49/49 tests. The DR3 filing (user's step 1) was **not done**: t
     - Read by eye: aggregates only (counts, Δ, CIs, control widths). The one system name is EBLM IV's public
       J1500-33.
     - The five are added to `.gitignore` by name and stay local.
+
+### Amendment 1, draft revision 5 (user edits, 2026-11-10; not frozen, nothing run)
+**E38. Revision 5 of `prereg_drafts/DRAFT_AMENDMENT_wasp_membership_2026-11-09.txt`**, exactly the user's eight edits.
+No velocity, RV, or dispersion was computed.
+1. **Section 4, first line:** B, C, D1–D6 and E(i)–(ii) are rerun; E(iii) is reported from the frozen run.
+2. **Section 5, seed sentence completed:** the tail is c, 99, or a test-specific tail (2 and 3 in eblm_kinematics,
+   11 and 12 in eblm_width, none in hu2026_checks and eblm_compare); `src/seeds.py` is the complete registry.
+   - *Judgment:* `eblm_compare` has two streams without a label: SeedSequence([20191021, 7]) and
+     `astrometric_error`'s default_rng(1), which both callers use. They are added to `seeds.UNLABELLED`, so the
+     statement "complete registry" is true. The collision test now includes them and passes. No result changes.
+3. **Section 7:** the frozen contrast cell 0.42 is footnoted as E4's d < 600 pc row (97 hosts).
+4. **Section 2, publication:**
+   - The push date comes from the local reflog of `origin/victoria-barriola-08`: 20cc253, pushed 2026-11-04 14:05
+     −0500. That commit carries E31's numbers and the commit message; `results.json` is gitignored.
+   - *Judgment:* this is stated precisely as what was pushed.
+   - **The Slack date is left as the placeholder `[DATE]`**, because it is not known here. It must be filled
+     before the freeze.
+5. **Section 3, mass condition:** the exact rule, from `hosts.select_planets` and `config.yaml`:
+   - pl_orbper < 10 (non-null);
+   - pl_bmassj > 0.1;
+   - pl_bmassprov ∈ {"Mass", "Msini", "Msin(i)/sin(i)"};
+   - pl_bmassjlim not used (`drop_mass_upper_limits: false`);
+   - disc_year ≤ 2019.
+6. **Section 4, contrast references:** a table of the WASP and EBLM reference for C, D1–D6 C and E(ii). It is taken
+   from `wasp_kinematics.py` as frozen (E30). D1 C and D2 C use eblm_primary (40,000). D3–D6 use
+   eblm_wD3–eblm_wD6 (5,000). E(ii) uses wasp_E_E.
+7. **Section 4, sample sizes:** "5,000 control samples and 5,000 bootstrap resamples for each D test" (40,000 each
+   for B, C, E).
+8. **Section 8:**
+   - The repository scope now reads "repositories cloned on this machine (AST_192_Fall26 01–07)".
+   - The nine hosts are absent from the 98-row `wasp_hemisphere_labels.csv`.
+   - Section 3's hemisphere counts (84/22/1) come from the archive `disc_facility`.
+- **Noted, not changed (outside the eight edits):** the section 7 "Check" bullet says the 98-host check reproduces
+  "contrast 0.42". The check row is the all-distance 98 list with the a1 EBLM draws (0.4165), while the frozen 0.42
+  is E4's d < 600 pc row (0.4212). They agree only after rounding.
+- **Final revision-5 changes (user, 2026-11-10):**
+  - The Slack date placeholder now reads `[YYYY-MM-DD]`.
+  - The section 7 "Check" line now states only what was reproduced. The check reproduced, exactly, the E4 power for
+    the all-distance 98 list under the E4 label `hu_pow_hs19_WASP, all distances`: B 0.8135 and σ_W 0.3558, with
+    identical control summaries. The E4 d < 600 pc contrast row (0.4212) was **not** recomputed with the E4 label,
+    so it is not claimed. The rounded "contrast 0.42" is removed.
+  - Section 4 now reads "the EBLM reference of every contrast (table below)".
+  - The `seeds.UNLABELLED` addition is kept (user).
+  - Revision 5 is approved by the user for freezing.

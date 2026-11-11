@@ -20,6 +20,9 @@ def test_no_two_registered_labels_produce_the_same_seed():
             e = seeds.stream_entropy(label, t)
             assert e not in owner or owner[e] == label, (label, t, owner.get(e))
             owner[e] = label
+    for name, e in seeds.UNLABELLED.items():                 # label-free streams (E38)
+        assert e not in owner, (name, owner.get(e))
+        owner[e] = name
     # the generated states, not just the entropy tuples, are distinct
     states = {tuple(np.random.SeedSequence(list(e)).generate_state(4)) for e in owner}
     assert len(states) == len(owner)
