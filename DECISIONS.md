@@ -1727,3 +1727,23 @@ No velocity, RV, or dispersion was computed.
   - `data/processed/wasp_amendment1/results.json`;
   - `diagnostic_98/results.json`;
   - `logs/wasp_amendment1.log`.
+
+**E41. Results of the amendment 1 rerun** (`python -m src.wasp_amendment1`, 2026-11-10, about 7.5 min, exit 0; the guard
+passed; commit 648e393; log `logs/wasp_amendment1.log`; table in `notes/wasp_amendment1_results.md`).
+- **Headline, 107 hosts:**
+  - B: Δ_W = −5.65 km/s [−9.37, −2.04], **case 1**.
+  - C: +6.15 [+0.40, +11.60], whole CI > 0.
+  - D1–D5: B variants all case 1, and every C has the whole CI > 0.
+  - D6 C: +5.43 [−0.05, +10.85], CI includes 0.
+  - E(i): −1.18 [−5.21, +2.59]; E(ii): −1.88 [−6.58, +2.98]. Both include 0, and both are exploratory.
+  - E(iii): reused from the frozen run, −3.06 [−5.99, −0.36].
+  - BCa was not triggered.
+- **Frozen 98-host run (E31), reported alongside:** B −5.81 [−9.69, −2.09], case 1; C +6.31 [+0.58, +12.02].
+- **Diagnostic (98 hosts, wasp_a1_* labels; no reading applies):** B −5.78 [−9.66, −2.03]; C +6.27 [+0.57, +11.87].
+  - Stream change: frozen → diagnostic = +0.03 km/s in B.
+  - Join: diagnostic → headline = +0.13 km/s in B.
+- **Section 6 rule:** every decision case and C reading of the 107-host run equals the frozen run's. The conclusion
+  does not depend on the 9 added hosts.
+- **Reuse checks:** the EBLM references were reused from cached frozen chunks. No new EBLM checkpoint directory
+  appeared, and eblm_primary = 41.7745 was asserted.
+- **Unchanged:** the frozen outputs in `data/processed/wasp/`.
