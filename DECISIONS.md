@@ -2045,3 +2045,46 @@ any match, instead of as a manual step.
     missing reference directory blocks every commit and push until `AST192_PRIVATE_DIR` points at a copy.
   - `git commit/push --no-verify` skips the hooks.
   - Binary files are checked by path only.
+
+**E50. Kayla's two pipeline scripts: provenance; not to be executed before the Phase 2 freeze** (filed
+2026-11-11; information only, no decision).
+- **Sender:** Kayla. **Received 2026-11-11 via Slack**: the macOS quarantine attribute names Slack, with
+  download times 13:09:26 and 13:09:31 local, the same as the files' creation times.
+- **Where they arrived vs where they are now:**
+  - They were expected at `~/data/hu2026_dr3_Kayla/code/`, but that folder did not exist. Both files were at
+    the **root of the 08 repository, untracked** (`??`), never committed, never imported (no `.pyc`).
+  - They were moved (`mv`, not copied) to `~/data/hu2026_dr3_Kayla/code/`, which is outside every repository.
+    Permissions: directory 700, files 600. SHA-256 is identical before and after the move, and the repo
+    root holds no `.py` file afterwards.
+
+  | File | SHA-256 | Bytes | Lines |
+  |---|---|---|---|
+  | `hu2026_replication.py` | `6f7bd10a539e13de70b3b8a73f21720aaafbb2ee12c3550f7b58d81057057887` | 60,452 | 1,312 |
+  | `velocity_dispersion_replication.py` | `7829cee33923f81b654e3354a943272127fa6a16db385a0300852d319260e119` | 56,757 | 1,209 |
+
+- **They must not be run, imported or executed before the Phase 2 pre-registration is frozen.**
+  - `hu2026_replication.py` `main()` computes σ_W of Gaia DR3 host samples, including the WASP hosts.
+  - `velocity_dispersion_replication.py` has **no `main()` guard**: its whole analysis (field build, Monte
+    Carlo, figure) runs at module level, so **importing it runs it**.
+  - Both also create a `data/` folder next to themselves at import.
+- **What was done:** both files were read as text only. They are treated as data, not instructions.
+- **Contents** (from reading):
+  - `velocity_dispersion_replication.py` is her HS19 (DR2) replication. Its docstring says its choices were
+    aligned with our `notes/cuts_and_choices.md` at our commit 55aa85d. That commit exists in this repository
+    ("Figure of the frozen WASP-only results").
+  - `hu2026_replication.py` is her Hu et al. (2026) DR3 replication. As received, `USE_PUBLISHED_SAMPLES =
+    True`, so it analyses the hosts of Hu Tables 2 and 3.
+  - The code agrees with the field ADQL recorded in E45 and with Kayla's answers in E47 (the `.key` files are
+    the SHA-1 of the build settings; the DR2→DR3 fallback; colour tolerances 0.025 and 0.2).
+- **Differences from our frozen DR2 pipeline:** `notes/phase2_pipeline_differences.md`, 29 rows covering cuts,
+  distances, extinction, MS selection, halo cut, field exclusions, matching, statistic, inference, RNG, host
+  list, WASP membership, exclusions, host RVs, IDs and NEA snapshot.
+  - K-DR3 differs in almost every block at once.
+  - K-DR2 differs mainly in:
+    - the cut-8 coefficient (0.0015);
+    - the host-RV filters (`st_radvlim` missing → rejected; a broader Gaia-DR3 reference filter);
+    - extra field exclusions (warm-Jupiter and Hu Table 3 TESS hosts);
+    - the inference reported (P and a Gaussian equivalent; no CI);
+    - its RNG.
+  - These are open questions for the Phase 2 pre-registration, alongside E46 and E47. No effect size was
+    computed.
