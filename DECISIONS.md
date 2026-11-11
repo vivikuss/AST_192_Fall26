@@ -1698,3 +1698,32 @@ No velocity, RV, or dispersion was computed.
 - **Not run:** the rerun. The guard requires the freeze commit to be on `origin/victoria-barriola-08`, so the user
   must push first.
 - **Test adjusted:** `test_wasp_a1_streams_refuse_without_a_valid_frozen_amendment` checked the real repository with "frozen ⇒ allowed". It now checks the real repository only before a freeze, so tests never fetch from GitHub; the temporary-repository cases are unchanged.
+
+### Rerun under amendment 1 (2026-11-10)
+**E40. Pre-run checks and implementation** (`src/wasp_amendment1.py`, recorded and committed before the run).
+- **Pre-run checks:**
+  - The user pushed; `origin/victoria-barriola-08` = 33fc3bd (the freeze commit).
+  - `src/seeds.py` is unchanged since 809f764 apart from `UNLABELLED` (E38), and the guard logic is identical. All 8
+    seed tests pass, including the four temporary-remote cases.
+  - `seeds.require_frozen_amendment()` passes on this repository after `git fetch`. It was not bypassed; the script
+    calls it first, and every `wasp_a1_*` stream calls it again.
+- **Implementation:** the frozen functions of `src/wasp_kinematics.py` (`case`, `contrast`, `boot_draws`,
+  `mc_sigma_w`, `sigma_w`) and `eblm_kinematics.bootstrap` / `mc` are used unchanged.
+  - *Judgment:* `vs_field` is repeated with one difference: its checkpoint directory is
+    `data/processed/wasp_amendment1/mc_checkpoints/`, so frozen outputs are untouched.
+  - Samples come from `hu2026_checks.wasp_hosts`:
+    - `join="source_id"` for the headline (107, D1 109);
+    - `join="hostname_legacy"` for the diagnostic (98, D1 100).
+    - *Judgment:* both are merged onto the Phase 1 table on source_id (one_to_one).
+  - Fields, EBLM table, matching, settings and labels are as in amendment sections 4–5.
+- **Reused from the frozen run (section 4):**
+  - `eblm_primary` and `eblm_wD3`–`wD6` control medians come from their cached frozen chunks. The script asserts
+    that no new EBLM checkpoint directory appears, so nothing is recomputed, and that eblm_primary = 41.7745 as in
+    `results.json`.
+  - The `wasp_E_E` σ_W control median and E(iii) are read from `data/processed/wasp/results.json`.
+- **Diagnostic:** the same code and labels, with the decision case, C reading and interpretation fields removed
+  from its output and logs.
+- **Outputs (aggregates):**
+  - `data/processed/wasp_amendment1/results.json`;
+  - `diagnostic_98/results.json`;
+  - `logs/wasp_amendment1.log`.
