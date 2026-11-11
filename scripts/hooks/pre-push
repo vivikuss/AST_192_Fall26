@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# Blocking privacy scan of everything being pushed: every commit in origin/victoria-barriola-08..<pushed tip>,
+# messages and added lines (DECISIONS E49). Without a base ref the full history of the tip is scanned.
+# Install: scripts/hooks/install.sh
+set -euo pipefail
+ROOT="$(git rev-parse --show-toplevel)"
+BASE="${AST192_PUSH_BASE:-refs/remotes/origin/victoria-barriola-08}"
+tips=()
+while read -r lref lsha rref rsha; do
+  if [ -z "${lsha:-}" ] || [[ "$lsha" =~ ^0+$ ]]; then continue; fi   # blank line / branch deletion
+  tips+=("$lsha")
+done
+if [ "${#tips[@]}" -eq 0 ]; then tips=(HEAD); fi
+"${AST192_HOOK_PYTHON:-python3}" -I "$ROOT/scripts/hooks/privacy_scan.py" push "$BASE" "${tips[@]}"

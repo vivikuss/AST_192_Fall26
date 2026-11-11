@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Blocking privacy scan of the lines being committed (DECISIONS E49). Install: scripts/hooks/install.sh
+set -euo pipefail
+ROOT="$(git rev-parse --show-toplevel)"
+"${AST192_HOOK_PYTHON:-python3}" -I "$ROOT/scripts/hooks/privacy_scan.py" staged

@@ -1991,3 +1991,57 @@ Script: `src/dr3_crossmatch.py`. Output (gitignored): `data/processed/dr3_crossm
     archive snapshot.
   - WASP-94 A has a known stellar companion (WASP-94 B), but the neighbourhood table lists only one candidate
     for its DR2 id.
+
+**E49. Blocking privacy hooks** (2026-11-11; user decision). The privacy scan now runs as git hooks that abort on
+any match, instead of as a manual step.
+- **Why: the manual scan was bypassed by a masked exit status.**
+  - Earlier on 2026-11-11, a local commit went ahead without its manual pre-commit scan being enforced. The
+    scan script only *printed* counts and always exited 0, and the command chain (`scan | tail … && git
+    commit …`) did not act on the printout. Even a failing status would have been masked by the `tail` in a
+    pipeline run without `pipefail`.
+  - That commit (4d2dbb7) was local and never pushed. It was amended under the privacy rule, and the amended
+    branch scans clean.
+  - 4d2dbb7 is no longer on any branch but stays in the local object store until git prunes it.
+- **Files** (`scripts/hooks/`, committed; install with `scripts/hooks/install.sh`, which sets the repository-local
+  `core.hooksPath = scripts/hooks`):
+  - `privacy_scan.py`: standard library only, any `python3`. It never prints a private value, only location
+    and kind. Exit 1 on any match.
+    - **It fails closed (exit 2)** if the reference files are missing or empty.
+    - Reference directory: `$AST192_PRIVATE_DIR`, default 07's `data/private` (extended_sample_all.csv,
+      extended_sample_pool_k.csv, `rv/coralie*/dbase/*_coralie.rdb`).
+  - `pre-commit`: scans the lines added in the index and the paths touched.
+  - `commit-msg`: scans the commit message. This hook was added beyond the request, because pre-commit cannot see
+    the message.
+  - `pre-push`: scans **every commit being pushed**: `rev-list <pushed tip> --not
+    origin/victoria-barriola-08`, i.e. origin/victoria-barriola-08..tip. For each commit it scans the message,
+    the added lines and the paths. Without the base ref it scans the tip's full history.
+  - All wrappers run under `set -euo pipefail`.
+- **Match rules** (unchanged from the manual scan):
+  - an extended-sample numeric ID;
+  - an extended-sample name-like string (letters and digits, 7–40 characters; CSV headers excluded);
+  - a CORALIE vrad value as written or rounded to 3 or 4 decimals;
+  - a private path: `data/private/`, `data/eblm/`, `*.rdb`, or a path containing "coralie" or "extended_sample".
+- **False-positive rate, measured before choosing "abort on any match":**
+  - Replayed over the 28 commits then on the branch, the rules would have blocked 2. Both were 3-decimal
+    coincidences with a rounded vrad value: one is the power value already explained in E37, the other a
+    statistic in another committed file. No raw-precision or 4-decimal match occurred.
+  - Only added lines are scanned, so existing lines block only if they are re-added or edited.
+  - **On a coincidental match, the remedy is to change the number's formatting or wording.** It is not
+    `--no-verify` and not an allowlist: a committed allowlist would itself disclose rounded RV values.
+- **Tests** (`tests/test_privacy_hooks.py`, with an invented ID, name and RV value; no real private data):
+  - In a throwaway repository with the committed hooks installed, pre-commit blocks a planted ID, a name, an RV
+    value as written, an RV value rounded to 3 decimals, and a private path. commit-msg blocks a planted ID.
+  - pre-push blocks a planted ID that skipped the commit hooks (`--no-verify`) one commit below the tip, and an RV
+    value in a commit message. The remote is unchanged and the value is not echoed.
+  - Clean commits and pushes pass.
+  - Both hooks fail closed when the reference directory is missing.
+  - Every wrapper uses `set -euo pipefail`.
+- **Checked on the real repository:**
+  - The current unpushed range (4 commits) is clean.
+  - The scanner was also run on the discarded commit 4d2dbb7, as a check that it blocks without printing any
+    value.
+- **Limits:**
+  - Hooks are local to each clone, so another clone (e.g. on the HPC) needs `scripts/hooks/install.sh`. There, a
+    missing reference directory blocks every commit and push until `AST192_PRIVATE_DIR` points at a copy.
+  - `git commit/push --no-verify` skips the hooks.
+  - Binary files are checked by path only.
