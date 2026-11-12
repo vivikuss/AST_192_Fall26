@@ -70,8 +70,9 @@ def write_json(path, obj):
 
 
 def write_csv(path, df):
+    import gzip
     path.parent.mkdir(parents=True, exist_ok=True)
-    with open(path, "w") as fh:
+    with (gzip.open(path, "wt") if path.suffix == ".gz" else open(path, "w")) as fh:
         fh.write(f"# {HEADER}\n")
         df.to_csv(fh, index=False)
 

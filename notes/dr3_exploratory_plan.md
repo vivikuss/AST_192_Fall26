@@ -19,7 +19,7 @@ Stage 1.
 | Method B field code (`src/dr3x_field_b.py`) | written |
 | **Method B field download** | **started 2026-11-11 at ARI** (detached, pid 47363; log `~/data/dr3x_field_b/download.log`). The server query fixes none of the open choices (§3.1) |
 | Host step counts, 107 WASP hosts (E55, E60) | Method A main 97, without exclusions 101 (6 hosts resolved with Bayestar19, E60); Method B 101 (`astrometric_params_solved = 31` removes WASP-29, -34, -120, -94 A, -100) |
-| Host kinematics | none computed |
+| Host kinematics | **Stage 2 run (E61):** results in `data/processed/dr3_exploratory/stage2_results.json` |
 
 ## 1. Method A: Hu et al. (2026) as implemented by Kayla
 

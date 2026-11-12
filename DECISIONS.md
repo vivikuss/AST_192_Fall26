@@ -2404,3 +2404,73 @@ exists and where it comes from.**
   - **Code:** `validate` added to `src/dr3x_method_a.py`. Host rows now come from ARI (`query_hosts`). New
     tests cover `add_uvw` (solar motion, axes) and the RV-by-name rule; 77 tests pass.
 - **Not run:** Stage 2 (no WASP σ_W, no Method B kinematics).
+- **Note on the field medians (user, 2026-11-12, after the push).** The validation field medians are 0.13–0.15
+  km/s above Hu et al.'s. They match the values Kayla reported (18.8 for HS19-all, 17.7 for TESS d < 600), so
+  the offset comes from the shared field file (her `field_main_sequence_uvw.csv`), not from our implementation.
+  Kayla's values are as relayed by the user; her outputs were not read here.
+
+**E61. Stage 2 (EXPLORATORY): run as the plan specifies; implementation readings written before the run**
+(2026-11-12).
+- **User instruction:** run exactly what `notes/dr3_exploratory_plan.md` specifies, with no changes; if an input
+  is missing or anything forces a change, stop.
+- **Rows:**
+  - Method A main (97) and without exclusions (101): σ_W (primary), σ_tot, HS19 eq. 1.
+  - Method B (101, DR3): Δ with the frozen test B 95 % interval.
+  - Method B on DR2 for the same 101 (`dr3x_B_dr2match`).
+  - For comparison: the frozen DR2 107-host headline and Hu et al.'s WASP d < 600.
+  - The frozen six-case rule for the Method B rows, "for comparison only" (E54 item 9).
+- **Implementation readings.** None changes a rule of the plan; each fixes how a stated rule is carried out.
+  1. **Field processing order.** The 48 verified leaves are processed one at a time (8 GB RAM; 15,968,381
+    rows). The local cuts (§3.1: 1, 3, 4, 5, 6, 7, 8 at 0.015, 9, 10; `astrometric_params_solved = 31`; RV
+    present) and the BJ21 `r_med_geo` requirement come first. STILISM extinction, the MS flag, UVW and z then
+    run on the survivors only. Extinction does not enter any cut, so the final field is the same as
+    extinction-first.
+  2. **Planet-host removal (D17 adaptation, §3.3).** The lists are the three frozen Phase 1 host lists
+    (`phase1_dr2/hosts_{hj_table1,hj,longp}_after_cuts.csv`: 338, 457, 510 rows), the set the frozen run removed.
+    Each host's DR3 ID comes from the list's NEA `gaia_dr3_id` (our 2026-10-28 archive snapshot); 1 of 338
+    HS19 Table 1 rows has none. It then takes the closest (`angular_distance`) `gaiadr3.dr2_neighbourhood`
+    match of its DR2 ID, queried at ARI.
+  3. **Method A seeds.** The plan registers one label, `dr3x_A_wasp`, so the main and no-exclusion rows both
+    draw from it. Separate samples; no new label.
+  4. **Method A WASP host RV and UVW.** NEA `st_radv` matched on the DR3 ID (plan A3), else Gaia DR3 RV. UVW
+    as in the validation (`add_uvw`).
+  5. **Method B hosts.** The 101 survivors of the E55 steps (`dr3x_hosts.method_b`), prepared like the field
+    (r_med_geo, STILISM, MS, UVW, z). The DR2 line takes the same 101 by DR2 source_id (E48) from the frozen
+    Phase 1 rows (`hosts_hj_table1_final.csv`) and the Phase 1 field.
+  6. **Method B Monte Carlo** as `wasp_amendment1.vs_field` (pipeline.monte_carlo, eq. 1, z matching, 40,000
+    controls; eblm_kinematics.bootstrap, 40,000 resamples). Chunk checkpoints are in
+    `data/processed/dr3_exploratory/mc_checkpoints/`.
+- **Run record (2026-11-12).**
+  - **Method B field** (`python -m src.dr3x_stage2 field`, 07:28–08:00, `field_b_log.json`):
+    - 15,968,381 rows → 15,835,037 after `astrometric_params_solved = 31`. Cuts 1, 3–10 (8 at 0.015) and the BJ21
+      requirement remove no further star; cut 4 also removed none in the frozen DR2 field.
+    - −138 planet hosts (941 unique DR3 IDs; CoRoT-32 via `dr2_neighbourhood`).
+    - **7,867,685 main-sequence stars** (50 %; the DR2 field had 27 %).
+  - **Two code fixes, no change of method:**
+    - `write_csv` wrote plain text to a `.gz` path. The field file was gzipped in place (same content), and
+      `write_csv` now gzips `.gz` paths (new test; 78 pass).
+    - The first `run` stopped at Method B on a missing `source_id` column, needed for the checkpoint key. The
+      host DR3 ID now fills it. The rerun recomputed every row from scratch.
+- **Results (`data/processed/dr3_exploratory/stage2_results.json`, EXPLORATORY):**
+  - **Method A**, her field (8,510,700 rows; 2,117 NEA hosts removed); no host dropped for an empty pool. Pool
+    median 413, minimum 9. RV: NEA `st_radv` for every host. Extinction: GSP-Phot 93 / 97 (WASP-32, -68, -93
+    Bayestar19; WASP-66 zero, outside the map).
+
+    | Row | N | σ_W host / field median, 1σ, 2σ, one-sided σ | σ_tot | eq. 1 |
+    |---|---|---|---|---|
+    | main | 97 | 18.01 / 18.57, [16.69, 20.67], [15.06, 22.95], −0.29σ | 41.36 / 47.24, −2.12σ | 36.89 / 41.34, −1.95σ |
+    | no exclusions | 101 | 17.78 / 18.64, [16.82, 20.67], [15.18, 22.85], −0.46σ | 42.00 / 47.26, −1.96σ | 37.44 / 41.37, −1.76σ |
+
+  - **Method B, DR3** (101; `dr3x_B_wasp`):
+    - σ = 37.75, control median 45.83: **Δ = −8.08 [−11.95, −4.36]**.
+    - Fraction of controls ≤ host 0.000625. No unmatched host or empty z bin. Usable field 6,381,441.
+    - Six-case: case 1 (for comparison only). RV: archive `st_radv` for all 101.
+  - **Method B, DR2, same 101 hosts** (`dr3x_B_dr2match`, Phase 1 field 376,791):
+    - σ = 37.86, control median 43.27: **Δ = −5.41 [−9.26, −1.71]**.
+    - Fraction 0.011. Six-case: case 1 (for comparison only).
+  - **Comparison:**
+    - Frozen DR2 107-host headline Δ = −5.65 [−9.37, −2.04] (case 1; read from
+      `data/processed/wasp_amendment1/results.json`).
+    - Hu et al. WASP d < 600: 102 hosts, σ_W 17.7 vs 18.4 (published values as given by the user).
+  - Between the two Method B lines the host σ barely changes (37.86 → 37.75). The control median rises
+    (43.27 → 45.83) with the DR3 field. Recorded, not interpreted.

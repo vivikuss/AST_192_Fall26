@@ -78,18 +78,20 @@ def method_b(base, cfg):
     s.cut("host cuts 1, 3, 4 (cut 2 dropped: no DR3 column)", m)
     r = hosts.assign_rv(s.h.copy(), cfg)                       # frozen D6 rule, DR3 RV as the fallback
     s.h["rv_source"] = np.where(r["rv_source"] == "gaia_dr2", "Gaia DR3", r["rv_source"])
+    s.h["rv"] = r["rv"].to_numpy()                             # value used only in Stage 2 (E61)
     s.cut("no RV (archive st_radv under D6, else Gaia DR3)", r["rv_source"].ne("none").to_numpy())
     s.cut("no BJ21 r_med_geo", s.h["r_med_geo"].notna())
     h = s.h.copy()
     ebv = extinction.ebv_los(h["l"].to_numpy(), h["b"].to_numpy(), h["r_med_geo"].to_numpy(), cfg)
     extinction.deredden(h, cfg, ebv=ebv, dist_col="r_med_geo")
+    s.h = h
     s.cut("main sequence (STILISM, published polynomial, no colour limit)",
           main_sequence.on_main_sequence(h["M_G0"], h["bp_rp0"], cfg))
-    return s.rows
+    return s.rows, s.h
 
 
-def main():
-    cfg = config.load()
+def bases(cfg):
+    """(base, base_b, nea_rv): the 107 WASP hosts joined to their DR3 rows; base_b adds the archive RV columns."""
     w = A.wasp_hosts()
     g = gaia_rows(w["dr3"], "dr3x_hosts_wasp107")
     base = w.merge(g, on="dr3", how="left", validate="one_to_one")
@@ -102,9 +104,15 @@ def main():
                                                                             "st_radv_reflink"]],
                         on="name", how="left", validate="one_to_one")
     nea_rv = A.nea_radv(w["dr3"])
+    return base, base_b, nea_rv
+
+
+def main():
+    cfg = config.load()
+    base, base_b, nea_rv = bases(cfg)
     a_main, a_ext, a_left = method_a(base, nea_rv, exclude_companions=True)
     a_extra, _, _ = method_a(base, nea_rv, exclude_companions=False)
-    b = method_b(base_b, cfg)
+    b, _ = method_b(base_b, cfg)
     out = {"what": "Stage 1 host steps, 107 WASP hosts (no kinematics)",
            "method_A_main_with_companion_exclusions": a_main,
            "method_A_extra_without_companion_exclusions": a_extra,

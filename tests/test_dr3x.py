@@ -160,3 +160,16 @@ def test_nea_radv_by_name_rule():
         # X: HJ rows sorted (2010, "X b") first but null -> next non-null 5.0; Y: only the HJ row counts -> 9.0;
         # Z: no HJ row -> all rows -> 4.0
         assert r.to_dict() == {"X": 5.0, "Y": 9.0, "Z": 4.0}
+
+
+def test_write_csv_header_and_gzip():
+    import gzip
+    with tempfile.TemporaryDirectory() as t:
+        for name in ("x.csv", "x.csv.gz"):
+            p = pathlib.Path(t) / name
+            A.write_csv(p, pd.DataFrame({"a": [1, 2]}))
+            raw = p.read_bytes()
+            assert raw.startswith(b"\x1f\x8b") == name.endswith(".gz")
+            text = gzip.decompress(raw).decode() if name.endswith(".gz") else raw.decode()
+            assert text.splitlines()[0] == f"# {A.HEADER}"
+            assert pd.read_csv(p, comment="#")["a"].tolist() == [1, 2]
