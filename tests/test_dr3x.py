@@ -135,3 +135,28 @@ def test_wasp_run_refuses_without_stage2():
         assert "Stage 2" in str(e)
     else:
         raise AssertionError
+
+
+def test_add_uvw_solar_motion_and_axes():
+    # a star with zero heliocentric motion has UVW = SUN_UVW; RV toward the Galactic centre is +U
+    import astropy.units as u
+    from astropy.coordinates import SkyCoord
+    gc = SkyCoord(l=0 * u.deg, b=0 * u.deg, frame="galactic").icrs
+    h = pd.DataFrame({"ra": [gc.ra.deg] * 2, "dec": [gc.dec.deg] * 2, "d": [100.0] * 2,
+                      "pmra": [0.0] * 2, "pmdec": [0.0] * 2, "rv": [0.0, 10.0]})
+    v = A.add_uvw(h)[["U", "V", "W"]].to_numpy()
+    assert np.allclose(v[0], A.SUN_UVW, atol=1e-6)
+    assert np.allclose(v[1], np.array(A.SUN_UVW) + [10.0, 0, 0], atol=1e-6)
+
+
+def test_nea_radv_by_name_rule():
+    with tempfile.TemporaryDirectory() as t:
+        p = pathlib.Path(t) / "nea.csv"
+        pd.DataFrame({"pl_name": ["X c", "X b", "Y b", "Y c", "Z b"], "hostname": ["X", "X", "Y", "Y", "Z"],
+                      "pl_orbper": [3.0, 2.0, 50.0, 3.0, 80.0], "pl_bmassj": [1.0, 1.0, 1.0, 1.0, 1.0],
+                      "disc_year": [2010, 2010, 2001, 2012, 2005], "st_radv": [5.0, np.nan, 7.0, 9.0, 4.0]}
+                     ).to_csv(p, index=False)
+        r = A.nea_radv_by_name(["X", "Y", "Z"], p)
+        # X: HJ rows sorted (2010, "X b") first but null -> next non-null 5.0; Y: only the HJ row counts -> 9.0;
+        # Z: no HJ row -> all rows -> 4.0
+        assert r.to_dict() == {"X": 5.0, "Y": 9.0, "Z": 4.0}

@@ -8,8 +8,9 @@ distances (ARI gaiaedr3_complements.distances), cached by src.ari_tap.
 
 Method A (Kayla's steps, E54): close-companion exclusion (main result; the count without it is also given),
 no DR3 row, App. A cuts 1-3, RV (NEA st_radv, else DR3 RV), extinction (GSP-Phot, else Bayestar19 web query),
-MS + 0.5 <= (BP-RP)_0 <= 1.5, d = 1000/parallax < 600 pc. The Bayestar19 web service failed on 2026-11-11, so
-hosts without GSP-Phot are reported as PENDING at the MS step (neither kept nor removed; no zero fallback).
+MS + 0.5 <= (BP-RP)_0 <= 1.5, d = 1000/parallax < 600 pc. Hosts without GSP-Phot take Bayestar19 from the local
+bayestar2019.h5 in Kayla's order (median of the samples per tabulated distance, then interpolate; E59, E60);
+zero only where the map has no value (no coverage, or closer than its first distance bin).
 
 Method B (frozen DR2 rules ported, E53/E54): no DR3 row, astrometric_params_solved = 31, host cuts 1, 3, 4
 (cut 2 dropped), RV (archive st_radv under the frozen D6 rule, else Gaia DR3 RV), BJ21 r_med_geo present, MS
@@ -60,16 +61,13 @@ def method_a(base, nea_rv, exclude_companions):
     s.h["rv_source"] = np.where(s.h["dr3"].map(nea_rv).notna(), "NEA st_radv",
                                 np.where(s.h["radial_velocity"].notna(), "Gaia DR3", "none"))
     s.cut("no RV (NEA or Gaia DR3)", has)
-    gsp = (s.h["ag_gspphot"].notna() & s.h["ebpminrp_gspphot"].notna()).to_numpy()
-    s.h["ext_source"] = np.where(gsp, "gspphot", "PENDING: needs Bayestar19 (web service failed)")
-    p = A.photometry(s.h[gsp])                                  # GSP-Phot hosts only: no map needed
-    on_ms = np.ones(len(s.h), dtype=bool)                       # pending hosts are neither kept nor removed
-    on_ms[gsp] = ((p["zams_offset"] > -A.MS_MAX_ABOVE) & p["color0"].between(*A.COLOUR_WINDOW)).to_numpy()
-    pending = s.h.loc[~gsp, "name"].tolist()
-    s.cut("main sequence + 0.5<=(BP-RP)_0<=1.5 (GSP-Phot hosts only)", on_ms,
-          note=f"{len(pending)} host(s) PENDING (no GSP-Phot; Bayestar19 unavailable): {pending}")
+    s.h = A.photometry(s.h)                                    # GSP-Phot, else Bayestar19 (E60)
+    ext = {n: e for n, e in zip(s.h["name"], s.h["ext_source"]) if e != "gspphot"}
+    s.cut("main sequence + 0.5<=(BP-RP)_0<=1.5",
+          ((s.h["zams_offset"] > -A.MS_MAX_ABOVE) & s.h["color0"].between(*A.COLOUR_WINDOW)).to_numpy(),
+          note=f"extinction not from GSP-Phot: {ext}")
     s.cut("d = 1000/parallax < 600 pc", (1000.0 / s.h["parallax"]) < A.D_MAX)
-    return s.rows, pending, s.h
+    return s.rows, ext, s.h
 
 
 def method_b(base, cfg):
@@ -104,13 +102,13 @@ def main():
                                                                             "st_radv_reflink"]],
                         on="name", how="left", validate="one_to_one")
     nea_rv = A.nea_radv(w["dr3"])
-    a_main, a_pending, a_left = method_a(base, nea_rv, exclude_companions=True)
+    a_main, a_ext, a_left = method_a(base, nea_rv, exclude_companions=True)
     a_extra, _, _ = method_a(base, nea_rv, exclude_companions=False)
     b = method_b(base_b, cfg)
     out = {"what": "Stage 1 host steps, 107 WASP hosts (no kinematics)",
            "method_A_main_with_companion_exclusions": a_main,
            "method_A_extra_without_companion_exclusions": a_extra,
-           "method_A_pending_bayestar19": a_pending,
+           "method_A_extinction_not_gspphot": a_ext,
            "method_B": b,
            "gspphot_available_of_107": int((base["ag_gspphot"].notna() & base["ebpminrp_gspphot"].notna()).sum())}
     A.write_json(A.OUT / "host_steps_wasp107.json", out)

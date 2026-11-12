@@ -2357,3 +2357,50 @@ exists and where it comes from.**
     24 (3 %); 95th percentile 0.0000, 99th percentile 0.0044, max 0.0219 mag.
   - Not run: the 6 pending hosts, the validation, Stage 2. They wait for the user's decision on which median
     order Method A uses.
+
+**E60. Method A keeps Kayla's Bayestar19 order** (2026-11-12; user decision after E59).
+- **Decision:** Method A takes the **median of the 5 map samples at each tabulated distance, then interpolates**
+  in distance modulus (Kayla's order), via the repository's `src.dr3x_method_a.bayestar_ebv`. E59 showed it
+  equals her method at all 1,000 test positions. dustmaps' order (interpolate each sample, then median) is not
+  used.
+- **Reason: host/field consistency.** Her field file (`field_main_sequence_uvw.csv`, E51) was built with this
+  order. Host and field (BP-RP)_0 and M_G0 must come from the same extinction calculation, because the pools
+  match on colour and the main-sequence cut uses both.
+- **Logged check, no switch:** for the 6 hosts pending since E55, E(B-V) is computed in both orders, and any
+  change in their main-sequence or colour-window outcome is reported. Extinction values only, no kinematics.
+- **Then:** resolve the 6 hosts in Kayla's order, update the Method A host counts, and run the validation
+  (HS19-all and TESS d < 600 pc). No WASP-only numbers, no Stage 2.
+- **Six-host check, both orders** (`~/data/hu2026_dr3_Kayla/checks/bayestar_order_6hosts.py`, outside the
+  repo). **max |ΔE(B-V)| < 0.00005 mag; no host's main-sequence or colour-window outcome differs.**
+  - Bayestar19 values: WASP-32 0.0177, WASP-68 0.0619, WASP-93 0.0265, WASP-107 0.0000 (map value zero at its
+    distance).
+  - Zero by design: WASP-66 (no map coverage), WASP-80 (closer than the first distance bin).
+- **The 6 hosts resolved (Kayla's order).** WASP-32, -66, -68 and -93 are kept. WASP-80 ((BP-RP)_0 = 1.79)
+  and WASP-107 (1.54) fail the 0.5–1.5 colour window. Both are on the main sequence.
+  `src/dr3x_hosts.py` no longer has a pending state.
+- **Final Method A host counts (107 WASP hosts):**
+  - **Main, with close-companion exclusions: 97.** 107 → −4 companions (WASP-70 A, -94 A, -94 B, -173 A)
+    → 103 → −1 cuts 1–3 (WASP-11) → 102 → RV 102 → −4 main sequence + colour (WASP-90, -80, -107, -172) → 98
+    → −1 d ≥ 600 pc (WASP-142) → 97.
+  - **Without exclusions: 101** (same removals, without the companion step).
+  - **Method B: 101** (unchanged, E55).
+- **Validation** (`python -m src.dr3x_method_a validate` → `data/processed/dr3_exploratory/method_a_validation.json`):
+  - **Inputs:** Hu et al. samples from the name and `dr3` columns of Kayla's `hosts_hs19.csv` (282) and
+    `hosts_tess.csv` (105) only (E54). Gaia DR3 rows are from ARI (ESA anonymous jobs fail, E54).
+  - **Steps:** RV = NEA `st_radv` by host name (her host-table rule), else Gaia DR3 RV. Photometry as for
+    the hosts, UVW with her SUN_UVW (11.1, 12.24, 7.25). As in her pinned samples, no cuts: only hosts with no
+    astrometry or RV are dropped (none were).
+  - Her field file; NEA hosts removed. Seeds `dr3x_A_val_hs19`, `dr3x_A_val_tess`; 10,000 draws.
+  - **HS19-all: N = 279** (282 published; 51 Peg, tau Boo and HD 217107 dropped with empty pools, under the
+    same rule as her `run_analysis`). **σ_W hosts 15.77 (paper 15.8), field median 18.83 (paper 18.7)**,
+    1σ 17.70–20.01, −2.89σ. Extinction: GSP-Phot 267, Bayestar19 9, zero 6.
+  - **TESS d < 600 pc: N = 100 (paper 100;** 5 of 105 removed by the distance cut). **σ_W hosts 18.07 (paper
+    18.1), field median 17.65 (paper 17.5)**, 1σ 15.87–19.65, +0.23σ. Extinction: GSP-Phot 98, Bayestar19 1,
+    zero 1.
+  - Host σ_W matches the paper to ≤ 0.05 km/s. The field medians are 0.13 and 0.15 km/s above the paper's.
+  - Also computed on the same draws (HS19-all, hosts vs field median): σ_tot 40.25 vs 48.06 and eq. 1 36.05
+    vs 41.89, both with no control below the hosts (≤ −3.72σ, the 1/N floor). TESS: σ_tot 43.56 vs 45.73
+    (−0.79σ), eq. 1 38.16 vs 39.73 (−0.68σ).
+  - **Code:** `validate` added to `src/dr3x_method_a.py`. Host rows now come from ARI (`query_hosts`). New
+    tests cover `add_uvw` (solar motion, axes) and the RV-by-name rule; 77 tests pass.
+- **Not run:** Stage 2 (no WASP σ_W, no Method B kinematics).

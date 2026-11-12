@@ -8,7 +8,7 @@ Settings follow that script as received. The field is her `field_main_sequence_u
 were verified from her source text (cache key, E51).
 
     python -m src.dr3x_method_a hosts         # host step counts (no kinematics)
-    python -m src.dr3x_method_a validate      # Hu et al. HS19-all and TESS d<600 (needs the published tables)
+    python -m src.dr3x_method_a validate      # Hu et al. HS19-all and TESS d<600 (E54 item 2, E60)
     python -m src.dr3x_method_a wasp --stage2 # WASP sigma_W etc. Refuses without --stage2 (Stage 2 only)
 
 Steps (her logic):
@@ -54,6 +54,7 @@ ZAMS = [1.07857, 6.23258, -10.85944, 21.65561, -20.27879, 9.78665, -2.52543, 0.3
 MS_MAX_ABOVE = 1.0
 COLOUR_WINDOW = (0.5, 1.5)
 D_MAX = 600.0
+SUN_UVW = (11.1, 12.24, 7.25)          # km/s, added to heliocentric UVW (her SUN_UVW)
 POOL_HJ = {"sep_deg": 10.0, "dd": (-100.0, 50.0), "dg": (-1.0, 0.1), "dcol": 0.2}
 N_DRAWS = 10_000
 HOST_COLUMNS = ["source_id", "ra", "dec", "parallax", "pmra", "pmdec", "radial_velocity", "phot_g_mean_mag",
@@ -314,12 +315,82 @@ def compare(hosts, field, label, crit=POOL_HJ):
     return res
 
 
+# ----------------------------------------------------------------------------- validation (E54 item 2, E60)
+# Hu et al. samples: only the name and DR3-ID columns of Kayla's host files are read (E54). Paper values:
+# (N, host sigma_W, field median sigma_W) as quoted in the plan (notes/dr3_exploratory_plan.md section 1).
+VALIDATION = {"hs19_all": dict(csv=KAYLA / "hosts_hs19.csv", d_max=None, label="dr3x_A_val_hs19",
+                               paper=(282, 15.8, 18.7)),
+              "tess_d600": dict(csv=KAYLA / "hosts_tess.csv", d_max=D_MAX, label="dr3x_A_val_tess",
+                                paper=(100, 18.1, 17.5))}
+
+
+def published_ids(path):
+    t = pd.read_csv(path, usecols=["hostname", "dr3"], dtype={"hostname": str, "dr3": "Int64"})
+    assert t["hostname"].is_unique and t["dr3"].notna().all(), path
+    return t.rename(columns={"hostname": "name"})
+
+
+def nea_radv_by_name(names, nea_csv=NEA_CSV):
+    """NEA st_radv per host name, as her host table: first non-null over the host's HJ rows sorted by
+    (disc_year, pl_name); hosts with no HJ row use all their rows."""
+    n = pd.read_csv(nea_csv, usecols=["pl_name", "hostname", "pl_orbper", "pl_bmassj", "disc_year", "st_radv"])
+    n = n[n["hostname"].isin(set(names))]
+    hj = (n["pl_orbper"] < 10.0) & (n["pl_bmassj"] > 0.1)
+    n = pd.concat([n[hj], n[~hj & ~n["hostname"].isin(n.loc[hj, "hostname"])]])
+    return n.sort_values(["disc_year", "pl_name"]).groupby("hostname")["st_radv"].first()
+
+
+def add_uvw(h):
+    """UVW (km/s) relative to the LSR, U toward the Galactic centre: astropy heliocentric Galactic velocity
+    plus SUN_UVW, with d = 1000/parallax and the chosen RV (column 'rv')."""
+    import astropy.units as u
+    from astropy.coordinates import SkyCoord
+    c = SkyCoord(ra=h["ra"].to_numpy() * u.deg, dec=h["dec"].to_numpy() * u.deg,
+                 distance=h["d"].to_numpy() * u.pc, pm_ra_cosdec=h["pmra"].to_numpy() * u.mas / u.yr,
+                 pm_dec=h["pmdec"].to_numpy() * u.mas / u.yr, radial_velocity=h["rv"].to_numpy() * u.km / u.s)
+    v = c.galactic.velocity
+    h = h.copy()
+    for k, comp in enumerate((v.d_x, v.d_y, v.d_z)):
+        h["UVW"[k]] = comp.to_value(u.km / u.s) + SUN_UVW[k]
+    return h
+
+
+def validation_hosts(key, gaia=None):
+    """Published hosts with DR3 rows, RV (NEA by name, else DR3), photometry and UVW. Like her pinned samples:
+    no cuts, only hosts without usable astrometry (no row, parallax <= 0) or an RV are dropped (named)."""
+    v = VALIDATION[key]
+    p = published_ids(v["csv"])
+    g = gaia if gaia is not None else query_hosts(p["dr3"], f"val_{key}")
+    h = p.merge(g, on="dr3", how="left", validate="one_to_one")
+    h["rv"] = h["name"].map(nea_radv_by_name(h["name"])).fillna(h["radial_velocity"])
+    ok = (h["parallax"] > 0) & h["rv"].notna()
+    dropped = h.loc[~ok, "name"].tolist()
+    h = add_uvw(photometry(h[ok].reset_index(drop=True)))
+    beyond = []
+    if v["d_max"] is not None:
+        beyond = h.loc[h["d"] >= v["d_max"], "name"].tolist()
+        h = h[h["d"] < v["d_max"]].reset_index(drop=True)
+    return h, {"n_published": len(p), "dropped_no_astrometry_or_rv": dropped, "removed_d_cut": beyond}
+
+
+def validate(field=None):
+    field = field if field is not None else load_field()[0]
+    out = {}
+    for key, v in VALIDATION.items():
+        h, info = validation_hosts(key)
+        r = compare(h, field, v["label"])
+        r.update(info, ext_source=h["ext_source"].value_counts().to_dict(),
+                 paper={"n": v["paper"][0], "sigma_W_hosts": v["paper"][1], "sigma_W_field_median": v["paper"][2]})
+        out[key] = r
+    return out
+
+
 # ----------------------------------------------------------------------------- Gaia DR3 host rows
 def query_hosts(dr3_ids, tag):
-    from . import gaia_tap
+    from . import ari_tap                       # ARI (ESA anonymous jobs time out / return 429; E54, E59)
     ids = ", ".join(str(int(i)) for i in sorted(set(dr3_ids)))
     q = f"SELECT {', '.join('g.' + c for c in HOST_COLUMNS)} FROM gaiadr3.gaia_source AS g WHERE g.source_id IN ({ids})"
-    t = gaia_tap.query(q, f"dr3x_hosts_{tag}").to_pandas()
+    t = ari_tap.query(q, f"dr3x_hosts_{tag}").to_pandas()
     t.columns = [c.lower() for c in t.columns]
     return t.rename(columns={"source_id": "dr3"})
 
@@ -350,8 +421,17 @@ def main(argv=None):
                     "rv_source": surv["rv_source"].value_counts().to_dict()})
         for s in steps:
             print(f"{s['step']}: {s['n_after']}" + (f"  removed {s['removed']}" if s["removed"] else ""))
+    elif a.what == "validate":
+        res = validate()
+        write_json(OUT / "method_a_validation.json", res)
+        for k, r in res.items():
+            s, pp = r["sigma_W"], r["paper"]
+            print(f"{k}: N = {r['n_hosts']} (paper {pp['n']}); sigma_W hosts {s['host']:.2f} (paper "
+                  f"{pp['sigma_W_hosts']}), field median {s['field_median']:.2f} (paper {pp['sigma_W_field_median']})"
+                  f" [1sig {s['one_sigma'][0]:.2f}-{s['one_sigma'][1]:.2f}], {s['one_sided_sigma']:+.2f} sigma; "
+                  f"dropped {r['dropped_no_astrometry_or_rv']}, empty pool {r['dropped_empty_pool']}")
     else:
-        raise SystemExit(f"'{a.what}' is not wired up in Stage 1 (needs the published tables / Stage 2)")
+        raise SystemExit("WASP kinematics are Stage 2; not run in Stage 1")
 
 
 if __name__ == "__main__":

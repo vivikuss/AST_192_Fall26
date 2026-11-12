@@ -14,11 +14,11 @@ Stage 1.
 | E52 exploratory declaration | committed (7f40c4b) before any other step |
 | Seed labels `dr3x_*` | registered. The collision tests pass, and no new label shares a code with any label |
 | Method A code (`src/dr3x_method_a.py`) | written; unit tests on synthetic data only |
-| **Method A run and validation** | **STOPPED: the Bayestar19 web service failed** (2026-11-11, E54; the user ruled out downloading the full map). Method A host steps that need no map were run (E55); hosts without GSP-Phot are PENDING |
+| **Method A run and validation** | **Validation done (E60):** HS19-all N 279, σ_W 15.77 vs field 18.83 (paper 15.8 vs 18.7); TESS d<600 N 100, 18.07 vs 17.65 (paper 18.1 vs 17.5). Bayestar19 from the local file in Kayla's order (E59, E60) |
 | Hu et al. published host tables (validation input) | not available locally. Validation uses only the name and DR3-ID columns of Kayla's `hosts_hs19.csv` / `hosts_tess.csv` (E54) |
 | Method B field code (`src/dr3x_field_b.py`) | written |
 | **Method B field download** | **started 2026-11-11 at ARI** (detached, pid 47363; log `~/data/dr3x_field_b/download.log`). The server query fixes none of the open choices (§3.1) |
-| Host step counts, 107 WASP hosts (E55) | Method A main 99 (6 pending Bayestar19), without exclusions 103 (6 pending); Method B 101 (`astrometric_params_solved = 31` removes WASP-29, -34, -120, -94 A, -100) |
+| Host step counts, 107 WASP hosts (E55, E60) | Method A main 97, without exclusions 101 (6 hosts resolved with Bayestar19, E60); Method B 101 (`astrometric_params_solved = 31` removes WASP-29, -34, -120, -94 A, -100) |
 | Host kinematics | none computed |
 
 ## 1. Method A: Hu et al. (2026) as implemented by Kayla
