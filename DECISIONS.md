@@ -2323,3 +2323,37 @@ exists and where it comes from.**
   - Nothing else was run. The validation and Stage 2 stay on hold while the 6 hosts are pending (E55, E56).
   - The check of the full map's size and the free disk space is still due when the download finishes (E56
     item 2).
+
+**E59. Bayestar19 from the local file instead of the web query** (2026-11-12; user decision).
+- **Why:** the dustmaps web service (`argonaut.skymaps.info`) has been down since about 14:50 on 2026-11-11.
+  The retries at 17:52 and 20:22 both ended in ConnectTimeout (E54, E58). This replaces E54 item 1's route.
+- **What changes:** only the route. Method A reads `bayestar2019.h5` from Harvard Dataverse
+  (doi:10.7910/DVN/2EJ9TX; 0.73 GB, md5 ab815d2fd3068d1b81a1bd61fb18a722 as listed by the Dataverse API).
+  Stored outside the repo at `~/data/bayestar19/`, owner-only permissions.
+- **Unchanged:** median mode, × 0.884, CV18 coefficients. Positions with no map coverage get zero, as in
+  Kayla's method.
+- **Consistency check before use** (outside the repo, like `cache_key_check.py`): Kayla's `bayestar_ebv()`
+  reimplemented from her source text (her script not imported or run), compared with dustmaps'
+  `BayestarQuery` (median) on about 1,000 arbitrary positions and distances (no host positions). If the largest
+  E(B-V) difference exceeds 0.001 mag, stop and report.
+- **Then, only if they agree:** resolve the 6 pending hosts and run the validation (HS19-all and TESS
+  d < 600 pc; no WASP-only numbers). No Stage 2.
+- **Result (2026-11-12): the check FAILED the 0.001 mag limit, so the run stopped** before the hosts and the
+  validation.
+  - **File:** downloaded 05:51 to `~/data/bayestar19/bayestar2019.h5` (727,902,836 B, mode 600, directory
+    700). md5 matches Dataverse. sha256 f68f14df…e32ef99.
+  - **Check script:** `~/data/hu2026_dr3_Kayla/checks/bayestar_check.py`, sha256 85a69ccf…990aea, mode 600.
+    1,000 positions uniform on the sphere, d log-uniform 20–3000 pc, seed 20261112 (a check, not a result
+    stream).
+  - **Pixel lookup and coverage agree.** Her HEALPix function matches healpy at all five nsides (0 / 1000
+    mismatches). The same 758 positions are covered; 242 have no coverage (zero in both).
+  - **Kayla's method vs dustmaps median: max |ΔE(B-V)| = 0.0219 mag.** All 24 positions above 0.001 mag lie
+    between distance bins (24 of 587). Closer than the first bin and no coverage: 0 difference.
+  - **Kayla's method vs the repository's `src.dr3x_method_a.bayestar_ebv`: 0 difference** at all 1,000.
+  - **Cause (verified by a scratchpad diagnostic):** the order of median and interpolation. Kayla takes the
+    median of the map's 5 samples at each distance bin, then interpolates in distance modulus. dustmaps
+    interpolates each sample, then takes the median. Recomputing interpolate-then-median from the file
+    reproduces dustmaps to 5e-8 mag. Over the 758 covered positions, the two orders differ by > 0.001 mag at
+    24 (3 %); 95th percentile 0.0000, 99th percentile 0.0044, max 0.0219 mag.
+  - Not run: the 6 pending hosts, the validation, Stage 2. They wait for the user's decision on which median
+    order Method A uses.
