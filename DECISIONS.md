@@ -2535,3 +2535,47 @@ user request after seeing the Stage 2 results; written before any diagnostic run
       It does not come from DR3 changing the values of the stars common to both fields.
     - This diagnostic does not separate how much of the rise is a real population difference and how much is
       from larger velocity errors.
+
+**E63. EXPLORATORY figures for the DR3 Stage 2 and the E62 diagnostic; per-component Method A dispersions**
+(2026-11-12; user request).
+- **Status:** EXPLORATORY, not pre-registered. Every figure carries that label in its footer. No host names.
+  - Script: `src/fig_dr3_exploratory.py`.
+  - PNGs: `notes/figures/dr3_exploratory/fig1–fig4`.
+- **Sources:** values come from `stage2_results.json` and `diag_results.json` and are not retyped. Two inputs
+  are not stored, so they are regenerated:
+  - **Figs 1–2:** the Method A main draws (97 hosts, 10,000 draws) are regenerated from the registered label
+    `dr3x_A_wasp`, with the same RNG consumption as `dr3x_method_a.draws`. The script asserts that the host
+    values, medians and 1σ/2σ percentiles of σ_W, σ_tot and eq. 1 reproduce `stage2_results.json` to 1e-9.
+    They do.
+  - **Fig 3:** the Method B matched controls are the chunk-0 picks, replayed by `dr3x_diag.replay`, which
+    asserts them against the MC checkpoint.
+- **Fig 2(b):** the matched field is shown as the expected draw density, Σ over hosts of 1/(pool size) per
+  pool star. This is our choice for "matched field as a 2D density". All 97 hosts fall inside the plotted U–V
+  range.
+- **Fig 3:** the hosts are shown with their DR3 distance, G and |z|. They are not shown for
+  radial_velocity_error, because Method B uses archive RVs for all 101 hosts.
+  - The first axis ranges (distance to 600 pc, G to 14) cut off much of the DR3 distribution. Because the
+    histograms are normalized within the plotted range, this distorted the shapes, so we widened them to
+    1,800 pc, G 7–15.5 and |z| to 600 pc.
+  - At most 0.38 % of any distribution now lies outside the range: DR3 radial_velocity_error is 0.38 % and
+    DR3 distance 0.29 %. The script prints these fractions.
+- **Fig 4:** rows are the frozen DR2 107 headline, DR2 on the same 101 hosts, DR3, DR3 restricted to DR2-field
+  stars (E62) and DR3 with the D5 halo cut (E62). Lines are drawn at 0 and δ_HS19 = −6.64 (`wasp_kinematics`).
+- **New exploratory calculation:** per-component dispersions of Method A main (np.std, same draws as σ_W).
+  Saved to `data/processed/dr3_exploratory/fig2_method_a_components.json`.
+
+  | | host | control median | 1σ | 2σ | one-sided |
+  |---|---|---|---|---|---|
+  | σ_U | 29.53 | 36.09 | [33.28, 39.01] | [30.54, 41.95] | −2.33σ (tail 0.0100) |
+  | σ_V | 22.68 | 23.77 | [21.63, 26.21] | [19.66, 28.75] | −0.50σ |
+  | σ_W | 18.01 | 18.57 | [16.69, 20.67] | [15.06, 22.95] | −0.29σ |
+
+- **Seen in the figures, not in the tables** (descriptive, not tested):
+  - **(a)** In Method A the σ_tot and eq. 1 deficits come from U. The host σ_U lies below the 2σ range; V and W
+    are within 1σ.
+  - **(b)** The DR3 matched-control G distribution has a step at G ≈ 13: few picks brighter than 13, then a
+    jump. DR2 has a dip just below 13. The hosts (G ≈ 9–13) are brighter than both control sets, and the DR3
+    controls hardly overlap the hosts in G. Cause not examined. Matching is on z only, so G is not matched
+    by design.
+  - **(c)** The |z| distributions of DR2 and DR3 controls agree closely, including the z-bin steps. DR3
+    distance and RV-error distributions are broad and shifted (DR3 distance tail to about 1.5 kpc).
