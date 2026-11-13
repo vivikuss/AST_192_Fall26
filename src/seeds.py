@@ -79,7 +79,9 @@ DR3X_PREFIX = "dr3x_"
 DR3X = {"dr3x_A_val_hs19": ((),), "dr3x_A_val_tess": ((),), "dr3x_A_wasp": ((),),
         "dr3x_B_wasp": CHUNKS + (99,),
         # Stage 2 comparison line (E56): frozen test B on DR2 data for exactly the 101 Method B survivors
-        "dr3x_B_dr2match": CHUNKS + (99,)}
+        "dr3x_B_dr2match": CHUNKS + (99,),
+        # POST-HOC DIAGNOSTIC (E62): DR3 field restricted to DR2-field stars; D5 halo cut (5,000 + 5,000)
+        "dr3x_B_diag_dr2field": CHUNKS + (99,), "dr3x_B_diag_halo": (0, 99)}
 
 REGISTRY = _reg()
 REGISTRY.update(DR3X)

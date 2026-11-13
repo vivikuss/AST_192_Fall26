@@ -2474,3 +2474,64 @@ exists and where it comes from.**
     - Hu et al. WASP d < 600: 102 hosts, σ_W 17.7 vs 18.4 (published values as given by the user).
   - Between the two Method B lines the host σ barely changes (37.86 → 37.75). The control median rises
     (43.27 → 45.83) with the DR3 field. Recorded, not interpreted.
+
+**E62. POST-HOC DIAGNOSTIC: why the Method B DR3 control median (45.83) exceeds DR2's (43.27)** (2026-11-12;
+user request after seeing the Stage 2 results; written before any diagnostic run).
+- **Status:** post-hoc diagnostic of the EXPLORATORY Stage 2. It changes nothing in the E61 results. Outputs go
+  to `data/processed/dr3_exploratory/diag_*`, headed "EXPLORATORY — not pre-registered" and labelled POST-HOC
+  DIAGNOSTIC.
+- **1. Matched control stars, DR2 vs DR3.** The control stars actually drawn are reproduced, not resampled anew.
+  - Chunk 0 (5,000 iterations × 101 hosts) of each E61 run is replayed: `dr3x_B_dr2match` on the Phase 1 field,
+    and `dr3x_B_wasp` on the DR3 field.
+  - Same stream, same `ControlSampler` calls, so these are the same picks as in those runs.
+  - Properties of the picked stars, counted with multiplicity: distance (BJ18 `r_est` / BJ21 `r_med_geo`), G,
+    `grvs_mag` (DR3 only; DR2 has none), `radial_velocity_error`, `parallax_over_error` (DR2: parallax /
+    parallax_error) and |z|. Read from the DR2 prefilter cache and the DR3 leaves by source_id.
+  - Also the per-component RMS of U, V, W of the picked stars.
+- **2. DR3 field restricted to stars also in the DR2 field.**
+  - "The DR2 field" is the frozen Phase 1 matching field (`field_ms.csv.gz`, 376,791 main-sequence stars).
+  - Crossmatch: `gaiadr3.dr2_neighbourhood` at ARI, for DR2 stars passing the frozen DR2 server WHERE, in
+    HEALPix level-2 source_id ranges. Each DR2 field star takes its closest (`angular_distance`) DR3 candidate,
+    as E48.
+  - The DR3 Method B field is kept where its source_id is one of those matches. Its own DR3 cuts, MS flag and
+    values are unchanged.
+  - Same 101 hosts, 40,000 controls + 40,000 bootstrap as in E61. New label **`dr3x_B_diag_dr2field`** (chunks
+    0–7, 99).
+- **3. D5 halo cut**, as the frozen sensitivity test D5: field stars with √(U²+V²+W²) > 180 km/s removed. The
+  frozen test used 5,000 controls + 5,000 bootstrap, and so does this. New label **`dr3x_B_diag_halo`** (chunk
+  0, 99). The user named only the label for item 2; this second label is our choice, needed for a separate
+  stream.
+- **Results** (2026-11-12; `diag_results.json`, `diag_run.log`; POST-HOC DIAGNOSTIC, EXPLORATORY):
+  - Run: the ARI crossmatch took about 10 h, 192 level-2 ranges. Status-poll errors (DALServiceError, including
+    a network outage around 12:38) were retried by `ari_tap`; no range failed.
+  - **1. Replay:** both chunk-0 replays match the saved checkpoints exactly (max difference 0.0). There are
+    505,000 picks each: 218,517 unique stars in DR2 and 476,563 in DR3.
+
+    | matched controls, median [16–84 %] | DR2 | DR3 |
+    |---|---|---|
+    | distance (pc) | 423 [254, 638] | 752 [462, 1103] |
+    | G (mag) | 12.64 [12.18, 13.17] | 14.16 [13.48, 14.63] |
+    | radial_velocity_error (km/s) | 1.83 [0.99, 4.38] | 4.53 [2.52, 7.65] |
+    | parallax_over_error | 78.5 [47.4, 147.1] | 73.5 [44.0, 131.8] |
+    | \|z\| (pc) | 149 [59, 271] | 153 [63, 275] |
+    | RMS U / V / W (km/s) | 38.41 / 26.20 / 19.50 | 41.43 / 28.27 / 19.99 |
+    | eq. 1 of all picks (km/s) | 43.57 | 46.16 |
+    | fraction v_tot > 180 km/s | 0.21 % | 0.38 % |
+
+    `grvs_mag` (DR3 only): median 13.33.
+  - **2. DR3 field restricted to DR2-field stars:**
+    - All 376,791 DR2 field stars have a DR3 candidate (at most 4 each; the closest gives 376,791 unique DR3 ids).
+    - Of these, 124,142 are in the DR3 Method B field.
+    - Result: control median **43.25**, Δ = −5.49 [−9.35, −1.78] (40,000 + 40,000). Case 1, for comparison only.
+  - **3. D5 halo cut:** 41,051 field stars removed. Control median **45.09**, Δ = −7.34 [−11.19, −3.63]
+    (5,000 + 5,000). Case 1, for comparison only.
+  - **Reading** (descriptive; post-hoc):
+    - Matching is on z only, and the |z| distributions agree.
+    - The DR3 picks are about 1.8× farther and about 1.5 mag fainter, with about 2.5× larger RV errors. This is
+      the deeper DR3 RVS sample.
+    - On the same stars that make up the DR2 field, the DR3 median (43.25) equals the DR2 median (43.27).
+    - The halo cut accounts for only about 0.7 of the 2.6 km/s rise.
+    - So the higher DR3 control median comes from the DR3 field's additional, more distant and fainter stars.
+      It does not come from DR3 changing the values of the stars common to both fields.
+    - This diagnostic does not separate how much of the rise is a real population difference and how much is
+      from larger velocity errors.
