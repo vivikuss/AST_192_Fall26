@@ -1,0 +1,9 @@
+# Validation stars for the ARES+MOOG pipeline: the four recent HARPS planet hosts whose [Fe/H] comes from ARES+MOOG.
+# ra/dec/tic/tic_teff/tic_logg: TIC v8 (MAST, queried 2026-11-10). linelist: what the source analysis used
+# (sousa = Sousa+2008 with the automatic switch to the Tsantaki+2013 subset below 5200 K, as SWEET-Cat does).
+# pub_*: the published values to reproduce. alt_*: an independent ARES+MOOG value for the same star, where one exists.
+name,target_id,ra,dec,tic,tic_teff,tic_logg,linelist,pub_feh,pub_feh_err,pub_teff,pub_teff_err,pub_logg,pub_logg_err,pub_vt,pub_ref,pub_method,alt_feh,alt_feh_err,alt_ref
+TOI-2211,TOI-2211,308.538682,-29.672111,212253390,5253,4.55,tsantaki,-0.13,0.04,,,,,,Egger et al. 2026 (arXiv:2610.08922),"ARES+MOOG, Tsantaki+2013 list, Kurucz, co-added HARPS (19 spectra)",,,
+TOI-426,TOI-426,79.102169,-15.510132,189013224,5731,4.46,sousa,0.16,0.04,5750,62,4.43,0.11,1.08,Castro-Gonzalez et al. 2026 (arXiv:2609.05413),"ARES+MOOG, Sousa+2008 list, Kurucz, co-added HARPS (78 spectra)",,,
+HD 176986,HD_176986,285.774471,-11.043925,39554091,4986,4.55,tsantaki,0.03,0.05,,,,,,Tsantaki et al. 2013 (A&A 555 A150; adopted by Nari et al. 2026),"ARES+MOOG, Tsantaki+2013 list, HARPS",0.01,0.04,SWEET-Cat 2.0 (HARPS-N; Teff 4905 logg 4.31)
+HD 48265,HD_48265,100.007196,-48.541956,255781806,5785,3.83,sousa,0.39,0.03,5805,34,4.06,0.07,1.33,SWEET-Cat 2.0 (Sousa et al. 2021; adopted by Wu et al. 2026),"ARES+MOOG, Sousa+2008 list, Kurucz, HARPS",,,
