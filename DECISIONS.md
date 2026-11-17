@@ -2579,3 +2579,23 @@ user request after seeing the Stage 2 results; written before any diagnostic run
     by design.
   - **(c)** The |z| distributions of DR2 and DR3 controls agree closely, including the z-bin steps. DR3
     distance and RV-error distributions are broad and shifted (DR3 distance tail to about 1.5 kpc).
+
+**E64. Star list for a teammate's [Fe/H] measurements (ARES + MOOG)** (2026-11-17; user request).
+- **Made and shared:** a star list of identifiers, positions and magnitudes only, for a teammate. It was handed to
+  the user to send.
+  - Location: outside every git repo (`~/Desktop/for_metallicity/`). Not committed.
+  - No velocity, RV, γ or dispersion was read or computed. All reads were column-restricted.
+- **Counts:** 186 stars.
+  - **WASP:** 107, the frozen amendment 1 membership. DR3 ids come from `data/processed/dr3_crossmatch/`: the NEA
+    route and the closest-neighbour route agree for all 107.
+  - **EBLM:** 79, the frozen analysis sample (EBLM IV + public Gaia DR2 cuts). DR3 ids: both local derivations
+    agree for all 79.
+  - **Left out:** none.
+- **Columns:** sample, name, hs19_simbad_name (where different), other_names, Gaia DR2 and DR3 source_id,
+  RA/Dec (ICRS, epoch J2000.0, DR2 positions propagated with DR2 proper motions), Gaia DR2 G.
+  - Check: the EBLM positions agree with the EBLM IV catalogue coordinates (median 0.14″, max 1.84″).
+  - The list holds only public identifiers. It holds no CORALIE values, no extended-sample IDs or flags, and no
+    reference to private files.
+- **SHA-256:**
+  - `hj_eblm_star_list.csv`: `0d9451ac3ef71dd51c872b83e423cf392156e40caac3a26f6f084e6563ed7230`
+  - `README.txt`: `34af12b1c227d99e7a5a064288a4b8c22bc7bfd46a697f9ebb99fe69b07ed33f`
