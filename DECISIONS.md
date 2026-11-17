@@ -2599,3 +2599,114 @@ user request after seeing the Stage 2 results; written before any diagnostic run
 - **SHA-256:**
   - `hj_eblm_star_list.csv`: `0d9451ac3ef71dd51c872b83e423cf392156e40caac3a26f6f084e6563ed7230`
   - `README.txt`: `34af12b1c227d99e7a5a064288a4b8c22bc7bfd46a697f9ebb99fe69b07ed33f`
+
+**E65. Teammate [Fe/H] file filed (PRIVATE; CORALIE-derived values)** (2026-11-17; user request).
+- **What:** [Fe/H] for the 186 stars of the E64 list, from Nick (teammate; ARES + MOOG, plus PHOENIX fits).
+  - Files: `hj_eblm_feh.csv` and `README_feh.txt`, both dated 2026-11-17 (file times 11:43).
+  - They arrived inside the repo in `data/Nick/for_metallicity/`. That path is gitignored (`data/*`) and was never
+    tracked or committed (`git ls-files` and `git log --all` are empty for it).
+  - Moved to `~/data/feh_teammate/` (directory 700, files 600), outside every git repo. The repo folder was then
+    removed. Copies of the two E64 files came with them and were moved too; their hashes equal E64's.
+- **Private:** it contains values derived from CORALIE spectra. Never commit the file or any per-star value from it;
+  only code and aggregates go in git.
+- **SHA-256:**
+  - `hj_eblm_feh.csv`: `95eb6fa2e411315e739ae2fed0ac0d3128ebe473f5715bd27b3955c08c7684b4`
+  - `README_feh.txt`: `f61185b2f493e679ee4387b2b7be22e7971043e17af59a9309659ced7b507ae5`
+- **Rows:** 186 + header, in the E64 order; `sample` and `gaia_dr3_source_id` equal E64 row by row (checked in
+  code).
+
+  | status (teammate's) | WASP | EBLM | total |
+  |---|---|---|---|
+  | ARES+MOOG (`feh`) | 81 | 21 | 102 |
+  | PHOENIX only | 7 | 53 | 60 |
+  | in sample, no usable fit | 9 | 5 | 14 |
+  | not in teammate's sample | 10 | 0 | 10 |
+
+  - `feh` with empty `flags`: WASP 53, EBLM 18.
+  - `feh_phoenix`: WASP 85, EBLM 74. `feh_coralie_phoenix`: EBLM 74. `feh_sweetcat`: WASP 107, EBLM 1.
+  - The 10 WASP hosts outside the teammate's sample have planets below his 0.3 M_Jup hot-Jupiter cut.
+- **Provenance conflict (to raise with Nick):** README_feh says `feh_phoenix` is fitted to the ESO/SOPHIE spectra.
+  For the EBLMs, `phoenix_instruments` lists CORALIE for 72 of the 74. Only 26 include any ESO/SOPHIE spectrum, so
+  48 come from CORALIE spectra alone. Yet `feh_phoenix` and `feh_coralie_phoenix` differ for 73 of the 74 EBLMs.
+  - For the WASP hosts, no `feh_phoenix` uses CORALIE.
+  - Until Nick clarifies, E66 treats the EBLM `feh_phoenix` as partly CORALIE-based. It also reports the subset
+    with any ESO/SOPHIE spectrum.
+
+**E66. EXPLORATORY: teammate [Fe/H] vs Gaia DR3 GSP-Spec; WASP vs EBLM on one method** (2026-11-17; user request;
+not pre-registered).
+- Run: `python -m src.feh_compare`. Outputs go to `data/private/feh/` (gitignored, 700/600): the per-star merge,
+  `feh_summary.json` and the figure `feh_wasp_vs_eblm.png`. None of them is committed; the figure shows per-star
+  points.
+- **No velocity, RV or dispersion was read or computed.** Reads are column-restricted, with a name guard.
+  `vbroad_phoenix` (line broadening) was read on purpose, as the user asked.
+- **GSP-Spec query:** gaiadr3.astrophysical_parameters for the 186 public DR3 ids of E64, as a plain `IN` list.
+  - Columns: source_id, teff/logg/mh_gspspec, mh_gspspec_lower/upper, flags_gspspec. Cached as
+    `data/raw/gaia/feh/gspspec_186.*`.
+  - An ARI async job stayed QUEUED for more than 600 s, so the query went to the ESA archive. One ABORTED job was
+    retried and then succeeded.
+  - `src/gaia_tap.py` now casts object columns to str before writing FITS, as `ari_tap` does; masked
+    `flags_gspspec` had failed to write.
+- **Calibration** (Recio-Blanco et al. 2023, A&A 674, A29, Sect. 9.1.1, eq. 2, Table 3 literature row):
+  - [M/H]_cal = mh_gspspec + 0.274 − 0.1373 g − 0.0050 g² + 0.0048 g³, with g the **uncalibrated** logg_gspspec.
+  - The paper gives no logg validity range. The medium-quality stars have logg_gspspec 3.55–5.07, so some lie
+    above the dwarf end of its Fig. 12 trend.
+  - The open-cluster fourth-order alternative was not used.
+- **Quality:**
+  - Primary, "medium quality" (Sect. 9.1.1): flags 1–13 ≤ 1, except fluxNoise (7) ≤ 3 and KMgiantPar (13) = 0.
+  - Variant, "best quality": flags 1–13 all 0.
+  - The Sect. 10.5 metal-poor filters (e.g. logg > 4.9) were not applied.
+- **Robust scatter** = 1.4826 × MAD. Median CIs are bootstraps with 10,000 draws and seed 20261117.
+
+**Coverage (of 186; WASP / EBLM):**
+- In the AP table: 107 / 79. Any mh_gspspec: 98 / 38. Medium quality: 97 / 8. Best quality: 35 / 1.
+- For the EBLMs, the medium cut is lost to the vrad flags. Of the 38 with [M/H]: vradM fails for 29, vradT for 17
+  and vradG for 9 (vbroad flags 2–3). For WASP, only 1 star fails, on the vbroad flags.
+  - Reading: probably orbital motion of the SB1 primaries. This is an inference from the flags only; no RV was
+    examined.
+  - 41 EBLMs have no GSP-Spec [M/H] at all.
+
+**Offsets, teammate − GSP-Spec (calibrated, medium quality):** median [68 % CI], robust SD, N.
+
+| teammate value | all | WASP | EBLM |
+|---|---|---|---|
+| `feh`, no flags | +0.012 [−0.026, +0.036], 0.18, 55 | +0.016, 0.18, 48 | +0.004, 0.19, 7 |
+| `feh`, all | +0.012 [−0.009, +0.035], 0.19, 79 | +0.015, 0.19, 72 | +0.004, 0.19, 7 |
+| `feh_phoenix` | +0.057 [+0.026, +0.100], 0.23, 84 | +0.057, 0.24, 76 | +0.034, 0.21, 8 |
+
+- Against the uncalibrated mh_gspspec, the `feh` offset is −0.000 (all) and `feh_phoenix` +0.051. The
+  calibration moves the dwarfs by about 0.01 dex.
+- Best-quality GSP-Spec (WASP only): `feh` no flags +0.036, robust SD 0.13, N 18; `feh_phoenix` +0.077, 0.18, 28.
+- The EBLM offsets rest on 7–8 stars, so the field scale for the EBLMs is essentially unconstrained by GSP-Spec.
+
+**Offset vs line broadening (`vbroad_phoenix`):**
+
+| teammate − GSP | Spearman ρ (p) | Theil–Sen dex per km/s | < 5 km/s | 5–10 km/s | ≥ 10 km/s |
+|---|---|---|---|---|---|
+| `feh`, no flags | +0.47 (3.5e-4), N 53 | +0.044 | −0.10 (24) | +0.07 (29) | — (0) |
+| `feh`, all | +0.45 (5e-5), N 77 | +0.028 | −0.10 (32) | +0.07 (34) | +0.09 (11) |
+| `feh_phoenix` | +0.63 (1e-10), N 84 | +0.038 | −0.05 (34) | +0.12 (34) | +0.33 (16) |
+
+- Yes, the offset depends on broadening, strongly for PHOENIX. The single-number offsets above are therefore
+  averages over the vbroad mix.
+- The data cannot say which side carries the trend. GSP-Spec's synthetic grid has no rotation; README_feh says
+  ARES+MOOG reads *low* for broad lines, which is the opposite sign. Broadening also correlates with Teff (not
+  separated here).
+
+**WASP vs EBLM on one method:** median [68 % CI], robust SD, N.
+
+| method | WASP | EBLM | WASP − EBLM [95 %] | Mann–Whitney p / KS p |
+|---|---|---|---|---|
+| `feh_phoenix` | +0.18 [+0.16, +0.21], 0.12, 85 | +0.01 [−0.01, +0.02], 0.18, 74 | +0.18 [+0.13, +0.22] | 5e-9 / 2e-9 |
+| `feh_phoenix`, EBLMs with any ESO/SOPHIE spectrum | (same) | +0.023 [+0.015, +0.048], 0.11, 26 | +0.159 [+0.078, +0.201] | 7e-5 / 2e-4 |
+| GSP-Spec, calibrated, medium | +0.12 [+0.06, +0.18], 0.27, 97 | −0.15 [−0.21, −0.07], 0.12, 8 | +0.27 [+0.07, +0.40] | 0.04 / 0.04 |
+
+- Rows 1 and 3 are rounded to 0.01 dex: at 0.001 dex the privacy scan matched numbers in them to CORALIE RV
+  tokens. These are coincidences, but they are kept out anyway. Full precision is in `data/private/feh/feh_summary.json`.
+- Best-quality GSP-Spec: WASP +0.188, N 35. EBLM N 1, so no comparison.
+- **Caveats:**
+  - **Broadening:** the EBLM primaries are much broader-lined. Median vbroad_phoenix is 13.0 km/s for EBLMs vs
+    5.3 for WASP; 66 % vs 21 % (among stars with `feh_phoenix`) are at ≥ 10 km/s. Given the PHOENIX-vs-GSP trend,
+    `feh_phoenix` is not demonstrably the "same method" across the two groups.
+  - **EBLM GSP-Spec:** 8 stars selected by passing the vrad flags, so a small and possibly biased subset.
+  - **Instruments:** most EBLM PHOENIX values use CORALIE (E65 conflict).
+  - Both methods put the WASP hosts higher, by 0.16–0.27 dex. Treat as EXPLORATORY.

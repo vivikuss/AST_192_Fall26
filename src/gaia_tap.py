@@ -110,6 +110,9 @@ def query(adql, name, refresh=False, upload=None, upload_name=None, retries=None
     for c in tbl.colnames:                      # astroquery may upper/lower-case names
         if c != c.lower():
             tbl.rename_column(c, c.lower())
+    for c in tbl.colnames:                      # mixed/variable-length strings cannot be written to FITS (as ari_tap)
+        if tbl[c].dtype.kind == "O":
+            tbl[c] = tbl[c].astype(str)
     tbl.meta = {"QUERYSEC": round(time.time() - t0, 1)}
     tbl.write(out, overwrite=True)
     qfile.write_text(f"-- sha1 {hashlib.sha1(adql.encode()).hexdigest()}\n{adql}\n")
