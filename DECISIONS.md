@@ -2710,3 +2710,36 @@ not pre-registered).
   - **EBLM GSP-Spec:** 8 stars selected by passing the vrad flags, so a small and possibly biased subset.
   - **Instruments:** most EBLM PHOENIX values use CORALIE (E65 conflict).
   - Both methods put the WASP hosts higher, by 0.16–0.27 dex. Treat as EXPLORATORY.
+
+**E67. Field kinematics vs GSP-Spec [M/H]: code committed, field GSP-Spec query PENDING, no analysis run**
+(2026-11-17; user request; EXPLORATORY, not pre-registered).
+- **Request:** field-only kinematics by metallicity.
+  - GSP-Spec [M/H] (E66 calibration and medium cut) for the Method A field.
+  - σ_U, σ_V, σ_W and σ_tot in 0.1 dex [M/H] bins.
+  - Reweight the field to the WASP hosts' [M/H] (GSP-Spec; Nick's `feh` as a cross-check) to predict the deficit
+    that metallicity alone would give. Secondary, caveated: the EBLMs with `feh_phoenix` minus the WASP offset
+    (assumed).
+  - U–V density by [M/H].
+- **Rule:** no velocity, RV or dispersion of any host or EBLM is read or computed. Only field-star velocities are
+  used.
+- **Code:** `src/feh_field.py` (subcommands `field`, `gsp`, `run`).
+- **Done so far (no velocities used):**
+  - **Hosts:** the 97 Method A WASP hosts, taken from the logged steps in
+    `data/processed/dr3_exploratory/host_steps_wasp107.json`. The "no RV" step removed none, so no host RV is
+    needed.
+    - d, G and (BP−RP)₀ were recomputed from the cached DR3 rows, reading non-velocity columns only. All 97 pass
+      the logged cuts again.
+  - **Field:** Kayla's field file, 8,510,700 rows; 2,117 NEA hosts removed at load.
+    - Pool union (primary): 48,708 stars in at least one host's Method A pool. Pool sizes run from 9 to 2,149
+      (median 413).
+    - Host-range box (secondary): 1,037,430 stars within the hosts' (BP−RP)₀ 0.514–1.388, G 9.17–13.00 and
+      d range.
+    - Saved (gitignored) as `data/processed/feh_field/field_selected.csv.gz`.
+- **Pending: field GSP-Spec query.** On 2026-11-17 the Gaia archives would not serve it.
+  - ESA: ID uploads of 50,000 failed (broken pipe). Uploads of 10,000 stalled for more than 10 min.
+  - ESA, HEALPix chunks of GSP-Spec stars with parallax > 1.5 mas and 8.0 ≤ G ≤ 13.2: **HTTP 429**. Parallel
+    jobs failed, and later a single job failed four times over about 4 min.
+  - ARI: jobs aborted on read timeouts, and the availability endpoint did not answer within 20 s. **ARI was down.**
+  - Nothing was cached for the field.
+- **No analysis has run:** no field [M/H], no binned dispersion, no reweighting and no figure exist yet.
+- **Next:** a slow resumable fetch, pool-union sky pixels first. Steps 2–4 then run on the pool-union field.
