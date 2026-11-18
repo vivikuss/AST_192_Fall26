@@ -86,7 +86,9 @@ DR3X = {"dr3x_A_val_hs19": ((),), "dr3x_A_val_tess": ((),), "dr3x_A_wasp": ((),)
         "dr3x_A_feh_matched": ((),), "dr3x_A_feh_matched_w02": ((),), "dr3x_A_feh_matched_nick": ((),),
         "dr3x_A_feh_subset": ((),), "dr3x_A_feh_gsponly": ((),), "dr3x_A_feh_subset_nick": ((),),
         # EXPLORATORY metallicity-matched Method B (E71): chunks 0-7 + bootstrap tail 99
-        "dr3x_B_feh_none": CHUNKS + (99,), "dr3x_B_feh_02": CHUNKS + (99,), "dr3x_B_feh_01": CHUNKS + (99,)}
+        "dr3x_B_feh_none": CHUNKS + (99,), "dr3x_B_feh_02": CHUNKS + (99,), "dr3x_B_feh_01": CHUNKS + (99,),
+        # E73: controls restricted to stars with a medium GSP-Spec [M/H], no window
+        "dr3x_B_feh_selonly": CHUNKS + (99,)}
 
 REGISTRY = _reg()
 REGISTRY.update(DR3X)

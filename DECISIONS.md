@@ -3008,3 +3008,16 @@ earlier is changed; E61/E62 results stand.
     selection was not separated from the matching (no GSP-only run, which E70 had for Method A).
   - **Host subset:** the 9 hosts without GSP-Spec are excluded, so the comparison is on the same 92 hosts.
   - **Not pre-registered:** this is one exploratory analysis among several.
+
+**E73. PLAN (written before running): EXPLORATORY Method B, selection-only check (`dr3x_B_feh_selonly`)**
+(2026-11-18; user request; not pre-registered). It separates GSP-Spec's selection from the metallicity matching
+in E72.
+- **Setup:** same as E71/E72: the E62 field (124,142), the same 92 hosts with a medium-quality GSP-Spec [M/H],
+  the same checks (E62 chunk 0 replay; same-stream check), and 40,000 controls + 40,000 bootstrap.
+- **Condition:** in step (b), a control star must have a medium-quality GSP-Spec [M/H] (E66 calibration and
+  cut), with no window on its value. Step (a) z weights are unchanged (host subset and whole field, as E71).
+  - Implemented as `FehSampler` with an infinite window: `|Δ[M/H]| ≤ ∞` holds for every finite field [M/H] and
+    fails for a missing one.
+- **Reported:** the same rows as E72, next to its unmatched and ±0.2 dex columns. The E72 results are not rerun
+  or changed; `run selonly` adds this label to `feh_b_results.json`.
+- **Seed:** label `dr3x_B_feh_selonly` (code 1817, no collision), chunks 0–7 and bootstrap tail 99.
