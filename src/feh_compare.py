@@ -80,6 +80,10 @@ def gspspec(dr3_ids, refresh=False):
 
 def quality(flags):
     """(medium, best) booleans from the 41-character flags_gspspec chain (Recio-Blanco+2023 Sect. 9.1.1)."""
+    if isinstance(flags, bytes):
+        flags = flags.decode()
+    if isinstance(flags, str) and flags.startswith(("b'", 'b"')):     # bytes repr from a FITS-cached table
+        flags = flags[2:-1]
     if not isinstance(flags, str) or len(flags) < 13 or not flags[:13].isdigit():
         return False, False
     f = [int(c) for c in flags[:13]]

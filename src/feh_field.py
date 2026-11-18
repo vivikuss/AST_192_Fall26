@@ -19,6 +19,7 @@ Private: Nick's per-star values are only read from ~/data/feh_teammate; outputs 
 data/private/feh_field/ (gitignored).
 """
 import json
+import os
 import re
 import sys
 
@@ -122,6 +123,159 @@ def gsp_field():
     print(len(g), "rows; failed pixels:", len(failed))
 
 
+# ----------------------------------------------------------------------------- slow resumable fetch (E67/E68)
+POOL_CHUNK = 2000
+FETCH_LOG = ROOT / "logs" / "feh_field_fetch.log"
+FETCH_STATUS = PROC / "fetch_status.json"
+ARI_AVAIL = "https://gaia.ari.uni-heidelberg.de/tap/availability"
+WAIT_MIN_S, WAIT_MAX_S, PAUSE_OK_S = 15 * 60, 120 * 60, 20
+ATTEMPT_TIMEOUT_S = 900
+GIVE_UP_IF_NO_SUCCESS_BY = "2026-11-18T09:00:00"          # local time (user: "tomorrow morning")
+
+
+def pool_chunks():
+    sel = pd.read_csv(PROC / "field_selected.csv.gz", usecols=["source_id", "in_pool"])
+    ids = np.sort(sel.loc[sel["in_pool"], "source_id"].to_numpy(np.int64))
+    return [ids[k:k + POOL_CHUNK] for k in range(0, len(ids), POOL_CHUNK)]
+
+
+def chunk_adql(ids):
+    cols = _guard(["source_id", "teff_gspspec", "logg_gspspec", "mh_gspspec", "flags_gspspec"])
+    return (f"SELECT {', '.join(cols)} FROM gaiadr3.astrophysical_parameters "
+            f"WHERE source_id IN ({', '.join(map(str, ids))})")
+
+
+def _chunk_name(i):
+    return f"feh/field_pool_gspspec/c{i:03d}"
+
+
+def _cached_any(i, adql):
+    from . import ari_tap
+    return gaia_tap.cached(_chunk_name(i), adql) or ari_tap.cached(_chunk_name(i), adql)
+
+
+def _read_cached(i, adql):
+    from . import ari_tap
+    for svc, mod in (("esa", gaia_tap), ("ari", ari_tap)):
+        if mod.cached(_chunk_name(i), adql):
+            f = RAW / ("gaia" if svc == "esa" else "ari") / f"{_chunk_name(i)}.fits"
+            t = Table.read(f)
+            for c in t.colnames:
+                if t[c].dtype.kind == "S":
+                    t[c] = t[c].astype(str)                           # bytes from FITS -> str
+            return t.to_pandas()
+    raise FileNotFoundError(i)
+
+
+def _flog(msg):
+    import datetime as dt
+    FETCH_LOG.parent.mkdir(parents=True, exist_ok=True)
+    with open(FETCH_LOG, "a") as fh:
+        fh.write(f"{dt.datetime.now().isoformat(timespec='seconds')}\t{msg}\n")
+
+
+def _ari_available():
+    import urllib.request
+    try:
+        with urllib.request.urlopen(ARI_AVAIL, timeout=20) as r:
+            body = r.read(2000).decode(errors="ignore").lower()
+            return r.status == 200 and "true" in body
+    except Exception:
+        return False
+
+
+class _AttemptTimeout(BaseException):
+    """BaseException on purpose: ari_tap's poll loop catches Exception (to retry polls) and swallowed it (E68)."""
+
+
+def _attempt(i, adql, avoid=None, prefer=None):
+    """One try of one chunk on one service; returns service name. Raises on any failure (no internal retries).
+    ARI only when its availability check answers, and not right after an ARI failure (`avoid`); after a success,
+    stay with the service that worked (`prefer`) - ARI answered its availability check while its queue was stuck."""
+    import signal
+    from . import ari_tap
+
+    def alarm(*_):
+        raise _AttemptTimeout(f"no answer within {ATTEMPT_TIMEOUT_S} s")
+    signal.signal(signal.SIGALRM, alarm)
+    signal.alarm(ATTEMPT_TIMEOUT_S)
+    try:
+        if prefer != "esa" and avoid != "ari" and _ari_available():
+            _attempt.svc = "ari"
+            ari_tap.query(adql, _chunk_name(i), retries=0, max_wait_s=ATTEMPT_TIMEOUT_S - 60)
+            return "ari"
+        _attempt.svc = "esa"
+        gaia_tap.query(adql, _chunk_name(i), retries=0, retries_500=0)
+        return "esa"
+    finally:
+        signal.alarm(0)
+
+
+def _status(**kw):
+    PROC.mkdir(parents=True, exist_ok=True)
+    FETCH_STATUS.write_text(json.dumps(kw, indent=1))
+
+
+def fetch_pool():
+    """Sequential, resumable fetch of the pool-union stars' GSP-Spec rows. Exits when complete, or at the
+    deadline if nothing has succeeded. Box stars are NOT fetched here (user to be told first)."""
+    import datetime as dt
+    import time
+    chunks = pool_chunks()
+    adqls = [chunk_adql(c) for c in chunks]
+    deadline = dt.datetime.fromisoformat(GIVE_UP_IF_NO_SUCCESS_BY)
+    n_ok_session, wait, avoid, prefer = 0, WAIT_MIN_S, None, None
+    if FETCH_STATUS.exists():                       # restart: honour a wait that was in progress
+        st = json.loads(FETCH_STATUS.read_text())
+        if st.get("state") == "waiting":
+            until = dt.datetime.fromisoformat(st["updated"]) + dt.timedelta(minutes=st["wait_min"])
+            left = (until - dt.datetime.now()).total_seconds()
+            wait = min(2 * st["wait_min"] * 60, WAIT_MAX_S)
+            avoid = st.get("last_service")
+            if left > 0:
+                _flog(f"restart: honouring previous wait, sleeping {left / 60:.1f} min")
+                time.sleep(left)
+        elif st.get("last_success_service"):
+            prefer = st["last_success_service"]
+    _flog(f"start fetch_pool: {len(chunks)} chunks of <= {POOL_CHUNK} ids, "
+          f"{sum(len(c) for c in chunks)} ids; pid {os.getpid()}")
+    while True:
+        todo = [i for i, a in enumerate(adqls) if not _cached_any(i, a)]
+        done = len(adqls) - len(todo)
+        _status(state="running", chunks_done=done, chunks_total=len(adqls), pid=os.getpid(), last_success_service=prefer,
+                succeeded_this_run=n_ok_session, updated=dt.datetime.now().isoformat(timespec="seconds"))
+        if not todo:
+            g = pd.concat([_read_cached(i, a) for i, a in enumerate(adqls)], ignore_index=True)
+            g.columns = [c.lower() for c in g.columns]
+            g.to_csv(PROC / "field_gspspec_pool.csv.gz", index=False)
+            _flog(f"COMPLETE: {len(g)} rows for {sum(len(c) for c in chunks)} ids")
+            _status(state="pool_complete", chunks_done=len(adqls), chunks_total=len(adqls), rows=len(g),
+                    updated=dt.datetime.now().isoformat(timespec="seconds"))
+            return
+        if n_ok_session == 0 and done == 0 and dt.datetime.now() >= deadline:
+            _flog("STOP: deadline reached with no successful chunk")
+            _status(state="stopped_no_success", chunks_done=0, chunks_total=len(adqls),
+                    updated=dt.datetime.now().isoformat(timespec="seconds"))
+            return
+        i = todo[0]
+        t0 = time.time()
+        try:
+            _attempt.svc = None
+            svc = _attempt(i, adqls[i], avoid, prefer)
+            n_ok_session += 1
+            wait, avoid, prefer = WAIT_MIN_S, None, svc
+            _flog(f"chunk {i:03d} OK via {svc} in {time.time() - t0:.0f} s ({done + 1}/{len(adqls)})")
+            time.sleep(PAUSE_OK_S)
+        except (Exception, _AttemptTimeout) as err:
+            avoid, prefer = _attempt.svc, None
+            _flog(f"chunk {i:03d} FAIL via {avoid} after {time.time() - t0:.0f} s: {type(err).__name__}: "
+                  f"{str(err)[:160]!r}; waiting {wait // 60} min")
+            _status(state="waiting", chunks_done=done, chunks_total=len(adqls), last_error=f"{type(err).__name__}", last_service=avoid,
+                    wait_min=wait // 60, pid=os.getpid(), updated=dt.datetime.now().isoformat(timespec="seconds"))
+            time.sleep(wait)
+            wait = min(2 * wait, WAIT_MAX_S)
+
+
 # ----------------------------------------------------------------------------- analysis
 MH_EDGES = np.round(np.arange(-1.0, 0.8001, BIN), 2)          # 0.1 dex bins, -1.0 .. +0.8
 MIN_BIN = 30
@@ -138,7 +292,7 @@ def disp(uvw, w=None):
 
 def load_field_mh():
     sel = pd.read_csv(PROC / "field_selected.csv.gz")
-    g = pd.read_csv(PROC / "field_gspspec_all.csv.gz", dtype={"flags_gspspec": str})
+    g = pd.read_csv(PROC / "field_gspspec_pool.csv.gz", dtype={"flags_gspspec": str})
     f = sel.merge(g, on="source_id", how="left", validate="1:1")
     q = f["flags_gspspec"].map(quality)
     f["medium"] = [x[0] for x in q]
@@ -224,7 +378,9 @@ def run():
     out = {"status": "EXPLORATORY", "seed": SEED, "n_boot": N_BOOT, "bin_dex": BIN, "min_bin_n": MIN_BIN,
            "statistic": "np.std per component (ddof 0); sigma_tot = sqrt(sum var); FIELD stars only"}
     cov = {}
-    for name, m in (("pool", f["in_pool"]), ("box", f["in_box"])):
+    sets = ("pool",)                       # the box needs its own fetch first (user to be told before it starts)
+    out["sets_analysed"] = list(sets)
+    for name, m in (("pool", f["in_pool"]),):
         x = f[m]
         gb = pd.cut(x["phot_g_mean_mag"], [8, 10, 11, 12, 12.5, 13.2])
         cov[name] = {"n": len(x), "any_mh_gspspec": int(x["mh_gspspec"].notna().sum()),
@@ -238,7 +394,7 @@ def run():
     out["targets"] = tmeta
     out["target_medians"] = {k: round(float(np.median(v)), 3) for k, v in targets.items()}
     PROC.mkdir(parents=True, exist_ok=True)
-    for name in ("pool", "box"):
+    for name in sets:
         x = f[f["in_" + name] & f["mh"].notna()].reset_index(drop=True)
         b = binned(x, rng)
         b.to_csv(PROC / f"binned_dispersions_{name}.csv", index=False)
@@ -294,7 +450,7 @@ def fig_uv(x, d):
         ax.set_xlabel("U (km/s)")
     axes[0].set_ylabel("V (km/s)")
     fig.colorbar(h[3], ax=axes, label="density (per km²/s²)", shrink=0.9)
-    fig.text(0.99, 0.005, "EXPLORATORY. Field stars only (Method A pool union, GSP-Spec medium quality); "
+    fig.text(0.99, -0.06, "EXPLORATORY. Field stars only (Method A pool union, GSP-Spec medium quality); "
              "UVW as in Kayla's field file", ha="right", fontsize=7)
     fig.savefig(d / "field_uv_by_mh.png", dpi=150, bbox_inches="tight")
     plt.close(fig)
@@ -302,4 +458,4 @@ def fig_uv(x, d):
 
 if __name__ == "__main__":
     {"field": select_field, "gsp": gsp_field,
-     "run": lambda: run()}[sys.argv[1]]()
+     "run": lambda: run(), "fetch_pool": fetch_pool}[sys.argv[1]]()

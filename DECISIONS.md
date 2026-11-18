@@ -2743,3 +2743,85 @@ not pre-registered).
   - Nothing was cached for the field.
 - **No analysis has run:** no field [M/H], no binned dispersion, no reweighting and no figure exist yet.
 - **Next:** a slow resumable fetch, pool-union sky pixels first. Steps 2–4 then run on the pool-union field.
+
+**E68. EXPLORATORY: field kinematics vs GSP-Spec [M/H] (Method A pool-union field) and the dispersion change
+predicted from metallicity alone** (2026-11-17; user request; not pre-registered).
+- **Rule kept:** no velocity, RV or dispersion of any host or EBLM was read or computed.
+  - Hosts and EBLMs contribute only membership, d, G, (BP−RP)₀ (E67) and [M/H].
+  - Every dispersion below is of FIELD stars: Kayla's field file, with UVW as in that file.
+- **Fetch (resolves the E67 pending item for the pool union):** `python -m src.feh_field fetch_pool`.
+  - Detached, under `caffeinate -i`, one chunk at a time. 25 plain `IN`-list queries of ≤ 2,000 ids on
+    gaiadr3.astrophysical_parameters.
+  - After a 429, timeout or failed job it waits 15 min, doubling up to 2 h. ARI is used only when its availability
+    check answers. Each chunk is cached on its own (resumable). Every attempt is logged in
+    `logs/feh_field_fetch.log` (untracked).
+  - **History:**
+    - Chunk 0 on ARI: still QUEUED after about 19 min, then a 15 min wait.
+    - Fix 1: the per-attempt timeout (SIGALRM) had been swallowed by `ari_tap`'s poll loop, which catches
+      Exception. The timeout is now a BaseException.
+    - Fix 2: after a failure the loop tries the other service. ESA served chunk 0 in 36 s.
+    - Fix 3: after a success the loop stays on the service that worked. ARI answered its availability check while
+      its queue stayed stuck; a chunk-1 ARI job was aborted after about 8 min.
+    - A restart crashed (UnboundLocalError in the new restart code), so nothing ran from 19:26 to 19:57. Fixed.
+    - Then all 24 remaining chunks went through ESA in about 5 s each. COMPLETE 20:06:59: 48,708 rows for 48,708
+      ids.
+  - **Bug found:** FITS-cached `flags_gspspec` read back as bytes (`b'...'`), which failed the quality parse.
+    - `feh_compare.quality` now accepts that form, and `_read_cached` decodes bytes.
+    - E66 is not affected: it parsed the live query result, and its coverage of 105 medium-quality stars confirms
+      the flags parsed.
+  - **Box:** the 1.04M host-range box is NOT fetched. The user is to be told before it starts.
+- **Run:** `python -m src.feh_field run`.
+  - Outputs: `data/processed/feh_field/` (`feh_field_summary.json`, `binned_dispersions_pool.csv`; gitignored)
+    and `figures/feh_field/` (field aggregates plus two medians).
+  - Statistic: np.std per component (ddof 0), σ_tot = √(Σ var). Bins of 0.1 dex with N ≥ 30. Bootstrap: 1,000
+    draws, seed 20261118.
+- **Coverage (pool union, 48,708):** any mh_gspspec 43,333; medium quality 40,482 (83 %).
+  - Medium fraction by G: 0.84 (8–10), 0.87 (10–11), 0.90 (11–12), 0.86 (12–12.5), **0.52 (12.5–13.2)**.
+  - Medium fraction by (BP−RP)₀: 0.80, 0.86, 0.79, 0.75 for 0.5–0.7, 0.7–0.9, 0.9–1.1, 1.1–1.4.
+  - Field median [M/H] −0.034.
+- **Field σ by [M/H], selected bins** (km/s; bootstrap SE about 0.2–0.5 here; all 18 bins are in the CSV and the
+  figure):
+
+  | [M/H] bin | N | σ_U | σ_V | σ_W | σ_tot |
+  |---|---|---|---|---|---|
+  | −0.6 … −0.5 | 1,162 | 44.0 | 31.8 | 27.7 | 60.9 |
+  | −0.4 … −0.3 | 2,922 | 41.1 | 26.2 | 22.7 | 53.8 |
+  | −0.2 … −0.1 | 4,787 | 37.5 | 23.7 | 19.1 | 48.3 |
+  | 0.0 … +0.1 | 5,024 | 36.0 | 22.1 | 17.3 | 45.7 |
+  | +0.2 … +0.3 | 3,446 | 35.3 | 22.7 | 16.7 | 45.2 |
+  | +0.4 … +0.5 | 1,424 | 34.1 | 22.0 | 16.5 | 43.8 |
+
+  - The dispersions fall steeply from [M/H] ≈ −0.6 to ≈ 0 and are nearly flat above 0. σ_W keeps a slow decline.
+    So the predicted effect comes mostly from how much of the metal-poor tail a sample has.
+  - Figures: `figures/feh_field/field_sigma_vs_mh.png` (with dashed lines at the WASP and EBLM target medians)
+    and `field_uv_by_mh.png` (U–V density in 5 [M/H] bins).
+- **Prediction: reweight the field to a target [M/H] distribution** (0.1 dex histogram ratio; bootstrap over
+  field stars and target stars).
+  - Unweighted field (40,482): σ_U 37.74, σ_V 24.50, σ_W 19.52, σ_tot 49.05 km/s.
+  - Every target bin has field stars, so no target mass is lost.
+
+  | target (N, median) | Δσ_U | Δσ_V | Δσ_W | Δσ_tot | Δσ_W % |
+  |---|---|---|---|---|---|
+  | WASP, GSP-Spec (88 of the 97 Method A hosts, +0.105) | −1.01 [−1.47, −0.48] | −1.01 [−1.45, −0.46] | −1.36 [−1.95, −0.69] | −1.82 [−2.58, −0.89] | −7.0 |
+  | WASP, Nick `feh` − 0.015 (74, +0.085) | −1.16 | −1.37 | −1.59 [−2.11, −1.00] | −2.20 | −8.1 |
+  | WASP, Nick `feh` no flags − 0.015 (46, +0.075) | −1.34 | −1.49 | −1.79 [−2.32, −1.09] | −2.47 | −9.2 |
+  | EBLM, `feh_phoenix` − 0.057, ASSUMED (74, −0.051) | −0.64 [−1.02, −0.27] | −1.19 [−1.47, −0.90] | −0.88 [−1.24, −0.47] | −1.43 [−1.95, −0.92] | −4.5 |
+
+  - Brackets are 95 % bootstrap intervals. With 0.2 dex bins, WASP GSP-Spec gives Δσ_W −1.31 and Δσ_tot −1.81
+    (same as 0.1 dex).
+  - **Reading:** metallicity alone predicts the WASP hosts' σ_W about 1.4 km/s (7 %) below the unweighted field,
+    and σ_tot about 1.8 km/s below. Nick's values give slightly more, 1.6–1.8 km/s in σ_W.
+  - **EBLM caveats:**
+    - Their median is below the field's, yet the prediction is still negative, because the shifted PHOENIX
+      distribution has fewer stars in the metal-poor tail.
+    - The shift by the WASP offset is assumed; the EBLMs cannot be tied to GSP-Spec (E66: 8 stars).
+    - `feh_phoenix` has a strong broadening trend against GSP-Spec, and the EBLMs are broader-lined (E66). Much of
+      the EBLM PHOENIX comes from CORALIE spectra (E65 conflict).
+    - This field is the WASP hosts' pool union, not the EBLMs' colour/distance footprint.
+- **Limitations:**
+  - **Field weighting:** the field is the union of the pools, unweighted. Method A draws one star per host pool,
+    so the effective control mix differs: overlapping pools and pool sizes are ignored.
+  - **Selection:** GSP-Spec selects against faint stars (G > 12.5). Field [M/H] is measured on the same scale as
+    the WASP GSP-Spec target.
+  - **Not compared with host kinematics:** no host or EBLM dispersion was read, so these numbers are not compared
+    with any observed deficit here.
