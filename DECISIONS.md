@@ -2856,3 +2856,61 @@ pre-registered).
   collision).
 - **E69 addendum (before running):** sixth variant **`dr3x_A_feh_subset_nick`** (code 2220, no collision). It
   uses the Nick variant's host subset with the original pools, so that variant has a same-host baseline too.
+
+**E70. RESULTS (EXPLORATORY, not pre-registered): metallicity-matched Method A (plan E69)** (2026-11-17).
+- Run: `python -m src.dr3x_feh_matched`. Output (gitignored): `data/processed/dr3_exploratory/feh_matched_results.json`.
+- **Guard passed:** the rebuilt hosts give N 97 and host σ_W 18.00968, equal to E61.
+- **Coverage:**
+  - Hosts with a GSP-Spec medium [M/H]: 88 of 97. Hosts with Nick's `feh` and no flags: 46 of 97 (shift
+    −0.016 dex).
+  - Field with a GSP-Spec medium [M/H]: 40,482. Field stars without one are excluded from every restricted pool.
+- **Hosts used and pool sizes:**
+  - ±0.1 dex: 87 of 88 hosts (1 has an empty pool; name in `data/private/feh_matched/`). Pool median 60, min 1.
+  - ±0.2 dex: 88 of 88. Pool median 116.5, min 2.
+  - Nick ±0.1: 46 of 46. Pool median 100, min 2.
+  - Same-host baselines: original pools have median 382 (88 hosts) and 456.5 (46 hosts). GSP-only pools have
+    median 356.5.
+- **Side by side, 88 GSP-Spec hosts:** host value | control median | one-sided σ. 1σ and 2σ ranges are in the
+  JSON.
+
+| statistic | host (88; 87 for ±0.1) | original pools (`subset`) | GSP-only pools (`gsponly`) | matched ±0.1 (`feh_matched`) | matched ±0.2 (`w02`) |
+|---|---|---|---|---|---|
+| σ_U | 30.20 (29.86) | 35.81, −1.98σ | 36.46, −2.19σ | 34.32 [1σ 31.71–37.05; 2σ 29.19–39.77], −1.71σ | 34.49, −1.55σ |
+| σ_V | 23.35 (23.48) | 23.52, −0.07σ | 23.48, −0.06σ | 21.79 [20.07–23.63; 18.44–25.52], +0.92σ | 21.65, +0.91σ |
+| σ_W | 16.39 (16.49) | 18.43, −1.06σ | 18.66, −1.20σ | 16.11 [14.68–17.70; 13.43–19.44], +0.25σ | 16.23, +0.10σ |
+| σ_tot | 41.54 (41.41) | 46.89, −1.87σ | 47.38, −2.15σ | 43.83 [41.45–46.37; 39.25–48.90], −1.01σ | 43.95, −0.96σ |
+| HS19 eq. 1 | 37.07 (36.90) | 41.04, −1.65σ | 41.84, −2.03σ | 39.04 [37.00–41.22; 35.06–43.38], −1.04σ | 38.99, −0.91σ |
+
+- **Side by side, 46 hosts with Nick's `feh` (no flags):**
+
+| statistic | host (46) | original pools (`subset_nick`) | matched ±0.1, Nick → GSP scale (`feh_matched_nick`) |
+|---|---|---|---|
+| σ_U | 26.98 | 36.34, −2.35σ | 35.30 [31.60–39.24; 28.13–43.19], −2.29σ |
+| σ_V | 24.61 | 24.29, +0.09σ | 21.85 [19.22–24.81; 16.92–27.99], +0.92σ |
+| σ_W | 20.16 | 18.95, +0.41σ | 17.19 [15.02–19.56; 13.13–21.87], +1.23σ |
+| σ_tot | 41.71 | 48.06, −1.58σ | 45.19 [41.71–48.86; 38.64–52.55], −1.00σ |
+| HS19 eq. 1 | 37.53 | 42.29, −1.41σ | 40.29 [37.39–43.41; 34.73–46.57], −0.94σ |
+
+- **Reading (exploratory):**
+  - **Matching on [M/H] lowers the control medians:** σ_W by 2.3 km/s (18.43 → 16.11), σ_V by 1.7 and σ_U by 1.5.
+    - This is more than the E68 field reweighting predicted (Δσ_W −1.36). Per-host matching also follows each
+      pool's own [M/H]–kinematics mix.
+    - The GSP-only pools *raise* the medians slightly (σ_W 18.66), so GSP-Spec's own selection does not cause the
+      drop.
+  - **σ_W:** the host deficit (−1.06σ on these 88) disappears after matching (+0.25σ at ±0.1, +0.10σ at ±0.2).
+  - **σ_U:** the deficit largely remains (−1.98σ → −1.71σ / −1.55σ), so it is not explained by metallicity on
+    this test. **σ_V** moves from −0.07σ to +0.9σ.
+  - **σ_tot and eq. 1:** the deficit shrinks from about −1.9σ / −1.65σ to about −1.0σ.
+  - **Nick subset:** consistent in direction. Matching lowers the control medians in σ_V, σ_W and σ_tot, and the
+    σ_U deficit stays (−2.35σ → −2.29σ). This 46-host subset already has no σ_W deficit with the original pools
+    (host 20.16).
+- **Caveats:**
+  - **Small pools:** at ±0.1 dex the median pool is 60 and the minimum 1. A host with a 1-star pool always gets
+    the same control star, which narrows the control spread.
+  - **Host subset:** the 9 hosts without GSP-Spec are excluded. On the 88, host σ_W is 16.39 against 18.01 for
+    all 97, so the subset itself changes the baseline. The side-by-side is therefore on the same hosts.
+  - **Nick subset:** the 46 no-flag hosts are a selected subset (flags remove broad-lined and hot stars, among
+    others). Nick's values are shifted by the E66 median offset only, with no vbroad dependence.
+  - **Field [M/H]:** GSP-Spec is noisy for single stars (E66 robust scatter about 0.18 dex against Nick), so a
+    ±0.1 dex window is narrower than the measurement error. Matching therefore acts partly on noise.
+  - **Not pre-registered:** this is one exploratory analysis among several on these hosts.

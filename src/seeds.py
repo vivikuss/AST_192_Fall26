@@ -81,7 +81,10 @@ DR3X = {"dr3x_A_val_hs19": ((),), "dr3x_A_val_tess": ((),), "dr3x_A_wasp": ((),)
         # Stage 2 comparison line (E56): frozen test B on DR2 data for exactly the 101 Method B survivors
         "dr3x_B_dr2match": CHUNKS + (99,),
         # POST-HOC DIAGNOSTIC (E62): DR3 field restricted to DR2-field stars; D5 halo cut (5,000 + 5,000)
-        "dr3x_B_diag_dr2field": CHUNKS + (99,), "dr3x_B_diag_halo": (0, 99)}
+        "dr3x_B_diag_dr2field": CHUNKS + (99,), "dr3x_B_diag_halo": (0, 99),
+        # EXPLORATORY metallicity-matched Method A (E69): one stream of 10,000 draws per variant
+        "dr3x_A_feh_matched": ((),), "dr3x_A_feh_matched_w02": ((),), "dr3x_A_feh_matched_nick": ((),),
+        "dr3x_A_feh_subset": ((),), "dr3x_A_feh_gsponly": ((),), "dr3x_A_feh_subset_nick": ((),)}
 
 REGISTRY = _reg()
 REGISTRY.update(DR3X)
