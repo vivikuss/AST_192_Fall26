@@ -2914,3 +2914,45 @@ pre-registered).
   - **Field [M/H]:** GSP-Spec is noisy for single stars (E66 robust scatter about 0.18 dex against Nick), so a
     ±0.1 dex window is narrower than the measurement error. Matching therefore acts partly on noise.
   - **Not pre-registered:** this is one exploratory analysis among several on these hosts.
+
+**E71. PLAN (written before running): EXPLORATORY metallicity-matched Method B (HS19-style)** (2026-11-18; user
+request; not pre-registered). Question: does the Method B deficit survive metallicity matching? Nothing frozen or
+earlier is changed; E61/E62 results stand.
+- **Field:** the E62 diagnostic field, i.e. the DR3 Method B field restricted to stars also in the DR2 Phase 1
+  field (124,142 stars). It is rebuilt exactly as in `dr3x_diag` (cached ARI `dr2_neighbourhood` crossmatch,
+  closest match), with no new cut.
+- **Hosts:** the 101 Method B hosts as built by `dr3x_diag.hosts` (no new host quantity).
+- **Guard:** before any new run, chunk 0 (5,000 iterations) of `dr3x_B_diag_dr2field` is replayed on the rebuilt
+  field and hosts. The run stops unless it equals the saved E62 checkpoint.
+- **[M/H]:** GSP-Spec, E66 calibration (Recio-Blanco et al. 2023 polynomial in uncalibrated logg) and E66 medium
+  quality cut, for hosts and field alike.
+  - Hosts: the 101 are among the 107 WASP hosts whose GSP-Spec rows were fetched in E66
+    (`data/private/feh/feh_gspspec_merged.csv`). They are reused, not fetched again.
+  - Field: rows for stars already fetched in E68 (the Method A pool union) are reused. The rest are fetched with
+    the E68 slow, resumable loop: one chunk of ≤ 2,000 IDs at a time, waiting ≥ 15 min after a failure (doubling
+    up to 2 h), ARI only when its availability check answers. Coverage is reported.
+- **Runs** (hosts with a GSP-Spec medium [M/H] only; 40,000 controls + 40,000 bootstrap, as the diagnostic):
+  - **`dr3x_B_feh_none`:** Method B exactly as the diagnostic (`matching.ControlSampler`) on that host subset.
+    This is the side-by-side baseline.
+  - **`dr3x_B_feh_02` (main):** in step (b), a control star must also have a GSP-Spec medium [M/H] within
+    ±0.2 dex of its host's, in addition to the colour tolerance.
+  - **`dr3x_B_feh_01` (check):** the same with ±0.1 dex.
+- **Implementation of the matching:**
+  - Step (a), the z-matched thinning, is unchanged: z weights from the host subset and the whole 124,142 field.
+  - Step (b) draws uniformly among the kept stars that pass both the colour and the [M/H] condition, with the
+    same no-replacement rule.
+  - With an infinite window the code consumes the random stream exactly as `ControlSampler`; this is checked.
+  - A host with no candidate at all (colour + window, usable field) is dropped and counted.
+  - Iterations where a host is unmatched are handled as in `ControlSampler.run` (D13b): both the control and the
+    host statistic of that iteration use only the matched hosts.
+- **Reported per run:**
+  - Δ with the 95 % bootstrap interval (`eblm_kinematics.bootstrap`, tail 99) for HS19 eq. 1 and σ_tot (the
+    `rms` statistic).
+  - σ_U, σ_V, σ_W: host value and control median (population std about the sample's own mean).
+  - Number of hosts used; pool size median and minimum. A pool here is a host's usable field stars (z weight
+    > 0) within the colour tolerance and, if matched, the window.
+  - Iterations with an unmatched host.
+- **Privacy:** per-star metallicities and host names stay private. Only code and aggregates go in git; dropped
+  host names go to `data/private/` only.
+- Code: `src/dr3x_feh_b.py`. Labels registered in `src/seeds.py` (codes 1475, 1141, 1140; no collision), chunks
+  0–7 and bootstrap tail 99.
