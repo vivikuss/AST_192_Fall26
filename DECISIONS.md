@@ -2825,3 +2825,32 @@ predicted from metallicity alone** (2026-11-17; user request; not pre-registered
     the WASP GSP-Spec target.
   - **Not compared with host kinematics:** no host or EBLM dispersion was read, so these numbers are not compared
     with any observed deficit here.
+
+**E69. PLAN (written before running): EXPLORATORY metallicity-matched Method A** (2026-11-17; user request; not
+pre-registered).
+- **Hosts:** the 97 Method A WASP hosts of Stage 2 (E61), with their Stage 2 kinematic values reused.
+  - Stage 2 saved only aggregates, so the host rows are rebuilt through the exact Stage 2 code path:
+    `dr3x_hosts.bases` from the cached DR3 rows; `dr3x_hosts.method_a(..., exclude_companions=True)`; RV = NEA
+    `st_radv`, else Gaia DR3; `A.add_uvw`.
+  - **Guard:** the run stops unless the rebuilt host σ_W equals the logged E61 value (18.00968 km/s) and N = 97.
+  - No new host quantity is introduced. Host statistics are only re-evaluated on host subsets.
+- **Field:** Method A field (Kayla's file, NEA hosts removed), with GSP-Spec [M/H] as E68 (E66 calibration,
+  medium quality). The pools lie inside the E68 pool union, so every pool star has had its GSP-Spec row fetched.
+- **Variants:** each has its own seed label; Method A otherwise exactly as Stage 2 (pool criteria, 10,000 draws
+  of one pool star per host, empty pools dropped, percentiles, one-sided sigma).
+  - **`dr3x_A_feh_matched` (main):** hosts with a GSP-Spec medium [M/H]. Pool restricted to stars with
+    |[M/H]_field − [M/H]_host| ≤ 0.1 dex, both GSP-Spec.
+  - **`dr3x_A_feh_matched_w02`:** the same with ±0.2 dex.
+  - **`dr3x_A_feh_matched_nick`:** hosts with Nick's `feh` and empty `flags`, shifted onto the GSP-Spec scale by
+    −0.016 dex (E66 median of `feh` no flags − GSP-Spec, WASP). Field GSP-Spec within ±0.1 dex.
+  - **`dr3x_A_feh_subset`:** the main run's host subset with the ORIGINAL unrestricted pools. This is the
+    side-by-side baseline on the same hosts.
+  - **`dr3x_A_feh_gsponly`:** the same hosts, pools restricted to stars with a GSP-Spec medium [M/H] but no
+    window. It separates GSP-Spec's selection from the matching.
+- **Reported per variant:** σ_U, σ_V, σ_W, σ_tot (and HS19 eq. 1). For each: host value on the hosts used,
+  control median, 1σ and 2σ ranges, one-sided sigma. Also the number of hosts used (and dropped for empty
+  pools), and pool size median and minimum.
+- **Privacy:** per-host metallicities stay private. Only aggregates and counts go in git; host names dropped for
+  empty pools are written only to `data/private/`.
+- Code: `src/dr3x_feh_matched.py`. Labels registered in `src/seeds.py` (codes 1768, 2080, 2284, 1704, 1822; no
+  collision).
