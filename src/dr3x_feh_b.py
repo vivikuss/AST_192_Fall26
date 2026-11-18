@@ -35,6 +35,7 @@ OUT = A.OUT / "feh_b_results.json"
 PRIV = config.ROOT / "data" / "private" / "feh_b"
 N = 40000
 RUNS = (("dr3x_B_feh_none", None), ("dr3x_B_feh_02", 0.2), ("dr3x_B_feh_01", 0.1))
+SELONLY = (("dr3x_B_feh_selonly", np.inf),)   # E73: requires a medium [M/H], no window
 
 
 # ----------------------------------------------------------------------------- field and fetch
@@ -190,7 +191,7 @@ def run_one(h, fld, cfg, label, window, hmh, fmh):
         smp = FehSampler(h, fld, cfg, hmh, fmh, window)
         assert (smp.pool_sizes > 0).all()
     P, ctl, hst, full = mc(smp, cfg, label)
-    r = {"label": label, "window_dex": window, "n_hosts": len(h), "n_dropped_empty_pool": int(len(empty)),
+    r = {"label": label, "window_dex": "none; requires medium [M/H]" if window == np.inf else window, "n_hosts": len(h), "n_dropped_empty_pool": int(len(empty)),
          "pool_size_median": float(np.median(smp.pool_sizes)), "pool_size_min": int(smp.pool_sizes.min()),
          "n_usable_field": smp.n_usable, "hosts_in_empty_zbins": smp.bin_info["n_hosts_in_empty_bins"],
          "iters_with_unmatched_host": int((P < 0).any(axis=1).sum()),
@@ -206,7 +207,7 @@ def run_one(h, fld, cfg, label, window, hmh, fmh):
     return r, empty
 
 
-def run():
+def run(runs=RUNS):
     cfg = config.load()
     hb, _ = D.hosts(cfg)
     fld = pd.read_csv(FIELD)
@@ -224,13 +225,17 @@ def run():
     R = {"header": HEADER, "guard_replay_max_abs_diff": err, "same_stream_check": True,
          "hosts_method_b": len(hb), "hosts_with_gsp_medium": int(has.sum()), "field_coverage": cov}
     dropped = {}
-    for label, w in RUNS:
+    for label, w in runs:
         R[label], e = run_one(h, fld, cfg, label, w, hmh, fmh)
         dropped[label] = h["name"].iloc[e].tolist()
         r = R[label]
         S.log(f"{label}: N {r['n_hosts']}, pool median {r['pool_size_median']:.0f} min {r['pool_size_min']}, "
               f"eq1 {r['hs19_eq1']['host']:.2f} vs {r['hs19_eq1']['control_median']:.2f}, "
               f"Delta {r['hs19_eq1']['delta']:.2f} {np.round(r['hs19_eq1']['ci95'], 2).tolist()}")
+    if runs is not RUNS:                                 # add to the E72 results, which are kept as they are
+        old = json.loads(OUT.read_text())
+        R = {**old, **{k: R[k] for k, _ in runs}}
+        dropped = {**json.loads((PRIV / "dropped_empty_pool.json").read_text()), **dropped}
     A.write_json(OUT, R)
     PRIV.mkdir(parents=True, exist_ok=True)
     (PRIV / "dropped_empty_pool.json").write_text(json.dumps(dropped, indent=1))
@@ -238,4 +243,4 @@ def run():
 
 
 if __name__ == "__main__":
-    {"field": build_field, "fetch": fetch, "run": run}[sys.argv[1]]()
+    {"field": build_field, "fetch": fetch, "run": run, "selonly": lambda: run(SELONLY)}[sys.argv[1]]()

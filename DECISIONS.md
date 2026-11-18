@@ -3021,3 +3021,26 @@ in E72.
 - **Reported:** the same rows as E72, next to its unmatched and ±0.2 dex columns. The E72 results are not rerun
   or changed; `run selonly` adds this label to `feh_b_results.json`.
 - **Seed:** label `dr3x_B_feh_selonly` (code 1817, no collision), chunks 0–7 and bootstrap tail 99.
+
+**E74. RESULTS (EXPLORATORY, not pre-registered): Method B selection-only check (plan E73)** (2026-11-18).
+`python -m src.dr3x_feh_b selonly`. The checks passed again (E62 chunk 0 replay; same-stream check). The E72
+entries of `feh_b_results.json` are byte-for-byte unchanged.
+
+| | unmatched (`_none`) | has medium [M/H], no window (`_selonly`) | ±0.2 dex (`_02`) |
+|---|---|---|---|
+| eq. 1: host / control median | 37.49 / 42.91 | 37.49 / 42.64 | 37.49 / 40.98 |
+| eq. 1 Δ [95 %] | −5.42 [−9.44, −1.55] | −5.15 [−9.19, −1.29] | −3.49 [−7.53, +0.42] |
+| σ_tot: host / control median | 42.01 / 48.89 | 42.01 / 48.37 | 42.01 / 46.16 |
+| σ_tot Δ [95 %] | −6.88 [−11.83, −2.32] | −6.36 [−11.30, −1.81] | −4.15 [−9.16, +0.48] |
+| σ_U host / median | 30.87 / 37.82 | 30.87 / 37.38 | 30.87 / 36.09 |
+| σ_V host / median | 23.14 / 24.39 | 23.14 / 24.06 | 23.14 / 22.84 |
+| σ_W host / median | 16.63 / 18.51 | 16.63 / 18.61 | 16.63 / 17.24 |
+| fraction of controls ≤ host, eq. 1 | 0.012 | 0.014 | 0.056 |
+| pool size median / min | 8,392 / 680 | 2,604 / 112 | 1,044 / 16 |
+| iterations with an unmatched host | 0 | 0 | 5,075 (12.7 %) |
+
+- 92 hosts, none dropped; BCa not needed.
+- **Reading** (descriptive): requiring a GSP-Spec [M/H] lowers the control medians only slightly (eq. 1 −0.27,
+  σ_tot −0.52 km/s). The ±0.2 dex window lowers them further (eq. 1 −1.66, σ_tot −2.21 km/s beyond the
+  selection). So most of the E72 shrinkage of Δ comes from the matching itself, not from GSP-Spec's selection;
+  roughly 15–20 % comes from the selection.
