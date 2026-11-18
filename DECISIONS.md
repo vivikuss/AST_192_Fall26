@@ -2854,3 +2854,5 @@ pre-registered).
   empty pools are written only to `data/private/`.
 - Code: `src/dr3x_feh_matched.py`. Labels registered in `src/seeds.py` (codes 1768, 2080, 2284, 1704, 1822; no
   collision).
+- **E69 addendum (before running):** sixth variant **`dr3x_A_feh_subset_nick`** (code 2220, no collision). It
+  uses the Nick variant's host subset with the original pools, so that variant has a same-host baseline too.
