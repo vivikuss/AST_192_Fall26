@@ -145,20 +145,23 @@ def chunk_adql(ids):
             f"WHERE source_id IN ({', '.join(map(str, ids))})")
 
 
-def _chunk_name(i):
-    return f"feh/field_pool_gspspec/c{i:03d}"
+POOL_PREFIX = "feh/field_pool_gspspec"
 
 
-def _cached_any(i, adql):
+def _chunk_name(i, prefix=POOL_PREFIX):
+    return f"{prefix}/c{i:03d}"
+
+
+def _cached_any(i, adql, prefix=POOL_PREFIX):
     from . import ari_tap
-    return gaia_tap.cached(_chunk_name(i), adql) or ari_tap.cached(_chunk_name(i), adql)
+    return gaia_tap.cached(_chunk_name(i, prefix), adql) or ari_tap.cached(_chunk_name(i, prefix), adql)
 
 
-def _read_cached(i, adql):
+def _read_cached(i, adql, prefix=POOL_PREFIX):
     from . import ari_tap
     for svc, mod in (("esa", gaia_tap), ("ari", ari_tap)):
-        if mod.cached(_chunk_name(i), adql):
-            f = RAW / ("gaia" if svc == "esa" else "ari") / f"{_chunk_name(i)}.fits"
+        if mod.cached(_chunk_name(i, prefix), adql):
+            f = RAW / ("gaia" if svc == "esa" else "ari") / f"{_chunk_name(i, prefix)}.fits"
             t = Table.read(f)
             for c in t.colnames:
                 if t[c].dtype.kind == "S":
@@ -167,10 +170,11 @@ def _read_cached(i, adql):
     raise FileNotFoundError(i)
 
 
-def _flog(msg):
+def _flog(msg, log=None):
     import datetime as dt
-    FETCH_LOG.parent.mkdir(parents=True, exist_ok=True)
-    with open(FETCH_LOG, "a") as fh:
+    log = log or FETCH_LOG
+    log.parent.mkdir(parents=True, exist_ok=True)
+    with open(log, "a") as fh:
         fh.write(f"{dt.datetime.now().isoformat(timespec='seconds')}\t{msg}\n")
 
 
@@ -188,7 +192,7 @@ class _AttemptTimeout(BaseException):
     """BaseException on purpose: ari_tap's poll loop catches Exception (to retry polls) and swallowed it (E68)."""
 
 
-def _attempt(i, adql, avoid=None, prefer=None):
+def _attempt(i, adql, avoid=None, prefer=None, prefix=POOL_PREFIX):
     """One try of one chunk on one service; returns service name. Raises on any failure (no internal retries).
     ARI only when its availability check answers, and not right after an ARI failure (`avoid`); after a success,
     stay with the service that worked (`prefer`) - ARI answered its availability check while its queue was stuck."""
@@ -202,76 +206,83 @@ def _attempt(i, adql, avoid=None, prefer=None):
     try:
         if prefer != "esa" and avoid != "ari" and _ari_available():
             _attempt.svc = "ari"
-            ari_tap.query(adql, _chunk_name(i), retries=0, max_wait_s=ATTEMPT_TIMEOUT_S - 60)
+            ari_tap.query(adql, _chunk_name(i, prefix), retries=0, max_wait_s=ATTEMPT_TIMEOUT_S - 60)
             return "ari"
         _attempt.svc = "esa"
-        gaia_tap.query(adql, _chunk_name(i), retries=0, retries_500=0)
+        gaia_tap.query(adql, _chunk_name(i, prefix), retries=0, retries_500=0)
         return "esa"
     finally:
         signal.alarm(0)
 
 
-def _status(**kw):
+def _status(file=None, **kw):
     PROC.mkdir(parents=True, exist_ok=True)
-    FETCH_STATUS.write_text(json.dumps(kw, indent=1))
+    (file or FETCH_STATUS).write_text(json.dumps(kw, indent=1))
 
 
 def fetch_pool():
-    """Sequential, resumable fetch of the pool-union stars' GSP-Spec rows. Exits when complete, or at the
-    deadline if nothing has succeeded. Box stars are NOT fetched here (user to be told first)."""
+    """Sequential, resumable fetch of the pool-union stars' GSP-Spec rows (E68). Box stars are NOT fetched here."""
+    fetch_ids(pool_chunks(), POOL_PREFIX, FETCH_STATUS, PROC / "field_gspspec_pool.csv.gz", FETCH_LOG,
+              GIVE_UP_IF_NO_SUCCESS_BY, "pool_complete")
+
+
+def fetch_ids(chunks, prefix, status_file, out_csv, log, give_up_by, done_state="complete"):
+    """Sequential, resumable fetch of GSP-Spec rows for `chunks` (lists of source_ids), one chunk at a time; cache
+    under `prefix`. Exits when complete, or at `give_up_by` if nothing has succeeded."""
     import datetime as dt
     import time
-    chunks = pool_chunks()
     adqls = [chunk_adql(c) for c in chunks]
-    deadline = dt.datetime.fromisoformat(GIVE_UP_IF_NO_SUCCESS_BY)
+    deadline = dt.datetime.fromisoformat(give_up_by)
     n_ok_session, wait, avoid, prefer = 0, WAIT_MIN_S, None, None
-    if FETCH_STATUS.exists():                       # restart: honour a wait that was in progress
-        st = json.loads(FETCH_STATUS.read_text())
+    if status_file.exists():                        # restart: honour a wait that was in progress
+        st = json.loads(status_file.read_text())
         if st.get("state") == "waiting":
             until = dt.datetime.fromisoformat(st["updated"]) + dt.timedelta(minutes=st["wait_min"])
             left = (until - dt.datetime.now()).total_seconds()
             wait = min(2 * st["wait_min"] * 60, WAIT_MAX_S)
             avoid = st.get("last_service")
             if left > 0:
-                _flog(f"restart: honouring previous wait, sleeping {left / 60:.1f} min")
+                _flog(f"restart: honouring previous wait, sleeping {left / 60:.1f} min", log)
                 time.sleep(left)
         elif st.get("last_success_service"):
             prefer = st["last_success_service"]
-    _flog(f"start fetch_pool: {len(chunks)} chunks of <= {POOL_CHUNK} ids, "
-          f"{sum(len(c) for c in chunks)} ids; pid {os.getpid()}")
+    _flog(f"start fetch {prefix}: {len(chunks)} chunks of <= {POOL_CHUNK} ids, "
+          f"{sum(len(c) for c in chunks)} ids; pid {os.getpid()}", log)
     while True:
-        todo = [i for i, a in enumerate(adqls) if not _cached_any(i, a)]
+        todo = [i for i, a in enumerate(adqls) if not _cached_any(i, a, prefix)]
         done = len(adqls) - len(todo)
-        _status(state="running", chunks_done=done, chunks_total=len(adqls), pid=os.getpid(), last_success_service=prefer,
-                succeeded_this_run=n_ok_session, updated=dt.datetime.now().isoformat(timespec="seconds"))
+        _status(status_file, state="running", chunks_done=done, chunks_total=len(adqls), pid=os.getpid(),
+                last_success_service=prefer, succeeded_this_run=n_ok_session,
+                updated=dt.datetime.now().isoformat(timespec="seconds"))
         if not todo:
-            g = pd.concat([_read_cached(i, a) for i, a in enumerate(adqls)], ignore_index=True)
+            g = pd.concat([_read_cached(i, a, prefix) for i, a in enumerate(adqls)], ignore_index=True)
             g.columns = [c.lower() for c in g.columns]
-            g.to_csv(PROC / "field_gspspec_pool.csv.gz", index=False)
-            _flog(f"COMPLETE: {len(g)} rows for {sum(len(c) for c in chunks)} ids")
-            _status(state="pool_complete", chunks_done=len(adqls), chunks_total=len(adqls), rows=len(g),
+            g.to_csv(out_csv, index=False)
+            _flog(f"COMPLETE: {len(g)} rows for {sum(len(c) for c in chunks)} ids", log)
+            _status(status_file, state=done_state, chunks_done=len(adqls), chunks_total=len(adqls), rows=len(g),
                     updated=dt.datetime.now().isoformat(timespec="seconds"))
             return
         if n_ok_session == 0 and done == 0 and dt.datetime.now() >= deadline:
-            _flog("STOP: deadline reached with no successful chunk")
-            _status(state="stopped_no_success", chunks_done=0, chunks_total=len(adqls),
+            _flog("STOP: deadline reached with no successful chunk", log)
+            _status(status_file, state="stopped_no_success", chunks_done=0, chunks_total=len(adqls),
                     updated=dt.datetime.now().isoformat(timespec="seconds"))
             return
         i = todo[0]
         t0 = time.time()
         try:
             _attempt.svc = None
-            svc = _attempt(i, adqls[i], avoid, prefer)
+            svc = _attempt(i, adqls[i], avoid, prefer, prefix)
             n_ok_session += 1
             wait, avoid, prefer = WAIT_MIN_S, None, svc
-            _flog(f"chunk {i:03d} OK via {svc} in {time.time() - t0:.0f} s ({done + 1}/{len(adqls)})")
+            _flog(f"chunk {i:03d} OK via {svc} in {time.time() - t0:.0f} s ({done + 1}/{len(adqls)})", log)
             time.sleep(PAUSE_OK_S)
         except (Exception, _AttemptTimeout) as err:
             avoid, prefer = _attempt.svc, None
             _flog(f"chunk {i:03d} FAIL via {avoid} after {time.time() - t0:.0f} s: {type(err).__name__}: "
-                  f"{str(err)[:160]!r}; waiting {wait // 60} min")
-            _status(state="waiting", chunks_done=done, chunks_total=len(adqls), last_error=f"{type(err).__name__}", last_service=avoid,
-                    wait_min=wait // 60, pid=os.getpid(), updated=dt.datetime.now().isoformat(timespec="seconds"))
+                  f"{str(err)[:160]!r}; waiting {wait // 60} min", log)
+            _status(status_file, state="waiting", chunks_done=done, chunks_total=len(adqls),
+                    last_error=f"{type(err).__name__}", last_service=avoid, wait_min=wait // 60, pid=os.getpid(),
+                    updated=dt.datetime.now().isoformat(timespec="seconds"))
             time.sleep(wait)
             wait = min(2 * wait, WAIT_MAX_S)
 

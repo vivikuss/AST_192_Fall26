@@ -16,3 +16,6 @@ logs/hu2026_power.log
 logs/wasp_kinematics.log
 logs/feh_field_fetch.log
 logs/feh_field_fetch.stdout
+logs/feh_fieldB_fetch.log
+logs/feh_fieldB_fetch.stdout
+logs/feh_b_run.log

@@ -2956,3 +2956,55 @@ earlier is changed; E61/E62 results stand.
   host names go to `data/private/` only.
 - Code: `src/dr3x_feh_b.py`. Labels registered in `src/seeds.py` (codes 1475, 1141, 1140; no collision), chunks
   0–7 and bootstrap tail 99.
+
+**E72. RESULTS (EXPLORATORY, not pre-registered): metallicity-matched Method B (plan E71)** (2026-11-18).
+`python -m src.dr3x_feh_b field|fetch|run` → `data/processed/dr3_exploratory/feh_b_results.json`.
+- **Checks passed:**
+  - The rebuilt field has 124,142 stars.
+  - The chunk 0 replay of `dr3x_B_diag_dr2field` equals the E62 checkpoint (max difference 0.0).
+  - `FehSampler` with no window reproduces `ControlSampler`'s picks exactly (300 and 200 iterations).
+- **Fetch:**
+  - 1,025 of the field stars were already in the E68 cache.
+  - The other 123,117 were fetched in 62 chunks via ARI (11:50–13:09), with no failure; every ID has an
+    `astrophysical_parameters` row.
+  - `src/feh_field.py`: the E68 loop was generalised to `fetch_ids` (same behaviour; the pool cache is still
+    recognised).
+- **Coverage:**
+  - Field: `mh_gspspec` 39,664 / 124,142; E66 medium quality 34,431 (27.7 %); 33,219 of them inside the host
+    [M/H] range.
+  - Hosts: 92 of 101 have a medium-quality GSP-Spec [M/H] (E66 rows).
+- **Results** (92 hosts in every run; no host dropped for an empty pool; 40,000 + 40,000):
+
+  | | unmatched (`_none`) | ±0.2 dex (`_02`, main) | ±0.1 dex (`_01`, check) |
+  |---|---|---|---|
+  | eq. 1: host / control median | 37.49 / 42.91 | 37.49 / 40.98 | 37.49 / 40.77 |
+  | eq. 1 Δ [95 %] | −5.42 [−9.44, −1.55] | −3.49 [−7.53, +0.42] | −3.28 [−7.30, +0.56] |
+  | σ_tot: host / control median | 42.01 / 48.89 | 42.01 / 46.16 | 42.01 / 45.98 |
+  | σ_tot Δ [95 %] | −6.88 [−11.83, −2.32] | −4.15 [−9.16, +0.48] | −3.96 [−8.93, +0.59] |
+  | σ_U host / median | 30.87 / 37.82 | 30.87 / 36.09 | 30.87 / 36.02 |
+  | σ_V host / median | 23.14 / 24.39 | 23.14 / 22.84 | 23.14 / 22.60 |
+  | σ_W host / median | 16.63 / 18.51 | 16.63 / 17.24 | 16.63 / 17.18 |
+  | fraction of controls ≤ host, eq. 1 | 0.012 | 0.056 | 0.066 |
+  | pool size median / min | 8,392 / 680 | 1,044 / 16 | 543 / 5 |
+  | iterations with an unmatched host | 0 | 5,075 (12.7 %) | 23,060 (57.7 %) |
+
+  - Pool = a host's usable field stars (z weight > 0) within the colour tolerance (and window), before the
+    per-iteration thinning.
+  - Unmatched hosts per iteration: mean 0.13 (±0.2) and 0.58 (±0.1). Handled as in D13b.
+  - BCa was not needed in any bootstrap.
+  - Both Δ bootstraps of a run use the label's tail-99 stream, so they share resample indices.
+  - Reference: on all 101 hosts, E62 gives a control median of 43.25 and Δ = −5.49 [−9.35, −1.78].
+- **Reading** (descriptive; exploratory):
+  - **Overall:** matching lowers the control medians by about 2 km/s (eq. 1) and 2.7 km/s (σ_tot). Δ shrinks
+    by about 35–40 % and its 95 % interval now includes 0 (upper ends +0.4 to +0.6).
+  - **By component:** the σ_W and σ_V gaps largely close. Most of the σ_U gap remains (host 30.9 vs median
+    36.1; fraction of controls ≤ host 0.03), as in E70 for Method A.
+  - **Window:** ±0.1 and ±0.2 dex give nearly the same result.
+- **Caveats:**
+  - **Window vs noise:** GSP-Spec's single-star noise (about 0.18 dex) is comparable to the windows.
+  - **Unmatched hosts:** at ±0.1 dex, 58 % of iterations have an unmatched host, so those iterations use
+    slightly fewer hosts (for host and controls alike).
+  - **Selection:** only 28 % of the field has a medium [M/H], and matched controls come from that subset. Its
+    selection was not separated from the matching (no GSP-only run, which E70 had for Method A).
+  - **Host subset:** the 9 hosts without GSP-Spec are excluded, so the comparison is on the same 92 hosts.
+  - **Not pre-registered:** this is one exploratory analysis among several.
